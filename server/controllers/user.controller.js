@@ -1,86 +1,22 @@
-const User = require('../models/user.model')
-const bcrypt = require ('bcryptjs')
-const jwt = require ('jsonwebtoken')
+const User = require('../models/user.model'); 
 
-exports.signup = ( req , res ) =>  {
+exports.deleteUser = async (req, res) => {
+  try {
+    
+    const { id } = req.params;
 
-
-    const data = {
-        firstname : req.body.firstname,
-        lastname: req.body.lastname,
-        email : req.body.email,
-        password : bcrypt.hashSync( req.body.password , 10 ) ,
-        picture : req.body.picture,
-        birthdate : req.body.birthdate,
-        address : req.body.address,
-        phone : req.body.phone
+    
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
     }
 
-    const _user = new User(data);
+    // Delete the user
+    await User.findByIdAndDelete(id);
 
-    _user.save().then(
-        (createdUser) => {
-            res.status(200).json({ message: "User added successfully" });
-        }
-    ).catch(
-        (err) => {
-            console.error("Error saving user:", err); // Log the error message
-            res.status(400).json({ message: "Error adding user: " + err.message }); // Send error message to client
-        }
-    );
-
-}
-
-exports.signin = async (req , res ) => {
-
-
-    const { email , password } =req.body
-
-    const user = await User.findOne({ email : email})
-
-    if ( !user ){
-        return res.status(400).json({ message: "Invalid Email" })
-    }
-
-    bcrypt.compare( password , user.password ).then(
-
-        (isMatch) =>{
-            if ( isMatch == false ){
-                return res.status(400).json({ message: "Invalid Password" })
-
-            }else{
-
-            
-                // Generate a JWT token
-                const token = jwt.sign(
-                    { data : { id : user._id , role : user.role } },
-                    process.env.CLE,
-                    { expiresIn : '1h' }
-
-                    )
-
-                    return res.status(200).json(
-                        { 
-                            message : "login Success",
-                            token : token, 
-                            user : user
-                    })
-
-                    
-
-            }
-
-        }
-
-    )
-
-}
-
-exports.logout = ( req , res ) => {
-    res.cookie('jwt', '', { maxAge:1})
-    res.status(200).json({ message: "Logged out successfully" });
-    res.redirect('/');
-
-}
-
-
+    res.status(200).send({ message: 'User deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: 'Error deleting user' });
+  }
+};

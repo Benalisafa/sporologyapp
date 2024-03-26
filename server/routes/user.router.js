@@ -4,8 +4,9 @@ const route = express.Router()
 
 const userController = require ('../controllers/user.controller');
 
-route.post('/signup', userController.signup )
-route.post('/signin', userController.signin )
-route.post('/logout', userController.logout )
+const passport = require ("passport")
+const checkRole = require ("../middleware/role.middleware");
+
+route.delete("/deleteUser/:id" , passport.authenticate("jwt",{session:false}), checkRole(['admin']) , userController.deleteUser)
 
 module.exports = route

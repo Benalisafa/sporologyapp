@@ -18,12 +18,30 @@ const activitySchema = new mongoose.Schema({
         
 
      },
-    creator:{
+    owner:{
         type : mongoose.Types.ObjectId,
-        ref : 'partners'
+        ref : 'users'
         // required:true
-    }
+    },
 
+    status: String,
+
+    reservations: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Reservations' 
+      },
+
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
+      },
+
+    isFavorite: {
+        type: Boolean,
+        default: false
+      }
+
+    
 
 })
 

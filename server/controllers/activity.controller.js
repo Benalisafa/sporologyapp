@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator');
 exports.createActivity = ( req , res ) =>  {
 
 
-    const data = {
+    const activityData = {
         title : req.body.title,
         description: req.body.description,
         photos : req.body.photos,
@@ -13,12 +13,12 @@ exports.createActivity = ( req , res ) =>  {
         duration : req.body.duration,
         capacity : req.body.capacity,
         // category : req.body.category,
-        // creator : req.body.creator,
+        owner : req.user._id,
         
     }
 
 
-    const _activity = new Activity(data);
+    const _activity = new Activity(activityData);
 
     _activity.save().then(
         (createdActivity) =>{
@@ -33,7 +33,27 @@ exports.createActivity = ( req , res ) =>  {
     }
      
 
+    exports.getActivities = async (req, res) => {
+
+       
+
+        try {
+            const allActivities = await Activity.find({}); 
+            res.status(200).json({ activities: allActivities });
+          } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error retrieving activities' });
+          }
+
+    }
      
+
+    exports.getMyActivities = async (req,res) => {
+
+        const activities = await Activity.find({owner:req.user._id})
+        res.status(200).json({ myActivities: activities })
+    }
+
 
      exports.getActivityById = async (req, res) => {
     try {
@@ -57,14 +77,13 @@ exports.createActivity = ( req , res ) =>  {
         res.status(200).json(_activity);
     } catch (error) {
         
-        console.error('Error getting activity by ID:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
 
 
 exports.updateActivity = async (req, res) => {
-    const data = {
+    const activityData = {
         title : req.body.title,
         description: req.body.description,
         photos : req.body.photos,
@@ -73,7 +92,7 @@ exports.updateActivity = async (req, res) => {
         duration : req.body.duration,
         capacity : req.body.capacity,
         // category : req.body.category,
-        // creator : req.body.creator,
+        owner : req.user._id,
         
     }
     try {
@@ -96,14 +115,14 @@ exports.updateActivity = async (req, res) => {
         }
         
         
-        if (data) {
-            _activity.title = data.title;
-            _activity.description = data.description;
-            _activity.photos = data.photos;
-            _activity.duration = data.duration;
-            _activity.capacity = data.capacity;
-            _activity.date = data.date;
-            _activity.location = data.location;
+        if (activityData) {
+            _activity.title = activityData.title;
+            _activity.description = activityData.description;
+            _activity.photos = activityData.photos;
+            _activity.duration = activityData.duration;
+            _activity.capacity = activityData.capacity;
+            _activity.date = activityData.date;
+            _activity.location = activityData.location;
           }
         
 
@@ -120,29 +139,55 @@ exports.updateActivity = async (req, res) => {
 };
 
 
-exports.deleteActivity = async (req, res) => {
+exports.cancelActivity = async (req, res) => {
+
+   
 
     try {
         // Extract the activity ID from the request parameters
         const { id } = req.params;
 
         // Find the activity in the database by its ID
-        const activity = await Activity.findById(id);
+        const _activity = await Activity.findById(id);
 
         // Check if the activity exists
-        if (!activity) {
+        if (!_activity) {
             return res.status(404).json({ error: 'Activity not found' });
         }
 
         // Delete the activity from the database
-        await activity.remove();
+        _activity.status = 'cancelled'
 
-        // Return success response
-        res.status(200).json({ message: 'Activity deleted successfully' });
+        await _activity.save();
+
+        
+        res.status(200).json(_activity);
     } catch (error) {
-        // If an error occurs during the process, return an error response
-        console.error('Error deleting activity:', error);
+        
+        console.error('Cannot cancel activity:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 
+
 };
+
+exports.removeActivity = async (req, res) => {
+    try {
+      
+      const { id } = req.params;
+  
+      
+      const activity = await Activity.findById(id);
+      if (!activity) {
+        return res.status(404).send({ message: 'Activity not found' });
+      }
+  
+      // Delete the user
+      await Activity.findByIdAndDelete(id);
+  
+      res.status(200).send({ message: 'Activity deleted successfully' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message: 'Error deleting activity' });
+    }
+  };
