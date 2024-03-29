@@ -7,6 +7,11 @@ import  Login  from './pages/login/Login'
 import  Home  from './pages/home/Home'
 import  Found  from './pages/notFound/notFound'
 import { Layout } from './components/layout/Layout'
+import { PrivateRoute } from './components/PrivateRoute'
+import { Provider } from 'react-redux'
+import {store} from './redux/store'
+import { PersistGate } from 'redux-persist/integration/react'
+import  {persistor}  from './redux/store'
 
 
 
@@ -18,7 +23,7 @@ const router =createBrowserRouter([
       children: [
         {
           path : '/',
-          element : <Home/>
+          element : <PrivateRoute><Home/></PrivateRoute>
         },
         
        
@@ -41,7 +46,7 @@ const router =createBrowserRouter([
 
     // {
     //   path : '/profile',
-    //   element : <Profile/>
+    //   element : <PrivateRoute> <Profile/></PrivateRoute>
     // },
 
     // {
@@ -52,6 +57,10 @@ const router =createBrowserRouter([
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+        
+      
   <React.StrictMode>
 
   
@@ -59,4 +68,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   
   
 </React.StrictMode>,
+</PersistGate>
+</Provider>
 )

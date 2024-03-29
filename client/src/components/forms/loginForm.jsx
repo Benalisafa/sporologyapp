@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import  {useState} from 'react'
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -6,9 +6,13 @@ import Form from 'react-bootstrap/Form';
 import toast, { Toaster } from 'react-hot-toast'
 import UserService from '../../Services/userService';
 import {useNavigate} from "react-router-dom";
+import {jwtDecode} from "jwt-decode"
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/reducers/auth.reducer';
 
 function LoginForm(){
 
+    const dispatch = useDispatch()
     const navigate=useNavigate()
   const [formData, setFormData] = useState({
  
@@ -17,12 +21,12 @@ function LoginForm(){
     
   });
 
-  const setErrors = useState({
+  // const setErrors = useState({
     
-    email: '',
-    password: '',
+  //   email: '',
+  //   password: '',
     
-  })
+  // })
     
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -44,14 +48,21 @@ function LoginForm(){
 
         
       try {
-        console.log('Form submitted:', formData);
-        await UserService.signin( formData )
-        navigate("/")
+        console.log('Form submitted:');
+        const response = await UserService.signin( formData )
+        
+        
         toast.success('Logged in successfully')
+        
+        const decoded = jwtDecode (response.data.token)
+        dispatch (login({user:decoded, token:response.data.token}))
+        navigate("/")
+       
+
         
         
       } catch (err) {
-        setErrors(err.response.data)
+        // setErrors(err.response.formData)
         console.log(err)
         toast.error(' Logging Failed')
       }
