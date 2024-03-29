@@ -9,4 +9,7 @@ const checkRole = require ("../middleware/role.middleware");
 
 route.delete("/deleteUser/:id" , passport.authenticate("jwt",{session:false}), checkRole(['admin']) , userController.deleteUser)
 
+
+//Kén aandek wa9t arja3 lenna w aamel desactiver l son compter el membre
+
 module.exports = route
