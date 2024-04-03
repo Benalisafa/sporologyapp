@@ -29,7 +29,7 @@ export const Navbar = () => {
         <Nav.Link href="/home">Logo</Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link eventKey="link-1">Activities</Nav.Link>
+      <Link to ={"/list"}>Activities</Link>
       </Nav.Item>
       <Nav.Item>
         <Nav.Link eventKey="link-1">Partners</Nav.Link>

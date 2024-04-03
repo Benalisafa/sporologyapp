@@ -24,3 +24,5 @@ export const authReducer = createSlice({
     },
 })
 export const {login,logout} =authReducer.actions;
+export const userData = state => state.auth.user;
+export const userToken = state => state.auth.token;

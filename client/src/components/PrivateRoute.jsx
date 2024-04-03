@@ -10,8 +10,8 @@ export const PrivateRoute = () => {
         if (!isConnected) {
             navigate("/");
         }
-    }, [isConnected, navigate]); // Add isConnected and navigate to the dependencies array
+    }, [isConnected, navigate]); 
 
-    // Render null or some loading indicator while checking authentication
+    
     return null;
 };

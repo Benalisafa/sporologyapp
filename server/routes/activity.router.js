@@ -10,17 +10,16 @@ const activityOwnership = require('../middleware/activityOwnership');
 
 route.post('/createActivity' , 
 passport.authenticate('jwt', { session: false }) ,  
-checkRole(['partner']), 
+checkRole(['member']), 
 activityController.createActivity)
 
 
 route.get('/listActivity' , activityController.getActivities)
 route.get('/listActivity/:id' , activityController.getActivityById)
 
-route.get('/me' , 
-passport.authenticate('jwt', { session: false }) ,  
-checkRole(['partner']), 
-activityController.getMyActivities)
+// route.get('/me' , 
+
+// activityController.getMyActivities)
 
 
 

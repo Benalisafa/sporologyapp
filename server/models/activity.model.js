@@ -2,6 +2,11 @@ const mongoose =require('mongoose')
 
 const activitySchema = new mongoose.Schema({
 
+  owner:{
+    type : mongoose.Types.ObjectId,
+    ref : 'users'
+    // required:true
+},
     title: String,
     description: String,
     photos: String,
@@ -18,11 +23,7 @@ const activitySchema = new mongoose.Schema({
         
 
      },
-    owner:{
-        type : mongoose.Types.ObjectId,
-        ref : 'users'
-        // required:true
-    },
+    
 
     status: String,
 

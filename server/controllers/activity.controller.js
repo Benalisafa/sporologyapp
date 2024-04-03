@@ -48,11 +48,11 @@ exports.createActivity = ( req , res ) =>  {
     }
      
 
-    exports.getMyActivities = async (req,res) => {
+    // exports.getMyActivities = async (req,res) => {
 
-        const activities = await Activity.find({owner:req.user._id})
-        res.status(200).json({ myActivities: activities })
-    }
+    //     const activities = await Activity.find({owner:req.user._id})
+    //     res.status(200).json({ myActivities: activities })
+    // }
 
 
      exports.getActivityById = async (req, res) => {

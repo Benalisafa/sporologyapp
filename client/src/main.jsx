@@ -12,6 +12,11 @@ import { Provider } from 'react-redux'
 import {store} from './redux/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import  {persistor}  from './redux/store'
+import ActivitiesHomePage from './pages/activitiesPage/ActivitiesPage'
+import CreateActivity from './pages/activitiesPage/create/CreateActivity'
+import { PrivateRole } from './components/PrivateRole'
+import Admin from './pages/Dashboard/admin/Admin'
+import Partner from './pages/Dashboard/partner/Partner'
 
 
 
@@ -23,7 +28,37 @@ const router =createBrowserRouter([
       children: [
         {
           path : '/',
-          element : <PrivateRoute><Home/></PrivateRoute>
+          element : <Home/>
+        },
+
+        {
+          path : '/list',
+          element : <ActivitiesHomePage/>
+        },
+
+        {
+          path : '/dashboard/partner/create',
+          element : <CreateActivity/>
+        },
+
+        {
+          
+          path : '/dashboard/admin',
+          element : 
+          <PrivateRole role="admin">
+          <Admin/>
+          </PrivateRole>
+
+        },
+
+        {
+          
+          path : '/dashboard/partner',
+          element : 
+          
+          <Partner/>
+         
+
         },
         
        
@@ -38,6 +73,8 @@ const router =createBrowserRouter([
       path : '/signup',
       element : <Register/>
     },
+
+    
 
     {
       path : '/*',
