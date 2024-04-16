@@ -1,24 +1,36 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
+
+import { Image } from 'react-bootstrap';
+
 import PropTypes from 'prop-types';
 
 const ActivityCard = ({ activity }) => {
-  return (
-    <Card style={{ width: '18rem' }}>
-      <Card.Body>
-        <Card.Title>{activity.title}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-        <Card.Text>{activity.description}</Card.Text>
-      </Card.Body>
-    </Card>
+  
+   return (
+    <div>
+      
+        <Image style={{ width: '300px', height: '300px'  }}src="../../assets/react.svg" fluid className="rounded-2xl" /> 
+      
+      <div className="p-3">
+        <h2 className="font-weight-bold">{activity.title}</h2>
+        
+        <div className="mt-1">
+        <span className="text-sm text-muted">{activity.address}address</span>
+        <br></br>
+          <span className="text-sm text-muted">{activity.date}</span> 
+        </div>
+      </div>
+    </div>
   );
 };
 
 ActivityCard.propTypes = {
   activity: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    // Add prop types for other activity properties if needed
+    date: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+    
   }).isRequired,
 };
 

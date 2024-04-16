@@ -17,6 +17,7 @@ import CreateActivity from './pages/activitiesPage/create/CreateActivity'
 import { PrivateRole } from './components/PrivateRole'
 import Admin from './pages/Dashboard/admin/Admin'
 import Partner from './pages/Dashboard/partner/Partner'
+import ActivityPage from './pages/activitiesPage/ActivityPage'
 
 
 
@@ -32,8 +33,12 @@ const router =createBrowserRouter([
         },
 
         {
-          path : '/list',
+          path : '/activities/list',
           element : <ActivitiesHomePage/>
+        },
+        {
+          path : '/activities/single/:id',
+          element : <ActivityPage />
         },
 
         {
@@ -65,12 +70,12 @@ const router =createBrowserRouter([
       ]
     },
     {
-      path : '/login',
+      path : '/partner/login',
       element : <Login/>
     },
 
     {
-      path : '/signup',
+      path : '/partner/signup',
       element : <Register/>
     },
 
