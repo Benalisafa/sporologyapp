@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container } from 'react-bootstrap';
 import LoginForm from '../../components/forms/loginForm';
+import './login.css'
 
 
 function Login() {
