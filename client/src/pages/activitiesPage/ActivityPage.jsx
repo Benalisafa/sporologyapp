@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { axiosInstance } from "../../lib/axios";
 import { useParams } from "react-router-dom";
-import Button from 'react-bootstrap/Button';
+
+import Filter from "../../components/layout/Filter";
+import Container from 'react-bootstrap/Container';
+import { LocationIcon, DateIcon } from "../../components/Icons";
+import BookingWidget from "../../components/activities/BookingWidget";
 
 const ActivityPage = () => {
   const { id } = useParams();
@@ -77,10 +81,16 @@ const ActivityPage = () => {
   }
 
   return (
-    <div className="container">
+    
+    <Container>
+    <div >
       <div className="row">
 
-        <h1>Activity: {activity.title}</h1>
+      <div className="m-5">
+        <Filter/>
+        </div>
+
+        <h1> {activity.title}</h1>
         <a
           className="mb-4 md:mb-0 col-md-8 position-relative rounded inline-block"
           style={{ height: '24em' }}
@@ -90,8 +100,8 @@ const ActivityPage = () => {
             className="position-absolute left-0 bottom-0 w-100 h-100"
             style={{ backgroundImage: 'linear-gradient(180deg,transparent,rgba(0,0,0,.7))' }}
           ></div>
-          <img
-            src="https://images.unsplash.com/photo-1493770348161-369560ae357d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80"
+          <div
+            
             className="position-absolute left-0 top-0 w-100 h-100 rounded"
             alt=""
             style={{ objectFit: 'cover' }}
@@ -118,8 +128,52 @@ const ActivityPage = () => {
           
         </a>
 
+
       </div>
-      {isBooked && <div>You have already booked this activity.</div>}
+
+      <div className="mb-5">
+
+      <h3 className="font-weight-bold text-dark">{activity.owner}</h3>
+
+      <div className="d-flex align-items-center">
+        <LocationIcon />
+        <h3 className="text-muted mb-0 ms-2 fs-5">{activity.location}</h3>
+      </div>
+
+      <div className="d-flex align-items-center">
+        <DateIcon />
+        <span className="text-muted mb-0 ms-2 fs-8">${activity.date}</span>
+      </div>
+    </div>
+    </div>
+
+    <div className="d-flex align-items-center justify-content-between" >
+      <div>
+          <div className="my-4">
+            <h2 >What this place offers?</h2>
+            Wifi <br/>
+            Free parking
+          </div>
+        
+          <div className="my-4">
+            <h2 >Description</h2>
+            {activity.description}
+          </div>
+          </div>
+        
+        <div style={{width:'300px'}}>
+          <BookingWidget  />
+        </div>
+      </div>
+      <div >
+        <div>
+          <h2 >How many places are available?</h2>
+        </div>
+        <div >50 places</div>
+      </div>
+    
+      
+      {/* {isBooked && <div>You have already booked this activity.</div>}
       {!isBooked && (
         <>
           <input
@@ -130,8 +184,10 @@ const ActivityPage = () => {
           />
           <Button onClick={handleBookClick}>Book</Button>
         </>
-      )}
-    </div>
+      )} */}
+      
+    
+    </Container>
   );
 };
 
