@@ -10,7 +10,7 @@ function Login() {
     
       <h1 className='text-center'>Welcome back</h1>
       <LoginForm/>
-    <div>New here? <a href="/signup">Sign up</a> </div>
+    
     </Container>
   )
 }

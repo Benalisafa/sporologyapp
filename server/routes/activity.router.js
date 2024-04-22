@@ -25,7 +25,7 @@ route.get('/listActivity/:id' , activityController.getActivityById)
 
 route.put('/updateActivity/:id' , 
 passport.authenticate('jwt', { session: false }) ,  
-checkRole(['partner']), 
+checkRole(['member']), 
 activityOwnership,
 activityController.updateActivity)
 

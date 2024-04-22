@@ -1,6 +1,6 @@
 // import Image from '../../components/Image'
 import {Image} from 'react-bootstrap'
-
+import img from '../../assets/Fitness Class Participation.jpg'
 import PropTypes from 'prop-types';
 import { LocationIcon, DateIcon ,HeartIcon} from '../Icons';
 
@@ -15,26 +15,24 @@ const ActivityCard = ({ activity }) => {
         </div> */}
 
         <Image
-        src="https://images.unsplash.com/photo-1493770348161-369560ae357d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80"
-        style={{ width: '366px', height: '366px', objectFit: 'cover' }}
-        fluid
-        className="rounded-2xl"
+        src={img}
+        style={{ width: '300px', height: '300px', objectFit: 'cover', borderRadius:'10px'}} 
       />
 
-<div className="d-flex align-items-center justify-content-between text-dark">
-  <h3 className="font-weight-bold text-dark">{activity.title}</h3>
+<div className="d-flex align-items-center justify-content-between text-dark mt-2">
+  <h3 className="font-weight-bold text-dark" style={{fontSize:'20px'}}>{activity.title}</h3>
     <HeartIcon/>
 </div>
 
 
       <div className="d-flex align-items-center">
         <LocationIcon />
-        <h3 className="text-muted mb-0 ms-2 fs-5">{activity.location}</h3>
+        <h3 className="text-muted mb-0 ms-2" style={{fontSize:'16px'}}>{activity.location}</h3>
       </div>
 
       <div className="d-flex align-items-center">
         <DateIcon />
-        <span className="text-muted mb-0 ms-2 fs-8">${activity.date}</span>
+        <span className="text-muted mb-0 ms-2 " style={{fontSize:'16px'}}>{activity.date}</span>
       </div>
     </div>
   );

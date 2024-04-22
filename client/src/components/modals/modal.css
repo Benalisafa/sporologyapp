@@ -1,0 +1,11 @@
+.modal-title {
+    
+    flex-grow: 1; 
+  text-align: center; 
+  }
+
+  .modal-body {
+    padding-top: 0;
+  }
+
+  

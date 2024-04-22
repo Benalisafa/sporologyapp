@@ -11,7 +11,7 @@ function Filter() {
       <Nav.Link className="flex-grow-1" style={{ color: 'black', borderRight: '1px solid #ccc' }} href="#">Activity</Nav.Link>
       <Nav.Link className="flex-grow-1" style={{ color: 'black', borderRight: '1px solid #ccc' }} href="#">Where</Nav.Link>
       <Nav.Link className="flex-grow-1" style={{ color: 'black' }} href="#">When</Nav.Link>
-      <Button style={{ borderRadius: '20px' }}>
+      <Button className='button-circle'>
         <SearchIcon/>
       </Button>
     </Nav>

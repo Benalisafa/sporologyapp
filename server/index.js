@@ -27,10 +27,13 @@ const userRoutes = require ('./routes/user.router')
 
 const activityRoutes = require('./routes/activity.router')
 
+const bookingRoutes = require('./routes/booking.router')
+
 
 app.use('/users' , authRoutes)
 app.use('/users' , userRoutes)
 app.use('/activities' ,activityRoutes)
+app.use('/bookings' ,bookingRoutes)
 
 mongoose.connect(process.env.CONNECTION_STRING)
 
@@ -45,7 +48,7 @@ db.once("open", function(){
 
 
 // Server setup
-app.listen(process.env.PORT,()=>{                          //express port default is 3000
+app.listen(process.env.PORT,()=>{                        
     console.log(`port ${process.env.PORT} connected`);
-})                                             // "nodemon src/index.js in terminal"for port to connect everytime
+})                                             
 

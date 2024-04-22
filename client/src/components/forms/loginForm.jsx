@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/reducers/auth.reducer';
+import { EyeIcon, MailIcon } from '../Icons';
+import './Forms.css'
 
 function LoginForm({ handleClose }) {
   const dispatch = useDispatch();
@@ -46,17 +48,19 @@ function LoginForm({ handleClose }) {
   return (
     <Form className='mt-5' noValidate onSubmit={handleSubmit}>
       <Toaster />
-      <Form.Group className='mb-3'>
-        <Form.Label>Email</Form.Label>
-        <Form.Control type="email" placeholder="Email@example.co" required
+      <Form.Group className='mb-3 input-with-icon'>
+        <Form.Label>Email Address</Form.Label>
+        <div className="icon"><MailIcon/></div>
+        <Form.Control type="email" placeholder="Email Address" required
           value={formData.email}
           name="email"
           onChange={handleChange}
         />
       </Form.Group>
 
-      <Form.Group className='mb-3'>
+      <Form.Group className='mb-3 input-with-icon'>
         <Form.Label>Password</Form.Label>
+        <div className="icon"><EyeIcon/></div>
         <Form.Control type="password" placeholder="Password" required
           value={formData.password}
           name="password"
@@ -64,7 +68,8 @@ function LoginForm({ handleClose }) {
         />
       </Form.Group>
 
-      <Button type="submit">Log In</Button>
+      <Button type="submit" className='custom-button'>Login</Button>
+      <div className='mt-2 mb-4 text-center'>Don’t have any account yet? <a href="/signup">Create an account</a> </div>
     </Form>
   );
 }

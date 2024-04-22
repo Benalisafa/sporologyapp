@@ -18,6 +18,11 @@ import { PrivateRole } from './components/PrivateRole'
 import Admin from './pages/Dashboard/admin/Admin'
 import Partner from './pages/Dashboard/partner/Partner'
 import ActivityPage from './pages/activitiesPage/ActivityPage'
+import './style.css'
+import AboutUs from './pages/about/AboutUs'
+import ContactUs from './pages/contact/Contact'
+
+
 
 
 
@@ -37,9 +42,20 @@ const router =createBrowserRouter([
           element : <ActivitiesHomePage/>
         },
         {
+          path : '/about',
+          element : <AboutUs />
+        },
+
+        {
+          path : '/contact',
+          element : <ContactUs />
+        },
+
+        {
           path : '/activities/single/:id',
           element : <ActivityPage />
         },
+
 
         {
           path : '/dashboard/partner/create',

@@ -6,6 +6,7 @@ import Filter from "../../components/layout/Filter";
 import Container from 'react-bootstrap/Container';
 import { LocationIcon, DateIcon } from "../../components/Icons";
 import BookingWidget from "../../components/activities/BookingWidget";
+import Rating from "../../components/reviews/Rating";
 
 const ActivityPage = () => {
   const { id } = useParams();
@@ -171,7 +172,8 @@ const ActivityPage = () => {
         </div>
         <div >50 places</div>
       </div>
-    
+
+      <Rating/>
       
       {/* {isBooked && <div>You have already booked this activity.</div>}
       {!isBooked && (

@@ -16,7 +16,6 @@ const activitySchema = new mongoose.Schema({
     time : Date,
     capacity: Number,
     price: Number,
-    // reviews: [],
     category:{
         type : mongoose.Types.ObjectId
     //     ref : 'categories'
@@ -27,9 +26,9 @@ const activitySchema = new mongoose.Schema({
 
     status: String,
 
-    reservations: {
+    bookingIds: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Reservations' 
+        ref: 'bookings' 
       },
 
     userId: {

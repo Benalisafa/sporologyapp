@@ -7,8 +7,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import ActivityCard from '../../components/activities/activityCard';
 import Filter from '../../components/layout/Filter';
 import { axiosInstance } from '../../lib/axios';
-import { NextArrowIcon , PrevArrowIcon} from '../../components/Icons';
+import { FilterIcon, NextArrowIcon , PrevArrowIcon} from '../../components/Icons';
 import PropTypes from 'prop-types';
+import Button from 'react-bootstrap/Button'
 
 
 
@@ -95,11 +96,13 @@ function Home() {
 
   return (
     <Container>
-       <div>
+       
       <div style={{ paddingTop: '150px', textAlign: 'center' }} >
         <h1>Move your body</h1>
         <Filter />
       </div>
+      <div>
+        <Button className='custom-button-secondary'><FilterIcon/> Filter</Button>
       </div>
       <Slider {...settings} className="mt-5">
         {activities.map(activity => (

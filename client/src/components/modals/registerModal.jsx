@@ -4,6 +4,8 @@ import Modal from 'react-bootstrap/Modal';
 import RegisterForm from '../forms/registerForm';
 import Button from 'react-bootstrap/Button';
 import LoginForm from '../forms/loginForm';
+import UserService from '../../Services/userService';
+import './modal.css'
 
 function RegisterModal({ show, handleClose }) {
   const [error, setError] = useState(null);
@@ -21,17 +23,12 @@ function RegisterModal({ show, handleClose }) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Register</Modal.Title>
+        <Modal.Title>Sign up</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <RegisterForm handleRegistration={handleRegistration} />
         {error && <p className="text-danger mt-2">{error}</p>}
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 }

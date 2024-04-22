@@ -1,0 +1,19 @@
+.input-with-icon {
+    position: relative;
+  }
+  
+  .input-with-icon .icon {
+    position: absolute;
+    left: 90%; 
+    top: 50%
+    
+  }
+
+  .form-control:focus {
+    
+    border-color: var(--bs-primary);
+    box-shadow: none;
+}
+
+
+  
