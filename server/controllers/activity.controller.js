@@ -1,36 +1,56 @@
-const Activity = require('../models/activity.model')
+const Activity = require('../models/activity.model');
+const multer = require('multer');
+
 const { validationResult } = require('express-validator');
+const path = require('path');
 
-exports.createActivity = ( req , res ) =>  {
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'Images/'); // Uploads folder where files will be stored
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
 
+const upload = multer({
+  storage: storage,
+  limits: { files: 5 } // Accept up to 5 files
+});
 
-    const activityData = {
-        title : req.body.title,
-        description: req.body.description,
-        photos : req.body.photos,
-        date : req.body.date,
-        location : req.body.location,
-        duration : req.body.duration,
-        capacity : req.body.capacity,
-        // category : req.body.category,
-        owner : req.user._id,
-        
-    }
+exports.createActivity = (req, res) => {
+  // Access the uploaded image file using req.file
+  const imageData = req.files;
+  
+  if (!imageData) {
+    // Handle error if no image was uploaded (optional)
+    return res.status(400).json({ message: 'No image uploaded' });
+  }
 
+  const activityData = {
+    title : req.body.title,
+    description: req.body.description,
+    image : imageData.filename,
+    // date : req.body.date,
+    // location : req.body.location,
+    // duration : req.body.duration,
+    // capacity : req.body.capacity,
+    // category : req.body.category,
+    // owner : req.user._id,
+  };
 
-    const _activity = new Activity(activityData);
+  const _activity = new Activity(activityData);
 
-    _activity.save().then(
-        (createdActivity) =>{
-            res.status(200).json({ message : "Activity added successfully"})
-        }
-    ).catch(
-        (err) => {
-            console.error("Error saving activity:", err); // Log the error message
-            res.status(400).json({ message: "Error adding activity: " + err.message }); // Send error message to client
-        }
-    )
-    }
+  _activity.save()
+    .then((createdActivity) =>{
+      res.status(200).json({ message : "Activity added successfully"});
+    })
+    .catch((err) => {
+      console.error("Error saving activity:", err); // Log the error message
+      res.status(400).json({ message: "Error adding activity: " + err.message }); // Send error message to client
+    });
+};
+
      
 
     exports.getActivities = async (req, res) => {

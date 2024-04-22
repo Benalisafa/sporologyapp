@@ -1,45 +1,35 @@
-const express = require ('express')
-
-const route = express.Router()
-
+const express = require ('express');
+const route = express.Router();
+const multer = require('multer');
 const activityController = require ('../controllers/activity.controller');
-const passport = require ("passport")
+const passport = require ("passport");
 const checkRole = require ("../middleware/role.middleware");
 const activityOwnership = require('../middleware/activityOwnership');
 
+const upload = multer({ dest: 'Images/' });
 
-route.post('/createActivity' , 
-passport.authenticate('jwt', { session: false }) ,  
-checkRole(['member']), 
-activityController.createActivity)
+route.post('/createActivity', upload.array('image', 5), activityController.createActivity);
 
-
-route.get('/listActivity' , activityController.getActivities)
-route.get('/listActivity/:id' , activityController.getActivityById)
-
-// route.get('/me' , 
-
-// activityController.getMyActivities)
-
-
+route.get('/listActivity' , activityController.getActivities);
+route.get('/listActivity/:id' , activityController.getActivityById);
 
 route.put('/updateActivity/:id' , 
-passport.authenticate('jwt', { session: false }) ,  
-checkRole(['member']), 
-activityOwnership,
-activityController.updateActivity)
-
+  passport.authenticate('jwt', { session: false }),  
+  checkRole(['member']), 
+  activityOwnership,
+  activityController.updateActivity
+);
 
 route.put('/cancelActivity/:id' , 
-passport.authenticate('jwt', { session: false }) ,  
-checkRole(['partner']),
-activityController.cancelActivity)
+  passport.authenticate('jwt', { session: false }),  
+  checkRole(['partner']),
+  activityController.cancelActivity
+);
 
 route.put('/removeActivity/:id' , 
-passport.authenticate('jwt', { session: false }) ,  
-checkRole(['admin']),
-activityController.removeActivity)
+  passport.authenticate('jwt', { session: false }),  
+  checkRole(['admin']),
+  activityController.removeActivity
+);
 
-
-
-module.exports = route
+module.exports = route;

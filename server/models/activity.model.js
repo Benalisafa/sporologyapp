@@ -9,7 +9,9 @@ const activitySchema = new mongoose.Schema({
 },
     title: String,
     description: String,
-    photos: String,
+    images: [{
+      type: String // Assuming you're storing image filenames
+  }],
     date: Date,
     location: String,
     duration : Number,
