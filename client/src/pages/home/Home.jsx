@@ -98,7 +98,7 @@ function Home() {
     <Container>
        
       <div style={{ paddingTop: '150px', textAlign: 'center' }} >
-        <h1>Move your body</h1>
+        <h1>Move Your Body</h1>
         <Filter />
       </div>
       <div>

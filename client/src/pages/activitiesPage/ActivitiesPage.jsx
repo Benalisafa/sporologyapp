@@ -41,7 +41,8 @@ function ActivitiesHomePage() {
         </div>
         
           {/* <h1>Activities: {activities.length}</h1> */}
-          <div className="mt-8 row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 " >
+          <div className="mt-8 row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 " style={{margin:"300"}} >
+            
             {activities.map(activity => (
               
             <Link key={activity._id} to={'/activities/single/' + activity._id} style={{ textDecoration: 'none' }}>

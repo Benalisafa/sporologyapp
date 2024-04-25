@@ -2,8 +2,19 @@
   --bs-primary: #00EED1; 
   --bs-black: #0F172A;
 }
- 
- 
+
+body {
+  font-family: 'Plus Jakarta Sans';
+}
+
+h3,h5{
+  text-transform: lowercase;
+}
+
+h3,h5:first-letter{
+    text-transform: capitalize
+}
+  
  .custom-button {
     background-color: var(--bs-primary);
     border: none;
@@ -43,11 +54,25 @@
   border: 1px solid  var(--bs-primary);
   border-radius: 20px;
   }
- 
+
+
+  h1{
+    font-size: 64px;
+  }
+
+  h2{
+    font-size: 48px;
+  }
+
   h3{
     font-size: 36px;
     text-align: center;
     font-weight: bold;
+    
+  }
+
+  h5{
+    font-size: 16px;
   }
 
   .logo{

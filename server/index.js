@@ -1,5 +1,4 @@
 const express=require('express')
-const multer = require('multer');
 const path = require('path');
 require('dotenv').config()
 const cors = require ('cors')
@@ -12,6 +11,8 @@ const mongoose = require('mongoose')
 
 
 // Routes
+app.use( express.static('images'));
+
 
 app.use(express.json())
 app.use(cors())
@@ -21,8 +22,6 @@ require ("./middleware/passport")
 app.get("/",(req,res)=>{
     res.send("hello")
 })
-
-
 
 
 

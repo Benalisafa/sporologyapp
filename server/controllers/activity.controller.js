@@ -1,71 +1,78 @@
-const Activity = require('../models/activity.model');
+const Activity = require('../models/activity.model'); 
 const multer = require('multer');
-
-const { validationResult } = require('express-validator');
+const { validationResult } = require('express-validator'); 
 const path = require('path');
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'Images/'); // Uploads folder where files will be stored
-  },
+  destination: './images/activity/', 
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 
-const upload = multer({
-  storage: storage,
-  limits: { files: 5 } // Accept up to 5 files
-});
+const upload = multer({ storage: storage, limits: { fileSize: 1000000 } });
 
-exports.createActivity = (req, res) => {
-  // Access the uploaded image file using req.file
-  const imageData = req.files;
-  
-  if (!imageData) {
-    // Handle error if no image was uploaded (optional)
-    return res.status(400).json({ message: 'No image uploaded' });
-  }
+exports.createActivity = async (req, res) => {
+  try {
+    const errors = validationResult(req); 
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-  const activityData = {
-    title : req.body.title,
-    description: req.body.description,
-    image : imageData.filename,
-    // date : req.body.date,
-    // location : req.body.location,
-    // duration : req.body.duration,
-    // capacity : req.body.capacity,
-    // category : req.body.category,
-    // owner : req.user._id,
-  };
+    const uploadedImages = []; 
 
-  const _activity = new Activity(activityData);
+    upload.array('images', 5)(req, res, async (err) => { 
+      if (err) {
+        return res.status(400).json({ message: err.message });
+      }
 
-  _activity.save()
-    .then((createdActivity) =>{
-      res.status(200).json({ message : "Activity added successfully"});
-    })
-    .catch((err) => {
-      console.error("Error saving activity:", err); // Log the error message
-      res.status(400).json({ message: "Error adding activity: " + err.message }); // Send error message to client
+      if (req.files.length === 0) {
+        return res.status(400).json({ message: 'No images uploaded' });
+      }
+
+      for (const file of req.files) {
+        uploadedImages.push(file.path); 
+      }
+
+      const activity = new Activity({
+        title: req.body.title,
+        description: req.body.description,
+        capacity: req.body.capacity,
+        price: req.body.price,
+        images: uploadedImages 
+      });
+
+      await activity.save();
+      res.status(201).json(activity);
     });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 };
 
-     
 
-    exports.getActivities = async (req, res) => {
 
-       
 
-        try {
-            const allActivities = await Activity.find({}); 
-            res.status(200).json({ activities: allActivities });
-          } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Error retrieving activities' });
-          }
+exports.getActivities = async (req, res) => {
+  try {
+    // Retrieve all activities from the database
+    const allActivities = await Activity.find({});
 
-    }
+    // Normalize image paths before sending response
+    const normalizedActivities = allActivities.map(activity => ({
+      ...activity.toObject(), // Convert Mongoose document to plain JavaScript object
+      images: activity.images.map(imageUrl => imageUrl.replace(/\\/g, '/'))
+    }));
+
+    // Send response with normalized activities
+    res.status(200).json({ activities: normalizedActivities });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error retrieving activities' });
+  }
+};
+
      
 
     // exports.getMyActivities = async (req,res) => {
@@ -202,7 +209,7 @@ exports.removeActivity = async (req, res) => {
         return res.status(404).send({ message: 'Activity not found' });
       }
   
-      // Delete the user
+      // Delete the activity
       await Activity.findByIdAndDelete(id);
   
       res.status(200).send({ message: 'Activity deleted successfully' });

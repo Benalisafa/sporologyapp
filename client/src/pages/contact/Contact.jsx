@@ -1,15 +1,16 @@
-import React from 'react'
-import logo from'../../assets/sporology-logo .svg'
+import React, { useState } from 'react';
+
+
 
 function ContactUs() {
-  return (
-    <div className='d-flex flex-column align-items-center mt-4 '>
-        <div>
-            <img src={logo} className='logo' alt="logo" />
+   
+
+    return (
+        <div className='d-flex flex-column align-items-center mt-4'>
+            <h3>Contact Us</h3>
+            
         </div>
-    <h3>Contact Us</h3>
-    </div>
-  )
+    );
 }
 
-export default ContactUs
+export default ContactUs;

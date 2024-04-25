@@ -1,0 +1,29 @@
+// exports.createActivity = (req, res) => {
+//   // Extract activity data from req.body
+//   const { title, description, capacity, price } = req.body;
+
+//   // Assuming 'image' is the field in your database schema to store the filename of the single image
+//   const imageFilename = req.file.filename;
+
+//   // Create activity data object including image filename
+//   const activityData = {
+//     title,
+//     description,
+//     images: imageFilename,
+//     capacity,
+//     price
+//   };
+
+//   // Create a new Activity instance with the provided data
+//   const activity = new Activity(activityData);
+
+//   // Save the activity to the database
+//   activity.save()
+//     .then(createdActivity => {
+//       res.status(200).json({ message: "Activity added successfully", activity: createdActivity });
+//     })
+//     .catch(err => {
+//       console.error("Error saving activity:", err);
+//       res.status(400).json({ message: "Error adding activity: " + err.message });
+//     });
+// };

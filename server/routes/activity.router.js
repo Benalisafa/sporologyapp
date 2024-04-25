@@ -6,9 +6,9 @@ const passport = require ("passport");
 const checkRole = require ("../middleware/role.middleware");
 const activityOwnership = require('../middleware/activityOwnership');
 
-const upload = multer({ dest: 'Images/' });
+// const upload = multer({ dest: 'Images/' });
 
-route.post('/createActivity', upload.array('image', 5), activityController.createActivity);
+route.post('/createActivity', activityController.createActivity);
 
 route.get('/listActivity' , activityController.getActivities);
 route.get('/listActivity/:id' , activityController.getActivityById);
