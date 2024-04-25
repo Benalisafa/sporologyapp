@@ -6,8 +6,13 @@ import { LocationIcon, DateIcon, HeartIcon } from '../Icons';
 const ActivityCard = ({ activity }) => {
   
   const firstImage = activity.images.length > 0 ? activity.images[0] : null;
-  const filename = firstImage.split('/').pop();
-  
+  const filename = firstImage ? firstImage.split('/').pop() : null;
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { month: 'long', day: 'numeric',  year: 'numeric' };
+    return date.toLocaleDateString('en-EN', options);
+  };
 
   return (
     <div>
@@ -16,7 +21,7 @@ const ActivityCard = ({ activity }) => {
           <BootstrapImage
             style={{ width: '300px', height: '300px', objectFit: 'cover', borderRadius: '6px' }}
             src={`http://localhost:4000/activity/${filename}`}
-            alt={activity.title}    
+            alt={activity.title}
             fluid
           />
         )}
@@ -34,12 +39,11 @@ const ActivityCard = ({ activity }) => {
 
       <div className="d-flex align-items-center">
         <DateIcon />
-        <h5 className="text-muted mb-0 ms-2 " style={{ fontSize: '16px' }}>{activity.date}</h5>
+        <h5 className="text-muted mb-0 ms-2 " style={{ fontSize: '16px' }}>{formatDate(activity.date)}</h5>
       </div>
     </div>
   );
 };
-
 
 ActivityCard.propTypes = {
   activity: PropTypes.shape({

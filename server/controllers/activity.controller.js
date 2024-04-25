@@ -39,6 +39,7 @@ exports.createActivity = async (req, res) => {
         description: req.body.description,
         capacity: req.body.capacity,
         price: req.body.price,
+        date:req.body.date,
         images: uploadedImages 
       });
 

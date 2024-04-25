@@ -3,13 +3,17 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import toast, { Toaster } from 'react-hot-toast';
 import { axiosInstance } from '../../lib/axios';
+import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import PropTypes from 'prop-types';
 
-function ActivityForm() {
+function ActivityForm({google}) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     capacity: null,
     price: null,
+    date:'',
+    location: { lat: 0, lng: 0 },
   });
 
   const [selectedImages, setSelectedImages] = useState([]);
@@ -22,18 +26,24 @@ function ActivityForm() {
     formDataToSend.append('description', formData.description);
     formDataToSend.append('capacity', formData.capacity);
     formDataToSend.append('price', formData.price);
+    formDataToSend.append('date', formData.date);
 
     for (const image of selectedImages) {
       formDataToSend.append('images', image);
     }
 
     try {
-      await axiosInstance.post('/activities/createActivity', formDataToSend);
-      toast.success('Activity created successfully');
-    } catch (err) {
-      console.error(err);
-      toast.error('Activity creation failed');
-    }
+        const response = await axiosInstance.post('/activities/createActivity', formDataToSend, {
+          headers: {
+            'Content-Type': 'multipart/form-data' // Ensure correct content type for file upload
+          }
+        });
+        console.log(response.data); // Log the response for debugging
+        toast.success('Activity created successfully');
+      } catch (err) {
+        console.error(err);
+        toast.error('Activity creation failed');
+      }
   };
 
   const handleChange = (event) => {
@@ -45,6 +55,15 @@ function ActivityForm() {
       setFormData({ ...formData, [name]: name === 'capacity' || name === 'price' ? parseInt(value, 10) : value });
     }
   };
+
+
+  const handleMapClick = (mapProps, map, clickEvent) => {
+    const { latLng } = clickEvent;
+    const lat = latLng.lat();
+    const lng = latLng.lng();
+    setFormData({ ...formData, location: { lat, lng } });
+  };
+
 
   return (
     <Form className='mt-5' noValidate onSubmit={handleSubmit}>
@@ -76,6 +95,15 @@ function ActivityForm() {
           onChange={handleChange}
         />
       </Form.Group>
+
+      <Form.Group className='mb-3'>
+                <Form.Label>Date</Form.Label>
+                <Form.Control type="date" required
+                    value={formData.date}
+                    name="date"
+                    onChange={handleChange}
+                />
+            </Form.Group>
       
       <Form.Group className='mb-3'>
         <Form.Label>Price</Form.Label>
@@ -95,9 +123,35 @@ function ActivityForm() {
         />
       </Form.Group>
 
+      {/* <Form.Group className='mb-3'>
+        <Form.Label>Location</Form.Label>
+        <Map
+          google={google}
+          zoom={14}
+          initialCenter={{
+            lat: formData.location.lat,
+            lng: formData.location.lng
+          }}
+          onClick={handleMapClick}
+        >
+          <Marker position={formData.location} />
+        </Map>
+      </Form.Group> */}
+
+      
+
       <Button type="submit">Add</Button>
     </Form>
   );
 }
 
-export default ActivityForm;
+ActivityForm.propTypes = {
+    google: PropTypes.object.isRequired, // Ensure `google` prop is provided and is an object
+  };
+  
+  const WrappedActivityForm = GoogleApiWrapper({
+    apiKey: 'AERFHYRE53486'
+  })(ActivityForm);
+  
+  export default WrappedActivityForm;
+  
