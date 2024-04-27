@@ -17,7 +17,7 @@ export default function BookingWidget() {
   useEffect(() => {
     axiosInstance.get(`activities/listActivity/${id}`)
       .then(response => {
-        console.log("Response from API:", response.data);
+        
         setActivity(response.data);
       })
       .catch(error => {

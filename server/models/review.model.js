@@ -7,12 +7,17 @@ const reviewSchema = new mongoose.Schema({
         ref: 'users' 
       },
 
+      activityId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'activities' 
+      },
+
       bookingId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'bookings' 
       },
 
-      content: String,
+      experience: String,
       rating: Number,
       date: Date
       

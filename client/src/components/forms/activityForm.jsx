@@ -146,7 +146,7 @@ function ActivityForm({google}) {
 }
 
 ActivityForm.propTypes = {
-    google: PropTypes.object.isRequired, // Ensure `google` prop is provided and is an object
+    google: PropTypes.object.isRequired, 
   };
   
   const WrappedActivityForm = GoogleApiWrapper({

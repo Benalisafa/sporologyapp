@@ -30,6 +30,7 @@ const authRoutes = require ('./routes/auth.router')
 const userRoutes = require ('./routes/user.router')
 
 const activityRoutes = require('./routes/activity.router')
+const reviewRoutes = require('./routes/review.router')
 
 const bookingRoutes = require('./routes/booking.router')
 
@@ -37,6 +38,7 @@ const bookingRoutes = require('./routes/booking.router')
 app.use('/users' , authRoutes)
 app.use('/users' , userRoutes)
 app.use('/activities' ,activityRoutes)
+app.use('/reviews' ,reviewRoutes)
 app.use('/bookings' ,bookingRoutes)
 
 mongoose.connect(process.env.CONNECTION_STRING)
