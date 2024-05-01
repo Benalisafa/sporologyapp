@@ -72,16 +72,19 @@ function Rating({ activityId }) {
                 );
             })}
             <Form onSubmit={handleSubmit} >
-                <Form.Group className='mt-4 mb-4' style={{width:'50%'}}>
+                <Form.Group className='mt-4 mb-4' style={{ width: '100%' }}>
                     <Form.Control
-                        type="text"
+                        as="textarea"
+                        rows={3}
                         placeholder="Describe your experience"
                         value={experience}
                         name="experience"
                         onChange={handleInputChange}
+                        style={{ height: '100px' ,border: '2px solid black', 
+                        backgroundColor: 'transparent' }}
                     />
                 </Form.Group>
-                <Button type="submit">Send</Button>
+                <Button className='button-primary' type="submit">Send</Button>
             </Form>
         </div>
     );

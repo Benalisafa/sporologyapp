@@ -18,12 +18,7 @@ const activitySchema = new mongoose.Schema({
     time : Date,
     capacity: Number,
     price: Number,
-    category:{
-        type : mongoose.Types.ObjectId
-    //     ref : 'categories'
-        
-
-     },
+    category:String,
     
 
     status: String,

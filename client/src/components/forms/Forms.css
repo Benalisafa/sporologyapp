@@ -15,5 +15,18 @@
     box-shadow: none;
 }
 
+.input-error{
+  border-color: black;
+  box-shadow: none;
+}
+.FormGroup .input-error {
+  border-color: green;
+ 
+}
+
+.feedback-error{
+  color: var(--bs-red);
+}
+
 
   

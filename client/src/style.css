@@ -1,30 +1,35 @@
 :root {
   --bs-primary: #00EED1; 
   --bs-black: #0F172A;
+  --bs-red: #DC2626;
+  --bs-light-red:#FEE2E2;
+  --bs-dark-red: #B91C1C;
+  --bs-green:#059669;
+  --bs-light-green: #ECFDF5;
 }
 
 body {
   font-family: 'Plus Jakarta Sans';
 }
 
-h3,h5{
+h1,h2,h3,h5{
   text-transform: lowercase;
 }
 
-h3,h5:first-letter{
+h1,h2,h3,h5:first-letter{
     text-transform: capitalize
 }
   
- .custom-button {
+ .button-primary {
     background-color: var(--bs-primary);
     border: none;
-    width:100%;
+    font-weight: bold;
     height:40px;
     color: var(--bs-black);
    
   }
 
-  .custom-button:hover, .custom-button:active {
+  .button-primary:hover, .button-primary:active {
     background-color: var(--bs-primary);
   }
 
@@ -41,7 +46,7 @@ h3,h5:first-letter{
     color: var(--bs-primary);
   }
   
-  .custom-button-secondary, .custom-button-secondary:hover, .custom-button-secondary:active  {
+  .button-secondary, .button-secondary:hover, .button-secondary:active  {
     background-color: white;
     border: solid 1px var(--bs-primary);
     height:40px;
@@ -58,25 +63,31 @@ h3,h5:first-letter{
 
   h1{
     font-size: 64px;
+    font-weight: bold;
   }
 
   h2{
-    font-size: 48px;
+    font-size: 40px;
+    margin-top: 20px;
   }
 
   h3{
     font-size: 36px;
     text-align: center;
     font-weight: bold;
-    
   }
+
+ 
 
   h5{
     font-size: 16px;
   }
 
-  .logo{
+  .logo-img{
     width: 70px;
+  }
+  .logo-txt{
+    font-weight: bold;
   }
 
   .image{
@@ -94,6 +105,16 @@ h3,h5:first-letter{
     cursor: pointer;
   }
   
+
+  .container{
+    padding-left: 10%; 
+    padding-right: 10%;
+  }
+
+  .container-s{
+    padding-left: 30%;
+    padding-right: 30%;
+  }
   
 
   

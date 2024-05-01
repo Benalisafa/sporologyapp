@@ -10,6 +10,8 @@ import { axiosInstance } from '../../lib/axios';
 import { FilterIcon, NextArrowIcon , PrevArrowIcon} from '../../components/Icons';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button'
+import background from '../../assets/home.jpg'
+import darkBackground from '../../assets/dark-bg.jpg'
 
 
 
@@ -95,9 +97,10 @@ function Home() {
   };
 
   return (
+    <div style={{backgroundImage: `url(${background})`}}>
     <Container>
        
-      <div style={{ paddingTop: '150px', textAlign: 'center' }} >
+      <div style={{ paddingTop: '180px', paddingLeft:'30px', textAlign: 'center'}} > 
         <h1>Move Your Body</h1>
         <Filter />
       </div>
@@ -105,17 +108,28 @@ function Home() {
         <Button className='custom-button-secondary'><FilterIcon/> Filter</Button>
       </div>
       <Slider {...settings} className="mt-5">
-        {activities.map(activity => (
-          <div key={activity._id} className="col">
-            <div className="m-2"> 
-              <Link to={`/activities/single/${activity._id}`} style={{ textDecoration: 'none' }} className="col">
-                <ActivityCard activity={activity} />
-              </Link>
-            </div>
-          </div>
-        ))}
-      </Slider>
+  {activities
+    .sort((a, b) => new Date(b.date) - new Date(a.date)) 
+    .map(activity => (
+      <div key={activity._id} className="col">
+        <div className="m-2"> 
+          <Link to={`/activities/single/${activity._id}`} style={{ textDecoration: 'none' }} className="col">
+            <ActivityCard activity={activity} />
+          </Link>
+        </div>
+      </div>
+    ))}
+</Slider>
+
+
+
+      <div style={{ backgroundImage: `url(${darkBackground})`, backgroundSize: 'cover', color: "white", textAlign: "center", width: "100%", height: '300px' }}>
+        <div style={{paddingTop:"50px"}}>
+        <h2>Professionals</h2>
+        </div>
+      </div>
     </Container>
+    </div>
   );
 }
 

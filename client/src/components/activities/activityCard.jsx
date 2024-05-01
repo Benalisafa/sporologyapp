@@ -1,18 +1,13 @@
-import React from 'react';
+import React  from 'react';
 import PropTypes from 'prop-types';
 import { Image as BootstrapImage } from 'react-bootstrap';
 import { LocationIcon, DateIcon, HeartIcon } from '../Icons';
+import { formatDate } from '../tools/date';
 
 const ActivityCard = ({ activity }) => {
   
   const firstImage = activity.images.length > 0 ? activity.images[0] : null;
   const filename = firstImage ? firstImage.split('/').pop() : null;
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = { month: 'long', day: 'numeric',  year: 'numeric' };
-    return date.toLocaleDateString('en-EN', options);
-  };
 
   return (
     <div>

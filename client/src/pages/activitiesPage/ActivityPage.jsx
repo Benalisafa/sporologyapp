@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../lib/axios";
 import { useParams } from "react-router-dom";
-
+import background from '../../assets/activity-single-bg.png';
+import { formatDate } from "../../components/tools/date";
 import Filter from "../../components/layout/Filter";
-import {Container} from 'react-bootstrap';
+// import {Container} from 'react-bootstrap';
+import {Row, Col } from 'react-bootstrap';
+
 import { LocationIcon, DateIcon } from "../../components/Icons";
 import BookingWidget from "../../components/activities/BookingWidget";
 import Rating from "../../components/reviews/Rating"; 
 import Review from "../../components/reviews/Review";
 
 const ActivityPage = () => {
+
+
+
   const { id } = useParams();
   const [activity, setActivity] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -17,8 +23,7 @@ const ActivityPage = () => {
   const [error, setError] = useState(null);
   const [activityId, setActivityId] = useState(null); // State to hold activityId
 
-
-
+ 
   useEffect(() => {
     axiosInstance.get(`activities/listActivity/${id}`)
       .then(response => {
@@ -26,6 +31,7 @@ const ActivityPage = () => {
         setActivity(response.data);
         setActivityId(response.data._id); // Set activityId from response
         setLoading(false);
+        
       })
       .catch(error => {
         setError(error);
@@ -55,55 +61,64 @@ const ActivityPage = () => {
     return <div>Error: {error.message}</div>;
   }
 
+  const filename = activity.images.map(imagePath => imagePath.split("\\").pop());
 
   return (
-    <Container>
+    <div style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
+      <section className="container mb-4" style={{width:'100%'}}>
       <div>
-        <div className="row">
+        <Row>
           <div className="m-5">
             <Filter/>
           </div>
           <h1>{activity.title}</h1>
-          <a
-            className="mb-4 md:mb-0 col-md-8 position-relative rounded inline-block"
-            style={{ height: '24em' }}
-            href="#"
+          <Col md={8}>
+          <figure
+            className="mb-4"
+            style={{ height: '26em' }}
+            
           >
-            <div
-              className="position-absolute left-0 bottom-0 w-100 h-100"
-              style={{ backgroundImage: 'linear-gradient(180deg,transparent,rgba(0,0,0,.7))' }}
-            ></div>
-            {activity.images && activity.images.length > 0 && (
+            
+            {activity && activity.images && activity.images.length > 0 && (
               <img
-                src={activity.images[0]} 
-                className="position-absolute left-0 top-0 w-100 h-100 rounded"
-                alt="Activity Image"
+              src={`http://localhost:4000/activity/${filename[0]}`}
+                className="left-0 top-0 w-100 h-100 "
+                alt="Activity Image 1"
                 style={{ objectFit: 'cover' }}
               />
             )}
-            <div
-              className="position-absolute left-0 top-0 w-100 h-100 rounded"
-              alt=""
-              style={{ objectFit: 'cover' }}
-            />
-          </a>
-          <a
-            className="col-md-4 position-relative rounded"
-            style={{ height: '24em' }}
-            href="#"
+
+          </figure>
+          </Col>
+          <Col md={4}>
+          <figure
+            className=" position-relative rounded"
+            style={{ height: '8em' }}
+            
           >
-            <div
-              className="position-absolute left-0 top-0 w-100 h-100"
-              style={{ backgroundImage: 'linear-gradient(180deg,transparent,rgba(0,0,0,.7))' }}
-            ></div>
+            
             <img
-              src="https://images.unsplash.com/photo-1543362906-acfc16c67564?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1301&q=80"
-              className="position-absolute left-0 top-0 w-100 h-100 rounded"
-              alt="Second Example"
+              src={`http://localhost:4000/activity/${filename[1]}`}
+              className="left-0 top-0 w-100 h-100"
+              alt="Activity Image 2"
               style={{ objectFit: 'cover' }}
             />
-          </a>
-        </div>
+          </figure>
+          <figure
+            className=" position-relative "
+            style={{ height: '16em' }}
+            
+          >
+            
+            <img
+              src={`http://localhost:4000/activity/${filename[2]}`}
+              className="position-absolute left-0 top-0 w-100 h-100"
+              alt="Activity Image 3"
+              style={{ objectFit: 'cover' }}
+            />
+          </figure>
+          </Col>
+        </Row>
         <div className="mb-5">
           <h3 className="font-weight-bold text-dark">{activity.owner}</h3>
           <div className="d-flex align-items-center">
@@ -112,41 +127,51 @@ const ActivityPage = () => {
           </div>
           <div className="d-flex align-items-center">
             <DateIcon />
-            <h5 className="text-muted mb-0 ms-2 fs-8">${activity.date}</h5>
+            <h5 className="text-muted mb-0 ms-2 fs-8">{formatDate(activity.date)}</h5>
           </div>
         </div>
       </div>
-      <div className="d-flex align-items-center justify-content-between">
-        <div>
-          <div className="my-4">
-            <h3>What this place offers?</h3>
-            Wifi <br/>
-            Free parking
-          </div>
-          <div className="my-4">
-            <h3>Description</h3>
+            <Row>
+              <Col md={6}>
+      
+        <div >
+          <div className="my-4" style={{textAlign:"justify"}}>
+            <h2>Description</h2>
             {activity.description}
           </div>
         </div>
-        <div style={{ width: '300px' }}>
+        </Col >
+        <Col md={6}>
+        <div style={{paddingLeft:'20%', paddingTop:'20%'}}>
           <BookingWidget />
         </div>
-      </div>
+        </Col>
+        </Row>
+      
+      
       <div>
+        <h2>What category?</h2>
+        <div>{activity.category} </div>
         <div>
-          <h3 style={{ textAlign: 'left' }}>How many places are available?</h3>
+          <h2 >How many places are available?</h2>
         </div>
-        <div>50 places</div>
+        <div>{activity.capacity} places</div>
       </div>
+      <h2 >How long?</h2>
+      <div>{activity.duration} Minutes</div>
+      </section>
       <div>
-            <h2>Reviews</h2>
+        
+        <section>
+           
             <Review reviews={reviews} />
-
+            </section>
                   </div>
-
+                  <section className="container">
           <h2>Add your feedback</h2>
                 <Rating activityId={activityId} />
-              </Container>
+                </section>
+              </div>
   );
 };
 

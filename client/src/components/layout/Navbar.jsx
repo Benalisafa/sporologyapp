@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../redux/reducers/auth.reducer';
 import { Link } from 'react-router-dom';
-import { Container, Navbar, Nav, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import RegisterModal from '../modals/registerModal';
 import LoginModal from '../modals/loginModal'; 
 import { BurgerIcon, ProfileIcon } from '../Icons';
+import logo from '../../assets/sporology-logo .svg'
 // import DropdownMenu from './DropdownMenu'
 
 export const Navbarhead = () => {
@@ -42,10 +43,11 @@ export const Navbarhead = () => {
 `}</style>
   
         <Navbar bg="light" expand="lg" expanded={expanded}>
-          <Container>
-            <Navbar.Brand as={Link} to="/">
-              <span className="font-weight-bold fs-3">logo</span>
-            </Navbar.Brand>
+          <header className='container'>
+          <Navbar.Brand as={Link} to="/" className='d-flex align-items-end'>
+            <img src={logo} alt="Logo" className="logo-img" />
+            <span className='ms-2 logo-txt' style={{color:''}}>Sporology</span>
+        </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" className="mr-auto" onClick={() => setExpanded(!expanded)} />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mx-auto">
@@ -94,7 +96,7 @@ export const Navbarhead = () => {
                 )}
               </div>
             </Nav>
-          </Container>
+          </header>
         </Navbar>
         <RegisterModal show={showRegisterModal} handleClose={handleCloseRegisterModal} />
         <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} /> {/* Add LoginModal */}

@@ -10,7 +10,8 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage, limits: { fileSize: 1000000 } });
+const upload = multer({ storage: storage,
+  limits: { files: 5 } });
 
 exports.createActivity = async (req, res) => {
   try {
@@ -19,12 +20,16 @@ exports.createActivity = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
+    
+
     const uploadedImages = []; 
 
     upload.array('images', 5)(req, res, async (err) => { 
       if (err) {
         return res.status(400).json({ message: err.message });
       }
+
+     
 
       if (req.files.length === 0) {
         return res.status(400).json({ message: 'No images uploaded' });
@@ -33,16 +38,20 @@ exports.createActivity = async (req, res) => {
       for (const file of req.files) {
         uploadedImages.push(file.path); 
       }
-
+     
       const activity = new Activity({
         title: req.body.title,
         description: req.body.description,
         capacity: req.body.capacity,
         price: req.body.price,
         date:req.body.date,
-        images: uploadedImages 
+        images: uploadedImages ,
+        category:req.body.category,
+        duration:req.body.duration,
+        location:req.body.location,
       });
-
+      
+      console.log(uploadedImages)
       await activity.save();
       res.status(201).json(activity);
     });
@@ -57,8 +66,15 @@ exports.createActivity = async (req, res) => {
 
 exports.getActivities = async (req, res) => {
   try {
-    // Retrieve all activities from the database
-    const allActivities = await Activity.find({});
+    // Pagination parameters
+    const page = parseInt(req.query.page) || 1; // Current page number
+    const pageSize = parseInt(req.query.pageSize) || 10; // Number of activities per page
+
+    // Calculate skip value to skip activities on previous pages
+    const skip = (page - 1) * pageSize;
+
+    // Retrieve activities from the database with pagination
+    const allActivities = await Activity.find({}).skip(skip).limit(pageSize);
 
     // Normalize image paths before sending response
     const normalizedActivities = allActivities.map(activity => ({
@@ -119,7 +135,7 @@ exports.updateActivity = async (req, res) => {
         location : req.body.location,
         duration : req.body.duration,
         capacity : req.body.capacity,
-        // category : req.body.category,
+        category : req.body.category,
         owner : req.user._id,
         
     }
@@ -132,7 +148,7 @@ exports.updateActivity = async (req, res) => {
 
         
         const { id } = req.params;
-        const { title, description, category, date, location } = req.body;
+        const { title, description, category, date, location} = req.body;
 
         
         let _activity = await Activity.findById(id);
@@ -151,6 +167,7 @@ exports.updateActivity = async (req, res) => {
             _activity.capacity = activityData.capacity;
             _activity.date = activityData.date;
             _activity.location = activityData.location;
+            _activity.category = activityData.category;
           }
         
 

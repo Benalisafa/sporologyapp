@@ -2,16 +2,12 @@
 import {Carousel } from 'react-bootstrap';
 import PropTypes from "prop-types";
 import DisplayRating from "../../components/reviews/DisplayRating";
-import bg from '../../assets/review-dark-bg.jpg';
+import bg from '../../assets/dark-bg.jpg';
+import { formatDate } from '../tools/date';
 
 
 const Review = ({ reviews }) => {
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = { month: 'long', day: 'numeric', year: 'numeric' };
-    return date.toLocaleDateString('en-EN', options);
-  };
-
+  
   return (
     <div style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', color: "white", textAlign: "center", width: "100%", height: '300px' }}>
       <Carousel className="p-5" style={{ height: '300px' }}>
