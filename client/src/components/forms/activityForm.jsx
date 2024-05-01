@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { Button ,Form } from 'react-bootstrap';
 import toast, { Toaster } from 'react-hot-toast';
 import { axiosInstance } from '../../lib/axios';
+import { useSelector } from 'react-redux';
 // import PropTypes from 'prop-types';
 import './Forms.css'
 
 function ActivityForm() {
+
+  const user = useSelector(state => state.auth.user);
   // function ActivityForm({buttonLabel}) {
   const [formData, setFormData] = useState({
     title: '',
@@ -42,11 +45,17 @@ function ActivityForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     if (!validateForm()) return;
-
+  
     const formDataToSend = new FormData();
     
+    // Extract userId from the user object obtained from Redux state
+    const userId = user ? user.userId : null;
+    
+    formDataToSend.append('userId', userId); // Append userId to the form data
+  
+    // Append other form data to formDataToSend
     formDataToSend.append('title', formData.title);
     formDataToSend.append('description', formData.description);
     formDataToSend.append('capacity', formData.capacity);
@@ -56,33 +65,24 @@ function ActivityForm() {
     formDataToSend.append('time', formData.time); 
     formDataToSend.append('category', formData.category); 
     formDataToSend.append('location', formData.location);  
-
-      // var selectedValue = document.getElementById("mySelect").value;
-      
-      // if (selectedValue === "") {
-      //   alert("Please select an option.");
-      //   return false;
-      // }
-
-      for (const image of selectedImages) {
-        formDataToSend.append('images', image);
-      }
-
+  
+    for (const image of selectedImages) {
+      formDataToSend.append('images', image);
+    }
+  
     try {
-        const response = await axiosInstance.post('/activities/createActivity', formDataToSend, {
-          headers: {
-            'Content-Type': 'multipart/form-data' 
-          }
-        });
-        console.log(response.data);
-        toast.success('Activity created successfully');
-      } catch (err) {
-        console.error(err);
-      }
-
-
-      
+      const response = await axiosInstance.post('/activities/createActivity', formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data' 
+        }
+      });
+      console.log(response.data);
+      toast.success('Activity created successfully');
+    } catch (err) {
+      console.error(err);
+    }
   };
+  
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;

@@ -6,6 +6,8 @@
   --bs-dark-red: #B91C1C;
   --bs-green:#059669;
   --bs-light-green: #ECFDF5;
+  --bs-grey:#A7AEB8;
+  --bs-light-grey: #F1F5F9;
 }
 
 body {
@@ -77,6 +79,10 @@ h1,h2,h3,h5:first-letter{
     font-weight: bold;
   }
 
+  h4{
+    font-size: 23px;
+  }
+
  
 
   h5{
@@ -114,6 +120,13 @@ h1,h2,h3,h5:first-letter{
   .container-s{
     padding-left: 30%;
     padding-right: 30%;
+  }
+
+
+  .custom-placeholder::placeholder {
+    color:var(--bs-grey);
+    text-align: center;
+    font-size: 14px;
   }
   
 

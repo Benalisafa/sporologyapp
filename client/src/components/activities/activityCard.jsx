@@ -7,11 +7,13 @@ import { formatDate } from '../tools/date';
 const ActivityCard = ({ activity }) => {
   
   const firstImage = activity.images.length > 0 ? activity.images[0] : null;
-  const filename = firstImage ? firstImage.split('/').pop() : null;
+  const filename = firstImage ? firstImage.split("\\").pop() : null;
+  // const filename = firstImage ? firstImage.split('/').pop() : null;
+ 
 
   return (
     <div>
-      <div className="bg-secondary mb-2 rounded-2xl flex">
+      <div className=" flex">
         {firstImage && (
           <BootstrapImage
             style={{ width: '300px', height: '300px', objectFit: 'cover', borderRadius: '6px' }}
@@ -46,6 +48,7 @@ ActivityCard.propTypes = {
     date: PropTypes.string,
     location: PropTypes.string,
     price: PropTypes.number,
+    
     images: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
 };

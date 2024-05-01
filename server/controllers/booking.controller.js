@@ -1,22 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../models/booking.model');
+const Activity = require('../models/activity.model'); 
 
-
-exports.saveBooking = async ( req , res ) => {
+exports.createBooking = async (req, res) => {
   try {
-    const { activityId, userId,  } = req.body;
-    
+    const { activityId, userId, name } = req.body;
+    const bookingDate = Date.now();
     
     const booking = new Booking({
       activityId,
       userId,
-
-      
+      name,
+      bookingDate:bookingDate,
     });
 
-   
     const savedBooking = await booking.save();
+
+    // Retrieve the corresponding activity
+    const activity = await Activity.findById(activityId);
+
+    // Log the retrieved activity to ensure it's found
+    console.log('Retrieved activity:', activity);
+
+    // Update the activity's bookingIds array to include the newly created booking's _id
+    activity.bookingIds.push(savedBooking._id);
+
+    // Log the updated activity before saving to ensure the bookingId is added
+    console.log('Updated activity:', activity);
+
+    // Save the updated activity back to the database
+    await activity.save();
 
     res.status(201).json(savedBooking);
   } catch (error) {
@@ -26,7 +40,7 @@ exports.saveBooking = async ( req , res ) => {
 };
 
 
-exports.getBookings = async ( req , res ) => {
+exports.getBookings = async (req, res) => {
   try {
     const bookings = await Booking.find();
     res.json(bookings);
@@ -36,8 +50,7 @@ exports.getBookings = async ( req , res ) => {
   }
 };
 
-
-exports.getBookingById = async ( req , res ) => {
+exports.getBookingById = async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);
     if (!booking) {
@@ -49,5 +62,3 @@ exports.getBookingById = async ( req , res ) => {
     res.status(500).json({ error: 'Error retrieving booking' });
   }
 };
-
-

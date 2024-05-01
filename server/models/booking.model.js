@@ -7,19 +7,23 @@ const bookingSchema = new mongoose.Schema({
         ref: 'users' 
       },
 
-      activityId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'activities' 
-      },
+    name: String,
+    bookingDate: Date,
 
-      reviewIds : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'reviews' 
-      },
 
-      bookingDate: Date,
-      startDate: Date,
-      endDate: Date
+      // activityId: {
+      //   type: mongoose.Schema.Types.ObjectId,
+      //   ref: 'activities' 
+      // },
+
+      // reviewIds : {
+      //   type: mongoose.Schema.Types.ObjectId,
+      //   ref: 'reviews' 
+      // },
+
+      
+      // startDate: Date,
+      // endDate: Date
       
 })
 

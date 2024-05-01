@@ -1,5 +1,23 @@
 const User = require('../models/user.model'); 
 
+exports.findUserById = async (req, res) => {
+
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error retrieving user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+}
+
 exports.deleteUser = async (req, res) => {
   try {
     

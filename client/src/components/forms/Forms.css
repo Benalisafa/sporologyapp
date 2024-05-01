@@ -24,6 +24,12 @@
  
 }
 
+/* .form-control::placeholder {
+  color:var(--bs-grey);
+  
+  font-size: 14px;
+} */
+
 .feedback-error{
   color: var(--bs-red);
 }

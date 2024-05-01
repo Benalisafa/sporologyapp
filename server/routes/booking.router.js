@@ -7,7 +7,7 @@ const bookingController = require ('../controllers/booking.controller');
 
 
 
-route.post('/save', bookingController.saveBooking)
+route.post('/createBooking', bookingController.createBooking)
 route.get ('/listBookings' , bookingController.getBookings)
 route.get('/listBooking/:id' , bookingController.getBookingById)
 

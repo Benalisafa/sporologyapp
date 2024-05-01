@@ -49,6 +49,9 @@ exports.createActivity = async (req, res) => {
         category:req.body.category,
         duration:req.body.duration,
         location:req.body.location,
+        time:req.body.time,
+        bookingIds: [],
+        userId:req.body.userId,
       });
       
       console.log(uploadedImages)
@@ -76,14 +79,8 @@ exports.getActivities = async (req, res) => {
     // Retrieve activities from the database with pagination
     const allActivities = await Activity.find({}).skip(skip).limit(pageSize);
 
-    // Normalize image paths before sending response
-    const normalizedActivities = allActivities.map(activity => ({
-      ...activity.toObject(), // Convert Mongoose document to plain JavaScript object
-      images: activity.images.map(imageUrl => imageUrl.replace(/\\/g, '/'))
-    }));
-
-    // Send response with normalized activities
-    res.status(200).json({ activities: normalizedActivities });
+    // Send response with activities
+    res.status(200).json({ activities: allActivities });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error retrieving activities' });
@@ -123,6 +120,20 @@ exports.getActivities = async (req, res) => {
         
         res.status(500).json({ error: 'Internal server error' });
     }
+};
+
+exports.getSimilarActivities = async (req, res) => {
+  try {
+    const { category } = req.params;
+
+    // Retrieve activities with the same category
+    const similarActivities = await Activity.find({ category });
+
+    res.status(200).json(similarActivities);
+  } catch (error) {
+    console.error('Error fetching similar activities:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 

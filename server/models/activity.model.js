@@ -2,20 +2,17 @@ const mongoose =require('mongoose')
 
 const activitySchema = new mongoose.Schema({
 
-  owner:{
-    type : mongoose.Types.ObjectId,
-    ref : 'users'
-    // required:true
-},
+ 
     title: String,
     description: String,
     images: [{
-      type: String // Assuming you're storing image filenames
+      type: String,
+      required:true
   }],
     date: Date,
     location: String,
     duration : Number,
-    time : Date,
+    time : String,
     capacity: Number,
     price: Number,
     category:String,
