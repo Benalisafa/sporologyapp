@@ -9,10 +9,10 @@ exports.createBooking = async (req, res) => {
     const bookingDate = Date.now();
     
     const booking = new Booking({
-      activityId,
+      activity: activityId, // Use 'activity' instead of 'activityId'
       userId,
       name,
-      bookingDate:bookingDate,
+      bookingDate: bookingDate,
     });
 
     const savedBooking = await booking.save();
@@ -40,6 +40,7 @@ exports.createBooking = async (req, res) => {
 };
 
 
+
 exports.getBookings = async (req, res) => {
   try {
     const bookings = await Booking.find();
@@ -49,6 +50,21 @@ exports.getBookings = async (req, res) => {
     res.status(500).json({ error: 'Error retrieving bookings' });
   }
 };
+
+exports.getBookingByUserId = async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    // Retrieve bookings for the specified user and populate the 'activity' field
+    const bookings = await Booking.find({ userId }).populate('activity').exec();
+    res.json({ bookings }); // Send merged data to the client
+  } catch (error) {
+    console.error('Error fetching bookings:', error);
+    res.status(500).json({ error: 'Failed to fetch bookings' });
+  }
+};
+
+
 
 exports.getBookingById = async (req, res) => {
   try {

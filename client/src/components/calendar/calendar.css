@@ -1,0 +1,88 @@
+
+.event {
+   
+    color: var(--bs-black); /* Text color for events */
+    padding: 5px;
+    border-radius: 3px;
+    border: solid 1px var(--bs-light-grey);
+    
+
+}
+
+.event-title{
+    font-weight: bold;
+}
+
+.event-time {
+    font-weight: bold;
+    background-color: var(--bs-primary);
+    border-radius: 3px;
+    padding: 4px;
+    margin-bottom: 5px;
+    
+
+}
+
+.fc-daygrid-event {
+    border: none;
+    background-color: transparent;
+    text-align: center;
+    
+}
+ .fc-daygrid{
+    background-color: var(--bs-light-grey);
+ }
+
+
+
+/* Custom styles for FullCalendar dates */
+.fc-daygrid-day-number {
+    color: #000; /* Text color for dates */
+    
+}
+
+
+
+.fc-daygrid-event {
+    border: solid 1px var(--bs-primary); /* Remove border for cells with events */
+    background-color: transparent !important; /* Remove any background color */
+}
+
+
+
+/* More specific selectors */
+.fc-button-group .fc-prev-button ,.fc-button-group .fc-next-button{
+    background-color: transparent; /* Change color as needed */
+    color: var(--bs-primary);
+    border: none;
+}
+
+.fc-button-group .fc-prev-button:hover ,.fc-button-group .fc-next-button:hover, .fc .fc-button-primary:hover{
+    background-color: var(--bs-primary); /* Change color as needed */
+    color: white;
+    border: none;
+}
+
+.fc-col-header-cell .fc-scrollgrid-sync-inner .fc-col-header-cell-cushion{
+    color: var(--bs-black);
+}
+
+
+.fc .fc-button-primary:disabled{
+    background-color: var(--bs-primary);
+    color: var(--bs-black);
+    border: none;
+}
+
+.fc .fc-button-primary{
+    background-color: transparent;
+    color: var(--bs-primary);
+    
+}
+
+
+
+
+
+
+

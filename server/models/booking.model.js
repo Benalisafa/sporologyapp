@@ -9,21 +9,13 @@ const bookingSchema = new mongoose.Schema({
 
     name: String,
     bookingDate: Date,
+    
+    activity: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'activities',
+  }
 
 
-      // activityId: {
-      //   type: mongoose.Schema.Types.ObjectId,
-      //   ref: 'activities' 
-      // },
-
-      // reviewIds : {
-      //   type: mongoose.Schema.Types.ObjectId,
-      //   ref: 'reviews' 
-      // },
-
-      
-      // startDate: Date,
-      // endDate: Date
       
 })
 

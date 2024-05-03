@@ -7,7 +7,6 @@ import RegisterModal from '../modals/registerModal';
 import LoginModal from '../modals/loginModal'; 
 import { BurgerIcon, ProfileIcon } from '../Icons';
 import logo from '../../assets/sporology-logo .svg'
-// import DropdownMenu from './DropdownMenu'
 
 export const Navbarhead = () => {
  
