@@ -10,17 +10,29 @@ const userSchema = new mongoose.Schema({
         unique : true,
     },
 
-    role : {  
-        type: String ,
-        enum:['partner','member','admin'],
-        default:'member'
-    },
+
+    role: {
+        type: String,
+        enum: ['partner', 'member', 'admin'],
+        default: 'member'
+      },
+      
+      partnerType: {
+        type: String,
+        enum: ['individual', 'company'],
+        
+      },
 
     picture: String,
     birthdate: Date,
     address: String,
-    phone: Number
-
+    phone: Number,
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Activity' }],
+    
+    companyName: String,
+    companyAddress: String,
+    description: String,
+        
 })
 
 module.exports = mongoose.model('users' , userSchema)

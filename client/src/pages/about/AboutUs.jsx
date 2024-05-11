@@ -1,22 +1,24 @@
 import React from 'react'
-import logo from '../../assets/sporology-logo .svg'
+import logo from '../../assets/sporology-logo.svg'
 import image from '../../assets/Fitness Class Participation.jpg'
+import background from '../../assets/about.jpg'
 import { Container } from 'react-bootstrap';
 
 
 function AboutUs() {
   return (
-    <Container>
-    <div className='d-flex flex-column align-items-center mt-4 '>
+    <div style={{backgroundImage: `url(${background})`}}>
+      <div className='container'>
+    <div className='d-flex flex-column align-items-center pt-4'>
         <div>
-            <img src={logo} className='logo' alt="logo" />
+            <img src={logo} className='logo-img' alt="logo" />
         </div>
     <h3>About Us</h3>
     </div>
 
-    <div className='d-flex align-items-center justify-content-between mt-4'>
+    <div className='d-flex align-items-center justify-content-between mt-4' style={{gap:'5%'}}>
         
-        <div style={{width:'600px', textAlign:'justify'}}>
+        <div style={{ textAlign:'justify'}}>
         Sporology is a comprehensive online directory or database dedicated to showcase the wide range  of sports professionals available in the UAE. Our platform aims to simplify the process of finding specific sports activities by providing a user-friendly interface that allows individuals to search and discover various sports professionals and activities in their erea.
         <br/>
         <br/>
@@ -31,7 +33,8 @@ function AboutUs() {
         </div>
 
     </div>
-    </Container>
+    </div>
+    </div>
   )
 }
 

@@ -2,9 +2,15 @@
 import axios from 'axios'
 const UserService = {}
 
-    UserService.signup = function( data ){
+    UserService.signupPartner = function( data ){
 
-        return axios.post('http://127.0.0.1:4000/users/signup' , data)
+        return axios.post('http://127.0.0.1:4000/users/signup/partner' , data)
+
+    }
+
+    UserService.signupMember = function( data ){
+
+        return axios.post('http://127.0.0.1:4000/users/signup/member' , data)
 
     }
 

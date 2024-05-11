@@ -6,7 +6,7 @@ import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import RegisterModal from '../modals/registerModal';
 import LoginModal from '../modals/loginModal'; 
 import { BurgerIcon, ProfileIcon } from '../Icons';
-import logo from '../../assets/sporology-logo .svg'
+import logo from '../../assets/sporology-logo.svg'
 
 export const Navbarhead = () => {
  

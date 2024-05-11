@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import './Forms.css'
 
 function ActivityForm() {
+  const [inputType, setInputType] = useState('text');
 
   const user = useSelector(state => state.auth.user);
   // function ActivityForm({buttonLabel}) {
@@ -103,7 +104,7 @@ function ActivityForm() {
 
     
     <div>
-    <Form className='mt-5 container-s' noValidate onSubmit={handleSubmit}>
+    <Form className='mt-5 container-xs' noValidate onSubmit={handleSubmit}>
       <Toaster />
 
                 <Form.Group controlId="categorySelect">
@@ -144,11 +145,14 @@ function ActivityForm() {
           <Form.Control.Feedback type="invalid">{errors.category}</Form.Control.Feedback>
         </Form.Group>
 
-      <div className='d-flex justify-content-between'>
+      <div className='d-flex justify-content-between' style={{gap:'5%'}}>
       <Form.Group className='mb-3' >
                 <Form.Label>Date</Form.Label>
-                <Form.Control type="date" required
+                <Form.Control type={inputType} required
+                placeholder="Date"
                     value={formData.date}
+                    onFocus={() => setInputType('date')} // Change type to date on focus
+                    onBlur={() => setInputType('text')}
                     name="date"
                     isInvalid={errors.date}
                     onChange={handleChange}
@@ -158,8 +162,11 @@ function ActivityForm() {
 
             <Form.Group className='mb-3'>
         <Form.Label>Time</Form.Label>
-        <Form.Control type="time"required 
+        <Form.Control type={inputType} required 
+        placeholder="Time"
         value={formData.time} 
+        onFocus={() => setInputType('time')} // Change type to date on focus
+                    onBlur={() => setInputType('text')}
         name="time" 
         isInvalid={errors.time}
         onChange={handleChange} />
@@ -240,7 +247,7 @@ function ActivityForm() {
         <Form.Control.Feedback type="invalid">{errors.images}</Form.Control.Feedback>
       </Form.Group>
 
-      <Button type="submit" className='button-primary'>add</Button>
+      <Button type="submit" className='button-primary' style={{width:'100%'}}>add</Button>
       {/* <Button type="submit" className='button-primary'>{buttonLabel}</Button> */}
     </Form>
     </div>

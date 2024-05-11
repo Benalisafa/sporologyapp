@@ -8,6 +8,7 @@
   --bs-light-green: #ECFDF5;
   --bs-grey:#A7AEB8;
   --bs-light-grey: #F1F5F9;
+  --bs-light-blue:#F8FAFC;
 }
 
 body {
@@ -56,10 +57,19 @@ h1,h2,h3,h5:first-letter{
     
   }
 
+  .button-extra, .button-extra:hover, .button-extra:active{
+    background-color: white !important;
+    border: solid 1px var(--bs-black);
+    height:40px;
+    color: var(--bs-black);
+  }
+
   .button-circle, .button-circle:hover, .button-circle:focus{
-   background-color: var(--bs-primary);
-  border: 1px solid  var(--bs-primary);
+   background-color: var(--bs-primary) !important;;
+  border: 1px solid  var(--bs-primary)!important;;
   border-radius: 20px;
+  color:var(--bs-black);
+  
   }
 
 
@@ -113,11 +123,16 @@ h1,h2,h3,h5:first-letter{
   
 
   .container{
-    padding-left: 10%; 
-    padding-right: 10%;
+    padding-left: 5%; 
+    padding-right: 5%;
   }
 
   .container-s{
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+
+  .container-xs{
     padding-left: 30%;
     padding-right: 30%;
   }

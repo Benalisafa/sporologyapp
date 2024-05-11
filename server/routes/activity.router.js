@@ -11,7 +11,10 @@ route.post('/createActivity', activityController.createActivity);
 
 route.get('/listActivity' , activityController.getActivities);
 route.get('/listActivity/:id' , activityController.getActivityById);
+route.get('/search', activityController.searchActivities);
 route.get('/similar/:category', activityController.getSimilarActivities);
+route.get('/top', activityController.getTopReservedActivities);
+route.put('/favorite/:id', activityController.activityFavoriteStatus);
 
 route.put('/updateActivity/:id' , 
   passport.authenticate('jwt', { session: false }),  

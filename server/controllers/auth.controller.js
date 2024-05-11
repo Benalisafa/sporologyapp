@@ -1,35 +1,53 @@
 const User = require('../models/user.model')
 const bcrypt = require ('bcryptjs')
 const jwt = require ('jsonwebtoken')
+exports.signup = (req, res) => {
+  let role;
 
-exports.signup = ( req , res ) =>  {
-
-
-    const data = {
-        firstname : req.body.firstname,
-        lastname: req.body.lastname,
-        email : req.body.email,
-        password : bcrypt.hashSync( req.body.password , 10 ) ,
-        picture : req.body.picture,
-        birthdate : req.body.birthdate,
-        address : req.body.address,
-        phone : req.body.phone
+  const route = req.route.path;
+    if (route.includes('/signup/member')) {
+      role = 'member';
+    } else if (route.includes('/signup/partner')) {
+      role = 'partner';
+    } else {
+      // Handle error: invalid route for signup
+      return res.status(400).json({ message: 'Invalid signup route' });
     }
+    
+  const data = {
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    email: req.body.email,
+    password: bcrypt.hashSync(req.body.password, 10),
+    address: req.body.address,
+    phone: req.body.phone,
+    companyName:req.body.companyName,
+    companyAddress: req.body.companyAddress,
+    description:req.body.description,
+    role: role,
+  };
 
-    const _user = new User(data);
+  const { password, confirmPassword } = req.body;
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: 'Passwords do not match' });
+  }
 
-    _user.save().then(
-        (createdUser) => {
-            res.status(200).json({ message: "User added successfully" });
-        }
-    ).catch(
-        (err) => {
-            console.error("Error saving user:", err); // Log the error message
-            res.status(400).json({ message: "Error adding user: " + err.message }); // Send error message to client
-        }
-    );
 
-}
+  const _user = new User(data);
+
+  _user
+    .save()
+    .then((createdUser) => {
+      res.status(200).json({ message: 'User added successfully' });
+    })
+    .catch((err) => {
+      console.error('Error saving user:', err);
+      res.status(400).json({ message: 'Error adding user: ' + err.message });
+    });
+};
+
+
+
 
 exports.signin = async (req , res ) => {
 

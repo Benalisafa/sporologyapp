@@ -1,0 +1,17 @@
+
+.formControl::placeholder{
+    color: var(--bs-black);
+    text-align: center;
+}
+
+  .formControl {
+     
+    background-color: transparent !important; 
+    border: none ;
+    box-shadow: none; 
+    border-radius: 0%;
+    border-right: 1px solid #ccc
+    
+  }
+
+  

@@ -16,18 +16,21 @@ const Calendar = () => {
             try {
                 const response = await axiosInstance.get(`/bookings/listUserBookings/${userId}`); 
                 
+                
                 if (response.error) {
                     throw new Error(response.error.message);
                 }
                 
                 const data = response.data;
-    
+
                 const activities = data.bookings.map(booking => ({
                     title: booking.activity.title, 
                     date: booking.activity.date,
-                    time: booking.activity.time
+                    time: booking.activity.time,
+                    location: booking.activity.location
                 }));
     
+                 console.log(activities);
                 setBookedActivities(activities);
                
             } catch (error) {
@@ -38,6 +41,17 @@ const Calendar = () => {
         fetchBookedActivities();
     }, [userId]); 
     
+    const eventContent = (arg) => {
+        return (
+            <div className="event">
+                
+                <div className="event-time">{arg.timeText}</div>
+                <div className="event-title">{arg.event.title}</div>
+                <div className="event-title">at {arg.event.extendedProps.location}</div>
+            </div>
+        );
+    };
+
     return (
         <Container>
             <Row>
@@ -46,6 +60,7 @@ const Calendar = () => {
                         plugins={[dayGridPlugin]}
                         initialView="dayGridMonth"
                         events={bookedActivities} 
+                        eventContent={eventContent}
                     />
                 </Col>
                 <Col>

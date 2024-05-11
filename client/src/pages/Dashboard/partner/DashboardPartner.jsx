@@ -3,22 +3,17 @@ import {Table} from 'react-bootstrap';
 import { PhoneIcon } from "../../../components/Icons";
 
 
-function Admin() {
+function DashboardPartner() {
 
   return (
     <div style={{paddingRight:'5%'}}>
    <h3 className="mt-4">Dashboard</h3>
    <div className="d-flex">
    <aside className="d-flex flex-column ps-4 pt-4" style={{backgroundColor:'var(--bs-light-grey)' , width:'20%'}}>
-        <h5> <PhoneIcon/>Participants</h5>
+        <h5> <PhoneIcon/>All activities</h5>
         <br/>
-        <h5><PhoneIcon/>Professionals</h5>
-        <br/>
-        <h5><PhoneIcon/>Activities</h5>
-        <br/> 
-        <h5><PhoneIcon/>Categories</h5>
-        <br/>
-        <h5><PhoneIcon/>Testimonies</h5>
+        <h5><PhoneIcon/>Add Activity</h5>
+        
     </aside>
    <Table striped bordered hover>
       <thead>
@@ -62,4 +57,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default DashboardPartner;

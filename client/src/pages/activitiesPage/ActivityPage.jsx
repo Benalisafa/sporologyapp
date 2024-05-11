@@ -154,7 +154,7 @@ const ActivityPage = () => {
   const filename = activity.images.map(imagePath => imagePath.split("\\").pop());
 
   return (
-    <div style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
+    <div className="container-s" style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
       <section className="container mb-4" style={{width:'100%'}}>
       <div>
         <Row>

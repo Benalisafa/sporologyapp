@@ -1,16 +1,17 @@
 
 .event {
    
-    color: var(--bs-black); /* Text color for events */
+    color: var(--bs-black); 
     padding: 5px;
     border-radius: 3px;
     border: solid 1px var(--bs-light-grey);
-    
+    text-align: center;
 
 }
 
 .event-title{
     font-weight: bold;
+    
 }
 
 .event-time {

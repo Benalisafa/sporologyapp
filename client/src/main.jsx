@@ -17,10 +17,12 @@ import CreateActivity from './pages/activitiesPage/create/CreateActivity'
 import { PrivateRole } from './components/PrivateRole'
 import Admin from './pages/Dashboard/admin/Admin'
 import Partner from './pages/Dashboard/partner/Partner'
+import DashboardPartner from './pages/Dashboard/partner/DashboardPartner'
 import ActivityPage from './pages/activitiesPage/ActivityPage'
 import './style.css'
 import AboutUs from './pages/about/AboutUs'
 import ContactUs from './pages/contact/Contact'
+import SearchPage from './pages/activitiesPage/search'
 
 
 
@@ -56,6 +58,10 @@ const router =createBrowserRouter([
           element : <ActivityPage />
         },
 
+        {
+          path : '/search',
+          element : <SearchPage />
+        },
 
         {
           path : '/dashboard/partner/create',
@@ -66,20 +72,29 @@ const router =createBrowserRouter([
           
           path : '/dashboard/admin',
           element : 
-          <PrivateRole role="admin">
+          // <PrivateRole role="admin">
           <Admin/>
-          </PrivateRole>
+          // </PrivateRole>
 
         },
 
-        {
-          
-          path : '/dashboard/partner',
+        { 
+          path : '/dashboard/partner/activities',
           element : 
           
           <Partner/>
-         
+        },
 
+        {
+           path : '/dashboard/partner',
+          element : 
+          
+          <DashboardPartner/>
+        },
+
+        {
+          path : '/partner/signup',
+          element : <Register/>
         },
         
        
@@ -90,10 +105,9 @@ const router =createBrowserRouter([
       element : <Login/>
     },
 
-    {
-      path : '/partner/signup',
-      element : <Register/>
-    },
+    
+  
+      
 
     
 

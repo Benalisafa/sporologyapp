@@ -51,6 +51,7 @@ exports.createActivity = async (req, res) => {
         location:req.body.location,
         time:req.body.time,
         bookingIds: [],
+        favorites: [],
         userId:req.body.userId,
       });
       
@@ -135,6 +136,108 @@ exports.getSimilarActivities = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.getTopReservedActivities = async (req, res) => {
+  try {
+    // Aggregate to find the most booked activities
+    const topReservedActivities = await Activity.aggregate([
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          description: 1,
+          images: 1,
+          date: 1,
+          location: 1,
+          duration: 1,
+          time: 1,
+          capacity: 1,
+          price: 1,
+          category: 1,
+          companyName: 1,
+          companyAddress: 1,
+          status: 1,
+          userId: 1,
+          favorites: 1,
+          numberOfBookings: { $size: '$bookingIds' }
+        }
+      },
+      { $sort: { numberOfBookings: -1 } } // Sort by number of bookings
+    ]);
+
+    // Send response with top reserved activities
+    res.status(200).json({ activities: topReservedActivities });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error retrieving top reserved activities' });
+  }
+};
+
+
+exports.activityFavoriteStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    let activity = await Activity.findById(id);
+
+    if (!activity) {
+      return res.status(404).json({ error: 'Activity not found' });
+    }
+
+    // Check if the user has already favorited the activity
+    const index = activity.favorites.indexOf(userId);
+    if (index === -1) {
+      // If user hasn't favorited the activity, add to favorites
+      activity.favorites.push(userId);
+    } else {
+      // If user has already favorited the activity, remove from favorites
+      activity.favorites.splice(index, 1);
+    }
+
+    await activity.save();
+
+    res.status(200).json({ message: 'Favorite status toggled successfully', activity });
+  } catch (error) {
+    console.error('Cannot toggle favorite status:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.searchActivities = async (req, res) => {
+  try {
+    // Extract search parameters from the request query
+    const { activity, location, date } = req.query;
+
+    // Validate the search parameters if needed
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //   return res.status(400).json({ errors: errors.array() });
+    // }
+
+    // Build the search query based on provided parameters
+    const searchQuery = {};
+    if (activity) {
+      searchQuery.title = { $regex: activity, $options: 'i' }; // Case-insensitive search
+    }
+    if (location) {
+      searchQuery.location = { $regex: location, $options: 'i' };
+    }
+    if (date) {
+      searchQuery.date = { $regex: date, $options: 'i' };
+    }
+
+    // Execute the search query
+    const matchingActivities = await Activity.find(searchQuery);
+
+    // Return the matching activities as a response
+    res.status(200).json({ activities: matchingActivities });
+  } catch (error) {
+    console.error('Error searching activities:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 
 exports.updateActivity = async (req, res) => {

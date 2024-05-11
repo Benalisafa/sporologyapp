@@ -18,7 +18,13 @@ const activitySchema = new mongoose.Schema({
     category:String,
     
 
-    status: String,
+    companyName: String,
+    companyAddress: String,
+    status: {
+        type: String,
+        enum: ['individual', 'company'],
+        default: 'individual'
+    },
 
     bookingIds: {
         type: [mongoose.Schema.Types.ObjectId],
@@ -30,10 +36,7 @@ const activitySchema = new mongoose.Schema({
         ref: 'users'
       },
 
-    isFavorite: {
-        type: Boolean,
-        default: false
-      }
+      favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 
     
 
