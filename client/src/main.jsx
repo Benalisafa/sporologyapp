@@ -23,6 +23,8 @@ import './style.css'
 import AboutUs from './pages/about/AboutUs'
 import ContactUs from './pages/contact/Contact'
 import SearchPage from './pages/activitiesPage/search'
+import PartnersPage from './pages/partnersPage/partnersPage'
+import PartnerPage from './pages/partnersPage/partnerPage'
 
 
 
@@ -56,6 +58,16 @@ const router =createBrowserRouter([
         {
           path : '/activities/single/:id',
           element : <ActivityPage />
+        },
+
+        {
+          path : '/partners/single/:id',
+          element : <PartnerPage />
+        },
+
+        {
+          path : '/partners',
+          element : <PartnersPage/>
         },
 
         {

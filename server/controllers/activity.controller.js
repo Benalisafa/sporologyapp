@@ -173,6 +173,70 @@ exports.getTopReservedActivities = async (req, res) => {
   }
 };
 
+exports.getUpcomingActivitiesByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    
+    // Validate userId format
+    if (!isValidUserId(userId)) {
+      return res.status(400).json({ error: 'Invalid userId' });
+    }
+
+    // Get current date
+    const currentDate = new Date();
+
+    // Find activities posted by the user where the date hasn't arrived yet
+    const upcomingActivities = await Activity.find({
+      userId: userId,
+      date: { $gt: currentDate } // Find activities with date greater than current date
+    });
+
+    // Return response
+    return res.status(200).json({ activities: upcomingActivities });
+  } catch (error) {
+    console.error('Error fetching upcoming activities:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// Function to validate userId format
+function isValidUserId(userId) {
+  // Implement your validation logic here
+  // Example: Check if userId is a non-empty string
+  return typeof userId === 'string' && userId.trim() !== '';
+}
+
+
+
+exports.getPastActivitiesByUserId = async (req, res) => {
+  const userId = req.params.userId; // Assuming userId is available in the request object
+  try {
+    // Get current date with time set to the beginning of the day
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    // Find activities posted by the user where the date has already passed
+    const pastActivities = await Activity.find({
+      userId: userId,
+      date: { $lt: currentDate } // Find activities with date less than current date
+    });
+
+    if (pastActivities.length === 0) {
+      return res.status(404).json({ message: "No past activities found for the user." });
+    }
+
+    // Send the past activities as response
+    res.json(pastActivities);
+  } catch (error) {
+    console.error('Error fetching past activities:', error);
+    res.status(500).json({ message: "Internal Server Error" }); // Send an error response
+  }
+};
+
+
+
+
+
 
 exports.activityFavoriteStatus = async (req, res) => {
   try {

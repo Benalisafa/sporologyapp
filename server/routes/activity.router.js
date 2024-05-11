@@ -14,6 +14,8 @@ route.get('/listActivity/:id' , activityController.getActivityById);
 route.get('/search', activityController.searchActivities);
 route.get('/similar/:category', activityController.getSimilarActivities);
 route.get('/top', activityController.getTopReservedActivities);
+route.get('/nextActivity/:userId', activityController.getUpcomingActivitiesByUserId);
+route.get('/pastActivity/:userId', activityController.getPastActivitiesByUserId );
 route.put('/favorite/:id', activityController.activityFavoriteStatus);
 
 route.put('/updateActivity/:id' , 
