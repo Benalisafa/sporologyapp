@@ -10,7 +10,7 @@ const activityOwnership = async (req, res, next) => {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    if (activity.owner.toString() !== req.user._id.toString()) { // Compare user IDs (as strings)
+    if (activity.userId && activity.userId.toString() !== req.user._id.toString()) { // Compare user IDs (as strings)
       return res.status(403).json({ message: 'Unauthorized: You are not the owner of this post' });
     }
 

@@ -10,6 +10,7 @@ const checkRole = require ("../middleware/role.middleware");
 
 route.get("/user/:id" , userController.findUserById)
 route.get("/partners" , userController.getPartners)
+route.get("/members" , userController.getMembers)
 route.delete("/deleteUser/:id" , passport.authenticate("jwt",{session:false}), checkRole(['admin']) , userController.deleteUser)
 
 

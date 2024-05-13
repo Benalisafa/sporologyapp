@@ -5,52 +5,49 @@ import { axiosInstance } from "../../../lib/axios";
 import { useSelector } from "react-redux";
 import { userData } from "../../../redux/reducers/auth.reducer";
 
-function DashboardPartner() {
+function DashboardAdmin() {
   
   const [activities, setActivities] = useState([]);
-  const [loading, setLoading] = useState(false); // Setting initial loading state to false
+  const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedActivity, setEditedActivity] = useState({});
-  const [fullActivity, setFullActivity] = useState(null); // State to store full details of the activity
-  const [showAddActivity, setShowAddActivity] = useState(false); // State to track if "Add Activity" section is clicked
-  const [showAllActivities, setShowAllActivities] = useState(false);
-  const currentUser = useSelector(userData);
+  const [fullActivity, setFullActivity] = useState(null); 
   
   useEffect(() => {
-    if (showAllActivities && currentUser) {
-      setLoading(true);
-      axiosInstance.get('activities/listActivity')
-        .then(({ data }) => {
-          const userActivities = data.activities.filter(activity => activity.owner === currentUser.userId);
-          setActivities(userActivities); 
-          setLoading(false);
-          setShowAllActivities(false);
-        })
-        .catch(error => {
-          console.error("Error fetching activities:", error);
-          setLoading(false);
-          setShowAllActivities(false);
-        });
+    axiosInstance.get('activities/listActivity')
+      .then(({ data }) => {
+        console.log(data.activities);
+
+        setActivities(data.activities); 
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("Error fetching activities:", error);
+        setLoading(false);
+      });
+  }, []); 
+  const handleProfessionalsClick = async () => {
+    try {
+      const response = await axiosInstance.get('/users/partners');
+      const professionals = response.data;
+      // Set the fetched professionals to state or handle it as required
+    } catch (error) {
+      console.error('Error fetching professionals:', error);
+      // Handle error appropriately (e.g., show error message)
     }
-  }, [showAllActivities, currentUser]); // Fetch activities when showAllActivities state changes or currentUser changes
-
-  const handleAllActivitiesClick = () => {
-    setShowAddActivity(false);
-    setShowAllActivities(true); // Set showAllActivities to true when "All Activities" is clicked
   };
-
-  const handleAddActivityClick = () => {
-    
-    console.log('before:' ,showAddActivity)
-    setShowAddActivity(true); // Show the "Add Activity" section when "Add Activity" is clicked
-    setShowAllActivities(false); // Set showAllActivities to false when "Add Activity" is clicked
-    console.log('after:' ,showAddActivity)
+  
+  const handleParticipantsClick = async () => {
+    try {
+      const response = await axiosInstance.get('/users/members');
+      const participants = response.data;
+      // Set the fetched participants to state or handle it as required
+    } catch (error) {
+      console.error('Error fetching participants:', error);
+      // Handle error appropriately (e.g., show error message)
+    }
   };
-
-  useEffect(() => {
-  console.log('showAddActivity:', showAddActivity);
-}, [showAddActivity]);
-
+  
 
   const handleEdit = async (activity) => {
     try {
@@ -113,53 +110,42 @@ function DashboardPartner() {
 
   return (
     <div style={{ paddingRight: '5%' }}>
-  <h3 className="mt-4">Dashboard</h3>
-  <div className="d-flex">
-    <aside className="d-flex flex-column ps-4 pt-4" style={{ backgroundColor: 'var(--bs-light-grey)', width: '20%' }}>
-      <h5 onClick={handleAllActivitiesClick}><PhoneIcon />All activities</h5>
-      <br />
-      <h5 onClick={handleAddActivityClick}><PhoneIcon />Add Activity</h5>
-    </aside>
-    <div style={{ width: '80%' }}>
-      {showAddActivity ? ( // Only render the "Add Activity" section if showAddActivity is true
-        <div>
-          <h3>Add Activity</h3>
-          {/* Add Activity Form or Content */}
-        </div>
-      ) : (
-        // Render activities table if showAddActivity is false
-        <>
-          {!loading && activities.length > 0 ? (
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Description</th>
-                  <th>Capacity</th>
-                  <th>Actions</th>
+      <h3 className="mt-4">Dashboard</h3>
+      <div className="d-flex">
+      <aside className="d-flex flex-column ps-4 pt-4" style={{ backgroundColor: 'var(--bs-light-grey)', width: '20%' }}>
+  <h5><PhoneIcon />Professionals</h5>
+  <Button variant="primary" size="sm" className="me-2" onClick={handleProfessionalsClick}>View Professionals</Button>
+  <br />
+  <h5><PhoneIcon />Participants</h5>
+  <Button variant="primary" size="sm" className="me-2" onClick={handleParticipantsClick}>View Participants</Button>
+</aside>
+
+        <div style={{ width: '80%' }}>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Capacity</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activities.map(activity => (
+                <tr key={activity._id}>
+                  <td>{activity.title}</td>
+                  <td>{activity.description}</td>
+                  <td>{activity.capacity}</td>
+                  <td>
+                    <Button variant="primary" size="sm" className="me-2" onClick={() => handleEdit(activity)}>Edit</Button>
+                    <Button variant="danger" size="sm" onClick={() => handleRemove(activity._id)}>Remove</Button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {activities.map(activity => (
-                  <tr key={activity._id}>
-                    <td>{activity.title}</td>
-                    <td>{activity.description}</td>
-                    <td>{activity.capacity}</td>
-                    <td>
-                      <Button variant="primary" size="sm" className="me-2" onClick={() => handleEdit(activity)}>Edit</Button>
-                      <Button variant="danger" size="sm" onClick={() => handleRemove(activity._id)}>Remove</Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          ) : (
-            loading ? <p>Loading...</p> : <p>No activities found.</p>
-          )}
-        </>
-      )}
-    </div>
-  </div>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      </div>
 
       {/* Edit Modal */}
       <Modal show={showEditModal} onHide={handleCloseEditModal}>
@@ -181,16 +167,14 @@ function DashboardPartner() {
               <Form.Control type="number" value={editedActivity.capacity || ''} onChange={(e) => setEditedActivity({ ...editedActivity, capacity: e.target.value })} />
             </Form.Group>
             {/* Add additional details here */}
-            
-<Form.Group controlId="formDate">
-  <Form.Label>Date</Form.Label>
-  <Form.Control type="text" value={editedActivity.date || ''} onChange={(e) => setEditedActivity({ ...editedActivity, date: e.target.value })} />
-</Form.Group>
-<Form.Group controlId="formLocation">
-  <Form.Label>Location</Form.Label>
-  <Form.Control type="text" value={editedActivity.location || ''} onChange={(e) => setEditedActivity({ ...editedActivity, location: e.target.value })} />
-</Form.Group>
-
+            <Form.Group controlId="formAdditionalDetails">
+              <Form.Label>Date</Form.Label>
+              <Form.Control type="text" value={editedActivity.date || ''} onChange={(e) => setEditedActivity({ ...editedActivity, date: e.target.value })} />
+            </Form.Group>
+            <Form.Group controlId="formAdditionalDetails">
+              <Form.Label>Location</Form.Label>
+              <Form.Control type="text" value={editedActivity.location || ''} onChange={(e) => setEditedActivity({ ...editedActivity, location: e.target.value })} />
+            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -206,4 +190,4 @@ function DashboardPartner() {
   );
 }
 
-export default DashboardPartner;
+export default DashboardAdmin;

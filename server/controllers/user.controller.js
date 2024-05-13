@@ -30,6 +30,18 @@ exports.getPartners = async (req, res) => {
   }
 };
 
+exports.getMembers = async (req, res) => {
+  try {
+    // Query users with role "partner" and select all fields
+    const partners = await User.find({ role: 'member' });
+
+    res.json(members);
+  } catch (error) {
+    console.error('Error retrieving members:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 exports.deleteUser = async (req, res) => {
   try {

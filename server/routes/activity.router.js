@@ -19,8 +19,8 @@ route.get('/pastActivity/:userId', activityController.getPastActivitiesByUserId 
 route.put('/favorite/:id', activityController.activityFavoriteStatus);
 
 route.put('/updateActivity/:id' , 
-  passport.authenticate('jwt', { session: false }),  
-  checkRole(['member']), 
+  // passport.authenticate('jwt', { session: false }),  
+  // checkRole(['member']), 
   activityOwnership,
   activityController.updateActivity
 );
@@ -32,9 +32,9 @@ route.put('/cancelActivity/:id' ,
   activityController.cancelActivity
 );
 
-route.put('/removeActivity/:id' , 
-  passport.authenticate('jwt', { session: false }),  
-  checkRole(['admin']),
+route.delete('/removeActivity/:id' , 
+  // passport.authenticate('jwt', { session: false }),  
+  // checkRole(['admin']),
   activityController.removeActivity
 );
 

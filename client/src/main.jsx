@@ -15,7 +15,7 @@ import  {persistor}  from './redux/store'
 import ActivitiesHomePage from './pages/activitiesPage/ActivitiesPage'
 import CreateActivity from './pages/activitiesPage/create/CreateActivity'
 import { PrivateRole } from './components/PrivateRole'
-import Admin from './pages/Dashboard/admin/Admin'
+import DashboardAdmin from './pages/Dashboard/admin/DashboardAdmin'
 import Partner from './pages/Dashboard/partner/Partner'
 import DashboardPartner from './pages/Dashboard/partner/DashboardPartner'
 import ActivityPage from './pages/activitiesPage/ActivityPage'
@@ -85,7 +85,7 @@ const router =createBrowserRouter([
           path : '/dashboard/admin',
           element : 
           // <PrivateRole role="admin">
-          <Admin/>
+          <DashboardAdmin/>
           // </PrivateRole>
 
         },
