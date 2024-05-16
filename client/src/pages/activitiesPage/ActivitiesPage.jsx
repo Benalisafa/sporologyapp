@@ -8,12 +8,11 @@ import Filter from "../../components/layout/Filter";
 function ActivitiesHomePage() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10); // Adjust the page size as needed
+ 
 
   useEffect(() => {
     setLoading(true);
-    axiosInstance.get(`activities/listActivity?page=${currentPage}&pageSize=${pageSize}`)
+    axiosInstance.get(`activities/listActivity`)
       .then(({ data }) => {
         setActivities(data.activities);
         setLoading(false);
@@ -22,7 +21,7 @@ function ActivitiesHomePage() {
         console.error("Error fetching activities:", error);
         setLoading(false);
       });
-  }, [currentPage, pageSize]);
+  }, []);
 
   return (
     <div className="mt-5 container">
@@ -40,14 +39,7 @@ function ActivitiesHomePage() {
             </Link>
           ))}
         </div>
-        {/* Pagination controls */}
-        <div className="mt-3">
-          <button onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))} disabled={currentPage === 1}>
-            Previous
-          </button>
-          <span>Page {currentPage}</span>
-          <Button className="button-primary" onClick={() => setCurrentPage(prevPage => prevPage + 1)}>Next</Button>
-        </div>
+        
         </>
       )}
     </div>

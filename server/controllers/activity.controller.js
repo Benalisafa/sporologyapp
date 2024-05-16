@@ -66,27 +66,19 @@ exports.createActivity = async (req, res) => {
 };
 
 
-
-
 exports.getActivities = async (req, res) => {
   try {
-    // Pagination parameters
-    const page = parseInt(req.query.page) || 1; // Current page number
-    const pageSize = parseInt(req.query.pageSize) || 10; // Number of activities per page
+    // Retrieve all activities from the database
+    const allActivities = await Activity.find().populate('userId', 'firstname');
 
-    // Calculate skip value to skip activities on previous pages
-    const skip = (page - 1) * pageSize;
-
-    // Retrieve activities from the database with pagination
-    const allActivities = await Activity.find({}).skip(skip).limit(pageSize);
-
-    // Send response with activities
+    // Send response with all activities
     res.status(200).json({ activities: allActivities });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error retrieving activities' });
   }
 };
+
 
      
 

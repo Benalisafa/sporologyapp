@@ -11,6 +11,10 @@
   --bs-light-blue:#F8FAFC;
 }
 
+@font-face {
+  font-family: 'Yarop';
+  src: url('assets/YaroOp.ttf') format('truetype'),}
+
 body {
   font-family: 'Plus Jakarta Sans';
 }
@@ -104,6 +108,7 @@ h1,h2,h3,h5:first-letter{
   }
   .logo-txt{
     font-weight: bold;
+    font-family: 'Yarop';
   }
 
   .image{

@@ -7,6 +7,8 @@ import { formatDate } from '../tools/date';
 
 
 const Review = ({ reviews }) => {
+
+  
   
   return (
     <div style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', color: "white", textAlign: "center", width: "100%", height: '300px' }}>

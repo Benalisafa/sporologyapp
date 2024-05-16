@@ -14,7 +14,7 @@ const PartnerCard = ({ partner }) => {
     <div>
       
 
-      <div className='mb-4' style={{backgroundColor:'var(--bs-light-grey)', height:'250px', width:'350px'}} >
+      <div className='mb-4' style={{backgroundColor:'var(--bs-light-grey)', height:'250px', width:'350px',border:'solid,1px,black'}} >
   <div>
     <div style={{paddingLeft:'10%', paddingTop:'10%',paddingBottom:'10%'}}> 
     <img src={logo} className='logo-img' alt="logo" />

@@ -13,16 +13,19 @@
   import background from '../../assets/home.jpg'
   import darkBackground from '../../assets/dark-bg.jpg'
   import logo from '../../assets/sporology-logo.svg'
+import PartnerCard from '../../components/activities/partnerCard';
 
 
   function Home() {
 
     
     const [activities, setActivities] = useState([]);
+    const [partners, setPartners] = useState([]);
     const [topActivities, setTopActivities] = useState([]);
 
     useEffect(() => {
       fetchActivities();
+      fetchPartners();
       fetchTopActivities();
     }, []);
 
@@ -30,6 +33,16 @@
       axiosInstance.get('activities/listActivity')
         .then(({ data }) => {
           setActivities(data.activities);
+        })
+        .catch(error => {
+          console.error("Error fetching activities:", error);
+        });
+    };
+
+    const fetchPartners = () => {
+      axiosInstance.get('users/partners')
+        .then(({ data }) => {
+          setPartners(data);
         })
         .catch(error => {
           console.error("Error fetching activities:", error);
@@ -124,7 +137,7 @@
           <Button className='button-extra'> Kids</Button>
           <Button className='button-circle' style={{borderRadius:'6px' }} ><FilterIcon/></Button>
         </div>
-        <Slider {...settings} className="mt-5">
+        <Slider {...settings} className="mt-2">
     {activities
       .sort((a, b) => new Date(b.date) - new Date(a.date)) 
       .map(activity => (
@@ -147,9 +160,16 @@
         </div>
       </div>
       <main className='d-flex justify-content-around container' style={{position: 'relative', top: '-150px'}}>
-      <div style={{backgroundColor:'white', width:'300px', height:'300px'}}> hi</div>
-      <div style={{backgroundColor:'white', width:'300px', height:'300px'}}> hi</div>
-      <div style={{backgroundColor:'white', width:'300px', height:'300px'}}> hi</div>
+      {partners.slice(0, 3).map(partner => (
+  <div key={partner._id} className="col">
+    <div className="m-2"> 
+      <Link to={`/partners/single/${partner._id}`} style={{ textDecoration: 'none' }}>
+        <PartnerCard partner={partner} />
+      </Link>
+    </div>
+  </div>
+))}
+
       </main>
       <section className='container'>
           <div className="row">

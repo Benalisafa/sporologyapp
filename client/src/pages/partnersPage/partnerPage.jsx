@@ -10,9 +10,6 @@ import {Row, Col } from 'react-bootstrap';
 import Slider from 'react-slick';
 
 import { LocationIcon, DateIcon } from "../../components/Icons";
-import BookingWidget from "../../components/activities/BookingWidget";
-import Rating from "../../components/reviews/Rating"; 
-import Review from "../../components/reviews/Review";
 import ActivityCard from "../../components/activities/activityCard";
 import { Link } from "react-router-dom";
 import {NextArrowIcon , PrevArrowIcon} from '../../components/Icons';

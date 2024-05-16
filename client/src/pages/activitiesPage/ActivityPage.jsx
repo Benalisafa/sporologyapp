@@ -8,7 +8,7 @@ import Filter from "../../components/layout/Filter";
 import {Row, Col } from 'react-bootstrap';
 import Slider from 'react-slick';
 
-import { LocationIcon, DateIcon } from "../../components/Icons";
+import { LocationIcon, DateIcon, StarIcon } from "../../components/Icons";
 import BookingWidget from "../../components/activities/BookingWidget";
 import Rating from "../../components/reviews/Rating"; 
 import Review from "../../components/reviews/Review";
@@ -29,6 +29,7 @@ const ActivityPage = () => {
   const [activityId, setActivityId] = useState(null); 
   const [user, setUser] = useState(null);
   const [similarActivities, setSimilarActivities] = useState([]);
+  const [averageRating, setAverageRating] = useState(null);
  
   useEffect(() => {
     axiosInstance.get(`activities/listActivity/${id}`)
@@ -51,6 +52,10 @@ const ActivityPage = () => {
       axiosInstance.get(`reviews/getReviewsByActivityId/${activityId}`)
         .then(response => {
           setReviews(response.data);
+
+          const totalRating = response.data.reduce((acc, curr) => acc + curr.rating, 0);
+          const avgRating = totalRating / response.data.length;
+          setAverageRating(avgRating);
         })
         .catch(error => {
           console.error('Error fetching reviews:', error);
@@ -161,7 +166,14 @@ const ActivityPage = () => {
           <div className="m-5">
             <Filter/>
           </div>
+          <div>
+     {averageRating && <div><StarIcon/>{averageRating}</div>}
+     {reviews.length > 0 && (
+            <span className="ms-2">{reviews.length} reviews</span>
+          )}
+     </div>
           <h1>{activity.title}</h1>
+          
           <Col md={8}>
           <figure
             // className="mb-4"
@@ -281,6 +293,7 @@ const ActivityPage = () => {
         </div>
       </div>
     ))}
+    
     </Slider>
     </section>
 )}

@@ -28,16 +28,20 @@ function PartnersPage() {
 
   return (
     <>
-    <div style={{backgroundColor:'var(--bs-light-blue)'}}>
+    <div>
+    <Filter />
+    <div style={{backgroundColor:'var(--bs-black)'}}>
     <div className="mb-5" >
-          <Filter />
+          
         </div>
-      <div style={{ backgroundColor: 'black', color: 'white', position: 'relative', height:'400px' }}>
+        {/* <div style={{ backgroundColor: 'black', color: 'white', position: 'relative', height:'400px' }}> */}
+      <div style={{ color: 'white' }}>
         <div style={{ paddingTop: '50px' }}>
           <h3>Professionals</h3>
         </div>
       </div>
-      <Container className="mt-5" style={{ position: 'relative', top: '-250px', zIndex: 2 }}>
+      {/* <Container className="mt-5" style={{ position: 'relative', top: '-250px', zIndex: 2 }}> */}
+      <Container className="mt-5" >
         
         {loading ? (
           <h1>Loading...</h1>
@@ -59,6 +63,7 @@ function PartnersPage() {
           </div>
         )}
       </Container>
+      </div>
       </div>
     </>
   );

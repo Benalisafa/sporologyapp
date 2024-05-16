@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../../assets/sporology-logo.svg'
+
 import image from '../../assets/Fitness Class Participation.jpg'
 import background from '../../assets/about.jpg'
 import { Container } from 'react-bootstrap';
@@ -10,9 +10,7 @@ function AboutUs() {
     <div style={{backgroundImage: `url(${background})`}}>
       <div className='container'>
     <div className='d-flex flex-column align-items-center pt-4'>
-        <div>
-            <img src={logo} className='logo-img' alt="logo" />
-        </div>
+        
     <h3>About Us</h3>
     </div>
 

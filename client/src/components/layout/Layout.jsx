@@ -3,7 +3,18 @@ import { Navbarhead } from './Navbar';
 import { Outlet } from 'react-router-dom';
 
 
-export const Layout = () => {
+export const NavLayout = () => {
+  return (
+    <div>
+      
+        <Navbarhead/>
+        <Outlet/>
+        
+    </div>
+  )
+};
+
+export const AdminLayout = () => {
   return (
     <div>
       

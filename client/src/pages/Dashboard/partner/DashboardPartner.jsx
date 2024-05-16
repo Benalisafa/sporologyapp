@@ -13,38 +13,37 @@ function DashboardPartner() {
   const [editedActivity, setEditedActivity] = useState({});
   const [fullActivity, setFullActivity] = useState(null); // State to store full details of the activity
   const [showAddActivity, setShowAddActivity] = useState(false); // State to track if "Add Activity" section is clicked
-  const [showAllActivities, setShowAllActivities] = useState(false);
-  const currentUser = useSelector(userData);
+  const currentUser = useSelector(userData)
   
   useEffect(() => {
-    if (showAllActivities && currentUser) {
+    if ( currentUser) {
       setLoading(true);
       axiosInstance.get('activities/listActivity')
+      
         .then(({ data }) => {
-          const userActivities = data.activities.filter(activity => activity.owner === currentUser.userId);
+          const userActivities = data.activities.filter(activity => activity.userId === currentUser.userId);
+          
           setActivities(userActivities); 
           setLoading(false);
-          setShowAllActivities(false);
+          
         })
         .catch(error => {
           console.error("Error fetching activities:", error);
           setLoading(false);
-          setShowAllActivities(false);
+          
         });
     }
-  }, [showAllActivities, currentUser]); // Fetch activities when showAllActivities state changes or currentUser changes
+  }, [ currentUser]); // Fetch activities when showAllActivities state changes or currentUser changes
 
   const handleAllActivitiesClick = () => {
     setShowAddActivity(false);
-    setShowAllActivities(true); // Set showAllActivities to true when "All Activities" is clicked
+   
   };
 
   const handleAddActivityClick = () => {
-    
-    console.log('before:' ,showAddActivity)
     setShowAddActivity(true); // Show the "Add Activity" section when "Add Activity" is clicked
-    setShowAllActivities(false); // Set showAllActivities to false when "Add Activity" is clicked
-    console.log('after:' ,showAddActivity)
+   
+
   };
 
   useEffect(() => {
@@ -55,7 +54,7 @@ function DashboardPartner() {
   const handleEdit = async (activity) => {
     try {
       // Fetch the full details of the activity from the server
-      const response = await axiosInstance.get(`/activities//listActivity/${activity._id}`);
+      const response = await axiosInstance.get(`/activities/listActivity/${activity._id}`);
       const fullActivityData = response.data;
       
       // Set the editedActivity state to the activity received from the server

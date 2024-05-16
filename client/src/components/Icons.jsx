@@ -82,21 +82,30 @@ export const FilterIcon = () => (
 </svg>
 );
 
-export const StarIcon = ({ filled = true, filledColor = '#00EED1', unfilledColor = '#e4e5e9' }) => {
-  const fillStyle = filled ? filledColor : unfilledColor;
+export const StarIcon = ({ filled = true, filledHalf = false, filledColor = '#00EED1', unfilledColor = '#e4e5e9' }) => {
+  const fillStyle = filled ? (filledHalf ? 'url(#halfFill)' : filledColor) : unfilledColor;
 
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill={fillStyle} className="bi bi-star-fill" viewBox="0 0 16 16">
+      {/* Define a linear gradient for half-filled stars */}
+      <defs>
+        <linearGradient id="halfFill" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="50%" stopColor={filledColor} />
+          <stop offset="50%" stopColor={unfilledColor} />
+        </linearGradient>
+      </defs>
       <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
     </svg>
   );
 };
 
 
+
 StarIcon.propTypes = {
   filled: PropTypes.bool.isRequired,
   filledColor: PropTypes.string.isRequired,
   unfilledColor: PropTypes.string.isRequired,
+  filledHalf: PropTypes.string.isRequired,
 };
 
 

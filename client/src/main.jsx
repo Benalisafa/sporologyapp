@@ -6,7 +6,7 @@ import  Register  from './pages/register/Register'
 import  Login  from './pages/login/Login'
 import  Home  from './pages/home/Home'
 import  Found  from './pages/notFound/notFound'
-import { Layout } from './components/layout/Layout'
+import { NavLayout } from './components/layout/Layout'
 import { PrivateRoute } from './components/PrivateRoute'
 import { Provider } from 'react-redux'
 import {store} from './redux/store'
@@ -25,6 +25,8 @@ import ContactUs from './pages/contact/Contact'
 import SearchPage from './pages/activitiesPage/search'
 import PartnersPage from './pages/partnersPage/partnersPage'
 import PartnerPage from './pages/partnersPage/partnerPage'
+import Dashboard from './pages/Dashboard/admin/Dashboard'
+import Profile from './pages/profile/Profile'
 
 
 
@@ -34,7 +36,7 @@ const router =createBrowserRouter([
   
     {
       path : '/',
-        element : <Layout/>,
+        element : <NavLayout/>,
       children: [
         {
           path : '/',
@@ -76,6 +78,11 @@ const router =createBrowserRouter([
         },
 
         {
+          path : '/profile',
+          element : <Profile />
+        },
+
+        {
           path : '/dashboard/partner/create',
           element : <CreateActivity/>
         },
@@ -112,11 +119,7 @@ const router =createBrowserRouter([
        
       ]
     },
-    {
-      path : '/partner/login',
-      element : <Login/>
-    },
-
+  
     
   
       
