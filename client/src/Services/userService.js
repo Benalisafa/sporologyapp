@@ -1,24 +1,23 @@
+import axios from 'axios';
 
-import axios from 'axios'
-const UserService = {}
+const API_BASE_URL = 'http://127.0.0.1:4000/users';
 
-    UserService.signupPartner = function( data ){
+const UserService = {
+  signupPartner(data) {
+    return axios.post(`${API_BASE_URL}/signup/partner`, data);
+  },
 
-        return axios.post('http://127.0.0.1:4000/users/signup/partner' , data)
+  signupMember(data) {
+    return axios.post(`${API_BASE_URL}/signup/member`, data);
+  },
 
-    }
+  signin(data) {
+    return axios.post(`${API_BASE_URL}/signin`, data);
+  },
 
-    UserService.signupMember = function( data ){
+  checkEmailExists(data) {
+    return axios.post(`${API_BASE_URL}/email`, data);
+  },
+};
 
-        return axios.post('http://127.0.0.1:4000/users/signup/member' , data)
-
-    }
-
-    UserService.signin = function( data ){
-
-        return axios.post('http://127.0.0.1:4000/users/signin' , data)
-
-    }
-
-  
-    export default UserService
+export default UserService;

@@ -12,6 +12,7 @@ const mongoose = require('mongoose')
 
 // Routes
 app.use( express.static('images'));
+app.use( express.static('picture'));
 
 
 app.use(express.json())

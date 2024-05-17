@@ -2,45 +2,87 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import toast, { Toaster } from 'react-hot-toast';
-import UserService from '../../Services/userService';
 import { useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon, MailIcon, PhoneIcon } from '../Icons';
 import './Forms.css';
+import { axiosInstance } from '../../lib/axios';
 
-function RegisterForm() {
-  const navigate = useNavigate(); // Correctly invoking useNavigate
 
+function RegisterFormPartner({ onSubmit }) {
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
     email: '',
     password: '',
+    confirmPassword: '',
     address: '',
     phone: '',
-    genre: '', 
+    genre: '',
+    picture: null, // Use null initially for picture state
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+
+    if (event.target.files) {
+      const file = event.target.files[0];
+      console.log('Selected picture file:', file); // Log the selected file
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: file
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value
+      }));
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
+    const formDataToSend = new FormData();
+    formDataToSend.append('firstname', formData.firstname);
+    formDataToSend.append('lastname', formData.lastname);
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('password', formData.password);
+    formDataToSend.append('confirmPassword', formData.confirmPassword);
+    formDataToSend.append('address', formData.address);
+    formDataToSend.append('phone', formData.phone);
+    formDataToSend.append('genre', formData.genre);
+    formDataToSend.append('picture', formData.picture); // Check if formData.picture is the File object
+  
+    console.log('Form data to send:', formDataToSend); // Check the formDataToSend in console
+  
     try {
-      await UserService.signupPartner(formData);
-      toast.success('User added successfully');
-      navigate('/dashboard/partner/create'); 
-    } catch (err) {
-      toast.error(err.response.data.message || 'Failed to register user');
+      const response = await axiosInstance.post('/users/signup/partner', formDataToSend);
+      console.log('Response:', response.data);
+  
+      // Call onSubmit callback if provided
+      if (onSubmit) {
+        onSubmit(formData); // Pass formData to parent component
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
   return (
     <div className='container-s d-flex align-items-center justify-content-center'>
       <Form className="mt-5" onSubmit={handleSubmit}>
         <Toaster />
-        <div className='d-flex ' style={{ gap: '5%' }}>
+        <div className='d-flex' style={{ gap: '5%' }}>
           <Form.Group className="mb-3">
             <Form.Label>First name</Form.Label>
             <Form.Control
@@ -49,6 +91,7 @@ function RegisterForm() {
               name="firstname"
               value={formData.firstname}
               onChange={handleChange}
+              required
             />
           </Form.Group>
 
@@ -60,6 +103,7 @@ function RegisterForm() {
               name="lastname"
               value={formData.lastname}
               onChange={handleChange}
+              required
             />
           </Form.Group>
         </div>
@@ -67,7 +111,7 @@ function RegisterForm() {
         <div className='d-flex mb-4 mt-4' style={{ gap: '5%' }}>
           <Form.Check
             type="radio"
-            label="male"
+            label="Male"
             name="genre"
             id="ml"
             value="male"
@@ -75,7 +119,7 @@ function RegisterForm() {
           />
           <Form.Check
             type="radio"
-            label="female"
+            label="Female"
             name="genre"
             id="fm"
             value="female"
@@ -93,6 +137,7 @@ function RegisterForm() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
+              required
             />
           </Form.Group>
 
@@ -100,45 +145,64 @@ function RegisterForm() {
             <Form.Label>Email Address</Form.Label>
             <div className="icon"><MailIcon /></div>
             <Form.Control
-              type="text"
+              type="email"
               placeholder="Email Address"
               name="email"
               value={formData.email}
               onChange={handleChange}
+              required
             />
           </Form.Group>
         </div>
 
-        <div className='d-flex ' style={{ gap: '5%' }}>
+        <div className='d-flex' style={{ gap: '5%' }}>
           <Form.Group className="mb-3 input-with-icon">
             <Form.Label>Password</Form.Label>
-            <div className="icon"><EyeIcon /></div>
+            <div className="icon" onClick={toggleShowPassword} style={{ cursor: 'pointer' }}>
+              {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
+            </div>
             <Form.Control
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               name="password"
               value={formData.password}
               onChange={handleChange}
+              required
             />
           </Form.Group>
 
           <Form.Group className="mb-3 input-with-icon">
             <Form.Label>Confirm Password</Form.Label>
-            <div className="icon"><EyeSlashIcon /></div>
+            <div className="icon" onClick={toggleShowConfirmPassword} style={{ cursor: 'pointer' }}>
+              {showConfirmPassword ? <EyeSlashIcon /> : <EyeIcon />}
+            </div>
             <Form.Control
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm Password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
+              required
             />
           </Form.Group>
         </div>
 
-        <Button type="submit" className='button-primary' style={{width:'100%'}}>Register</Button>
+        <div className="profile-image-container">
+          <Form.Label>Profile Picture</Form.Label>
+          <Form.Control
+            type="file"
+            className="profile-image-input"
+            name="picture"
+            accept="image/*"
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <Button type="submit" className='button-primary' style={{ width: '100%' }}>Register</Button>
       </Form>
     </div>
   );
 }
 
-export default RegisterForm;
+export default RegisterFormPartner;

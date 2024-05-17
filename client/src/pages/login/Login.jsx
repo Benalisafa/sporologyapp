@@ -6,12 +6,13 @@ import './login.css'
 
 function Login() {
   return (
-    <Container>
+    <div className='container-xs mt-4'>
     
-      <h1 className='text-center'>Welcome back</h1>
+      <h3 >Welcome back</h3>
       <LoginForm/>
+      <div className='mt-2 mb-4 text-center'>Don’t have any account yet? <a href="/partner/signup">Create an account</a> </div>
     
-    </Container>
+    </div>
   )
 }
 

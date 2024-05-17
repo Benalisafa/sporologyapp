@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import RegisterForm from '../../components/forms/registerForm';
-import CompanyForm from '../../components/forms/companyForm'; 
 import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom'; 
 import UserService from '../../Services/userService';
+import { useNavigate } from 'react-router-dom';
+import RegisterFormPartner from '../../components/forms/registerFormPartner';
+import CompanyForm from '../../components/forms/companyForm';
 
 function Register() {
   const [partnerType, setPartnerType] = useState(null);
   const [companyData, setCompanyData] = useState({});
-  const [registerFormData, setRegisterFormData] = useState({});
   const navigate = useNavigate();
 
   const handlePartnerTypeClick = (type) => {
@@ -17,34 +16,41 @@ function Register() {
 
   const handleCompanyFormSubmit = (data) => {
     setCompanyData(data);
-    setPartnerType('individual');
+    setPartnerType('individual'); // Switch to individual form after company form is submitted
   };
 
   const handleRegisterFormSubmit = async (registerData) => {
     const combinedData = { ...companyData, ...registerData };
-    const response = await UserService.signupPartner(combinedData);
-
-    if (!response.ok) {
-      console.error('Error saving data to database:', response);
-      return;
+    console.log(combinedData)
+    try {
+      const response = await UserService.signupPartner(combinedData);
+      
+      if (response.status >= 200 && response.status < 300) {
+        console.log("Data saved successfully");
+        navigate('/partner/login'); // Redirect after successful submission
+      } else {
+        console.error('Error saving data to database:', response);
+        // Handle error case
+        // Example: toast.error('Failed to register partner');
+      }
+    } catch (error) {
+      console.error('Error saving data to database:', error);
+      // Handle error case
+      // Example: toast.error('Failed to register partner');
     }
-
-    console.log("Data saved successfully");
-    // Redirect or perform any other action after successful submission
-    // navigate('/success');
   };
 
   return (
-    <div className='container-s' style={{backgroundColor:'var(--bs-light-blue)'}}>
+    <div className='container-s' style={{ backgroundColor: 'var(--bs-light-blue)', height: '80vh' }}>
       {partnerType === null && (
-        <div className='d-flex flex-column align-items-center ' style={{paddingTop:'10%'}}>
+        <div className='d-flex flex-column align-items-center ' style={{ paddingTop: '10%' }}>
           <h3>Who are you?</h3>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <Button className='button-extra' onClick={() => handlePartnerTypeClick('individual')}>
             Individual
           </Button>
-          <br/>
+          <br />
           <Button className='button-extra' onClick={() => handlePartnerTypeClick('company')}>
             Company
           </Button>
@@ -56,7 +62,7 @@ function Register() {
       )}
 
       {partnerType === 'individual' && (
-        <RegisterForm onSubmit={handleRegisterFormSubmit} />
+        <RegisterFormPartner onSubmit={handleRegisterFormSubmit} />
       )}
     </div>
   );

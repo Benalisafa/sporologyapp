@@ -14,6 +14,7 @@
   import darkBackground from '../../assets/dark-bg.jpg'
   import logo from '../../assets/sporology-logo.svg'
 import PartnerCard from '../../components/activities/partnerCard';
+import { Col, Row } from 'react-bootstrap';
 
 
   function Home() {
@@ -127,7 +128,7 @@ import PartnerCard from '../../components/activities/partnerCard';
       <section className='container'>
         
         <div className='d-flex flex-column align-items-center justify-content-center' style={{ paddingTop: '170px' , marginBottom:'100px'}} > 
-          <h1>Move Your Body</h1>
+          <h1 style={{textAlign:'center'}}>Move Your Body</h1>
           <Filter />
         </div>
         <div className='d-flex align-items-center justify-content-center ' style={{gap:'1%'}}>
@@ -187,16 +188,19 @@ import PartnerCard from '../../components/activities/partnerCard';
   </section>
   <div style={{backgroundColor:'var(--bs-black)',color:'white',padding:'50px',marginTop:'100px'}}>
   <h3>About us</h3>
-  <div className='d-flex align-items-center justify-content-between mt-4 container'>
+  <div className=' mt-4 container'>
+        <Row>
+        <Col  md={6}>
         
-        
-        <div >
         <img src={logo} style={{height:'300px'}} className='logo' alt="logo" />
-        </div>
-        <div style={{width:'50%'}}>
-        Sporology is a comprehensive online directory or database dedicated to showcase the wide range  of sports professionals available in the UAE. Our platform aims to simplify the process of finding specific sports activities by providing a user-friendly interface that allows individuals to search and discover various sports professionals and activities in their erea.
-        </div>
         
+        </Col>
+        <Col className='d-flex align-items-center'>
+        
+        Sporology is a comprehensive online directory or database dedicated to showcase the wide range  of sports professionals available in the UAE. Our platform aims to simplify the process of finding specific sports activities by providing a user-friendly interface that allows individuals to search and discover various sports professionals and activities in their erea.
+        
+        </Col>
+        </Row>
 
         
 

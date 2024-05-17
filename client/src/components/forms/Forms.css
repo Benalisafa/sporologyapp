@@ -1,13 +1,7 @@
-.input-with-icon {
-    position: relative;
-  }
-  
-  .input-with-icon .icon {
-    position: absolute;
-    left: 90%; 
-    top: 50%
-    
-  }
+
+.form-control{
+  border-radius: 6px;
+}
 
   .form-control:focus {
     
@@ -15,23 +9,45 @@
     box-shadow: none;
 }
 
-.input-error{
-  border-color: black;
-  box-shadow: none;
+
+.form-control.is-invalid {
+  background-image: none;
+ 
 }
-.FormGroup .input-error {
-  border-color: green;
+.form-control.is-invalid:focus {
+  box-shadow: none;
  
 }
 
-/* .form-control::placeholder {
+.form-control::placeholder {
   color:var(--bs-grey);
   
   font-size: 14px;
-} */
+}
 
-.feedback-error{
-  color: var(--bs-red);
+
+
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon .icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.input-with-icon input {
+  padding-right: 30px; 
+}
+
+.input-with-icon .invalid-feedback {
+  display: block; 
+  position: absolute;
+  bottom: -20px;
 }
 
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
-import RegisterForm from './registerForm';
+import { Button, Form } from 'react-bootstrap';
+import RegisterFormPartner from './registerFormPartner';
 
 function CompanyForm({ onSubmit }) {
   const [companyName, setCompanyName] = useState('');
@@ -33,12 +33,12 @@ function CompanyForm({ onSubmit }) {
     setCompleted(true);
   };
 
-  // Render company form if not completed, otherwise render a message
   return (
-    <div>
+    <div className='container-xs pt-5'>
       {!completed ? (
         <Form onSubmit={handleSubmit}>
-          <Form.Group>
+          <h3 className='mb-4'>About your company</h3>
+          <Form.Group className='mb-4'>
             <Form.Label>Company Name</Form.Label>
             <Form.Control
               type="text"
@@ -46,9 +46,10 @@ function CompanyForm({ onSubmit }) {
               name="companyName"
               value={companyName}
               onChange={handleChange}
+              required
             />
           </Form.Group>
-          <Form.Group>
+          <Form.Group className='mb-4'>
             <Form.Label>Company Address</Form.Label>
             <Form.Control
               type="text"
@@ -56,9 +57,10 @@ function CompanyForm({ onSubmit }) {
               name="companyAddress"
               value={companyAddress}
               onChange={handleChange}
+              required
             />
           </Form.Group>
-          <Form.Group>
+          <Form.Group className='mb-4'>
             <Form.Label>Description (Optional)</Form.Label>
             <Form.Control
               type="text"
@@ -68,10 +70,10 @@ function CompanyForm({ onSubmit }) {
               onChange={handleChange}
             />
           </Form.Group>
-          <button type="submit">Next</button>
+          <Button className='button-primary w-100' type="submit">Next</Button>
         </Form>
       ) : (
-        <RegisterForm/>
+        <RegisterFormPartner /> // Ensure RegisterFormPartner can handle onSubmit
       )}
     </div>
   );

@@ -8,42 +8,38 @@ import LoginModal from '../modals/loginModal';
 import { BurgerIcon, ProfileIcon } from '../Icons';
 import logo from '../../assets/sporology-logo.svg';
 import { axiosInstance } from '../../lib/axios';
-import './navStyle.css'; // Move your styles to this file
+import './navStyle.css';
 
-export const Navbarhead = () => {
+export const NavPartner = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
+  const userId = useSelector((state) => state.auth.user?.userId);
   const isConnected = useSelector((state) => state.auth.isConnected);
   const [expanded, setExpanded] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [partner, setPartner] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [profileImage, setProfileImage] = useState(null);
 
   useEffect(() => {
-    if (isConnected && user?.userId) {
-      axiosInstance.get(`users/user/${user.userId}`)
-      
-        .then((response) => {
-          console.log(response.data.picture)
-          if (response.data.picture) {
-            setProfileImage(`http://localhost:4000/profile/${response.data.picture}`);
-          }
+    if (userId) {
+      axiosInstance.get(`users/user/${userId}`)
+        .then(response => {
+          setPartner(response.data);
+          setLoading(false);
         })
-        .catch((error) => {
-          console.error('Error fetching profile image:', error);
+        .catch(error => {
+          setError(error);
+          setLoading(false);
         });
+    } else {
+      setLoading(false);  // Set loading to false if userId is not available
     }
-  }, [isConnected, user?.userId]);
+  }, [userId]);
 
   const handleLogout = () => {
     dispatch(logout());
   };
-
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleShowLoginModal = () => setShowLoginModal(true);
-    const handleCloseLoginModal = () => setShowLoginModal(false);
 
   return (
     <>
@@ -67,38 +63,11 @@ export const Navbarhead = () => {
             </Nav>
           </Navbar.Collapse>
           <Nav className="ml-auto">
-            <Nav.Link as={Link} to="/partner/login">Add activity</Nav.Link>
-            <div className="position-relative">
-              {!isConnected ? (
+            {isConnected ? (
+              <div className="position-relative">
                 <Dropdown>
                   <Dropdown.Toggle id="dropdown-basic" className="custom-toggle d-flex rounded-pill">
-                    <div className="me-1 mb-1">
-                      <BurgerIcon />
-                    </div>
-                    <div className="profile-icon-wrapper">
-                      <ProfileIcon />
-                    </div>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu align="end">
-                    <Dropdown.Item onClick={handleOpenModal}>Sign Up</Dropdown.Item>
-                    <Dropdown.Item onClick={handleShowLoginModal}>Log In</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              ) : (
-                <Dropdown>
-                  <Dropdown.Toggle id="dropdown-basic" className="custom-toggle d-flex rounded-pill">
-                    <div className="me-1 mb-1">
-                      <BurgerIcon />
-                    </div>
-                    <div>
-                    {profileImage ? (
-                      <img src={profileImage} alt="Profile" className="profile-img" />
-                    ) : (
-                      <div className="profile-placeholder">
-                        {user.email[0]}
-                      </div>
-                    )}
-                    </div>
+                    {partner?.name || 'User'}
                   </Dropdown.Toggle>
                   <Dropdown.Menu align="end">
                     <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
@@ -107,14 +76,20 @@ export const Navbarhead = () => {
                     <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-              )}
-            </div>
+              </div>
+            ) : (
+              <>
+                <Nav.Link onClick={() => setShowLoginModal(true)}>Login</Nav.Link>
+                <Nav.Link onClick={() => setShowRegisterModal(true)}>Register</Nav.Link>
+              </>
+            )}
           </Nav>
         </div>
       </Navbar>
-      <RegisterModal show={showModal} handleClose={handleCloseModal} />
-      <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} /> {/* Add LoginModal */}
+
+      {/* Modals */}
+      <RegisterModal show={showRegisterModal} onHide={() => setShowRegisterModal(false)} />
+      <LoginModal show={showLoginModal} onHide={() => setShowLoginModal(false)} />
     </>
   );
 };
-

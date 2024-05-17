@@ -1,7 +1,10 @@
 const User = require('../models/user.model'); 
 const bcrypt = require ('bcryptjs')
-
+const multer = require('multer');
+const path = require('path');
 const { validationResult } = require('express-validator'); 
+
+
 
 exports.findUserById = async (req, res) => {
 
@@ -77,38 +80,88 @@ exports.verifyPassword = async (req, res) => {
 
 
 
+const fs = require('fs');
+
+const storage = multer.diskStorage({
+  destination: './images/profile/', 
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
+
 exports.updateUserById = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const { id } = req.params;
-   
-    const userData = req.body;
+    const { firstname, lastname, phone, email,newPassword } = req.body; 
 
-    let _user = await User.findById(id);
-   
-    if (!_user) {
+    let user = await User.findById(id);
+
+    if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    // Update user data if fields are not empty
+    if (firstname !== undefined && firstname !== '') user.firstname = firstname;
+    if (lastname !== undefined && lastname !== '') user.lastname = lastname;
+    if (phone !== undefined && phone !== '') user.phone = phone;
+    if (email !== undefined && email !== '') user.email = email;
+    if (newPassword !== undefined && newPassword !== '') user.password = newPassword;
 
-    // Update user data
-    if (Object.keys(userData).length > 0) {
-      // Only proceed with the update if there are modified fields
-      Object.assign(_user, userData);
-      await _user.save();
-    }
+    // If picture exists in form data, update user's profile picture
+    upload.single('picture')(req, res, async (err) => {
+      if (err) {
+        console.error('Error uploading picture:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
 
-    // Respond with success message
-    res.status(200).json({ message: 'User updated successfully' });
+      console.log('Image received from frontend:', req.file); // Log if image is received
+
+      if (req.file) {
+        console.log('New profile picture uploaded:', req.file.filename); // Log if new profile picture is uploaded
+        user.picture = req.file.filename; // Save the filename/path of the uploaded picture
+      } else {
+        console.log('No new profile picture uploaded.'); // Log if no new profile picture is uploaded
+      }
+
+      // Save updated user data
+      await user.save();
+
+      console.log('User data updated successfully.'); // Log if user data is updated
+
+      res.status(200).json({ message: 'User updated successfully' });
+    });
   } catch (error) {
     console.error('Error updating user:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.checkEmailExists = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Check if the email already exists in the database
+    const user = await User.findOne({ email });
+    if (user) {
+      // Email already exists
+      return res.status(200).json({ exists: true });
+    } else {
+      // Email doesn't exist
+      return res.status(200).json({ exists: false });
+    }
+  } catch (error) {
+    // Error occurred while checking email existence
+    console.error('Error checking email existence:', error);
+    return res.status(500).json({ error: 'An error occurred while checking email existence' });
+  }
+};
+
+
+
+
+
 
 
 

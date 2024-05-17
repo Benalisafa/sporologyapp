@@ -3,15 +3,14 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-export const PrivateRole = ({ role}) => {
+export const PrivateRole = ({  role, children}) => {
     const user = useSelector((state) => state.auth.user);
     
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user.role !== role) {
-                   
-             navigate("/");
+        if (user && user.role !== role) {
+            navigate("/");
         }
     }, [user, navigate, role]);
 
@@ -19,8 +18,10 @@ export const PrivateRole = ({ role}) => {
         return null; // or loading indicator, etc.
     }
     
-    return null;
+    return children;
 };
 
 PrivateRole.propTypes = {
-    role: PropTypes.string.isRequired}
+    role: PropTypes.string.isRequired,
+    children: PropTypes.node 
+};

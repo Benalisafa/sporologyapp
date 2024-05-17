@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-bootstrap/Modal';
-import RegisterForm from '../forms/registerForm';
-import Button from 'react-bootstrap/Button';
-import LoginForm from '../forms/loginForm';
 import UserService from '../../Services/userService';
-import './modal.css'
+import './modal.css';
+import RegisterFormMember from '../forms/registerFormMember';
 
 function RegisterModal({ show, handleClose }) {
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegistration = async (formData) => {
+    setIsLoading(true);
+    setError(null);
     try {
-      // Assuming UserService.signup returns a promise
-      await UserService.signup(formData);
-      handleClose(); // Close the modal upon successful registration
+      await UserService.signupMember(formData);
+      handleClose(); 
     } catch (err) {
-      setError(err.response.data.message || 'Failed to register user');
+      const errorMessage = err.response?.data?.message || 'Failed to register user';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -26,8 +29,9 @@ function RegisterModal({ show, handleClose }) {
         <Modal.Title>Sign up</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <RegisterForm handleRegistration={handleRegistration} />
+        <RegisterFormMember handleRegistration={handleRegistration} />
         {error && <p className="text-danger mt-2">{error}</p>}
+        {isLoading && <p>Loading...</p>}
       </Modal.Body>
     </Modal>
   );

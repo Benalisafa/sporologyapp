@@ -1,0 +1,47 @@
+.dropdown-toggle::after {
+    display: none !important;
+  }
+  
+  .dropdown-toggle.custom-toggle,
+  .dropdown-toggle.custom-toggle:focus {
+    background-color: transparent;
+    border-color: grey;
+    
+  }
+  
+  .logo-img {
+    width: 40px;
+  }
+  
+  .profile-icon-wrapper {
+    width: 30px;
+    height: 30px;
+    background-color: grey;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: #ccc solid 1px;
+    object-fit: 'cover';
+  }
+  
+  .profile-placeholder {
+    width: 30px;
+    height: 30px;
+    background-color: grey;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+  }
+  
