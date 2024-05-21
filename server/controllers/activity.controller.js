@@ -294,6 +294,38 @@ exports.searchActivities = async (req, res) => {
   }
 };
 
+// exports.searchActivities = async (req, res) => {
+//   try {
+//     const searchQuery = {};
+
+//     const { activity, location, date, startDate, endDate } = req.query;
+
+//     if (activity) {
+//       searchQuery.title = { $regex: activity, $options: 'i' }; // Case-insensitive search
+//     }
+//     if (location) {
+//       searchQuery.location = { $regex: location, $options: 'i' }; // Case-insensitive search
+//     }
+//     if (date) {
+//       searchQuery.date = new Date(date);
+//     } else if (startDate && endDate) {
+//       searchQuery.date = {
+//         $gte: new Date(startDate),
+//         $lte: new Date(endDate)
+//       };
+//     } else if (startDate) {
+//       searchQuery.date = { $gte: new Date(startDate) };
+//     } else if (endDate) {
+//       searchQuery.date = { $lte: new Date(endDate) };
+//     }
+
+//     const activities = await Activity.find(searchQuery);
+//     res.status(200).json(activities);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 
 
 exports.updateActivity = async (req, res) => {

@@ -78,3 +78,22 @@ exports.getBookingById = async (req, res) => {
     res.status(500).json({ error: 'Error retrieving booking' });
   }
 };
+
+
+exports.getBookingData = async (req, res) => {
+  try {
+    const results = await Booking.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$bookingDate' } },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } }, // Sort by date ascending
+    ]);
+    res.json(results);
+  } catch (error) {
+    console.error('Error aggregating daily trends:', error);
+    res.status(500).json({ error: 'Error aggregating daily trends' });
+  }
+}

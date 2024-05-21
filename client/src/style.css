@@ -37,9 +37,12 @@ h1,h2,h3,h5:first-letter{
    
   }
 
-  .button-primary:hover, .button-primary:active {
+  .button-primary:hover, .button-primary:active  {
     background-color: var(--bs-primary);
+    
   }
+ 
+  
 
 
   .form-check-input[type=radio]:checked {

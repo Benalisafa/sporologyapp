@@ -7,6 +7,22 @@
     background-color: transparent;
     border-color: grey;
     
+    
+  }
+
+  .toggle-primary {
+    background-color: transparent;
+    border-color: grey;
+    color: black;
+    font-weight: bold;
+    
+  }
+  .toggle-primary:focus .toggle-primary:hover {
+    background-color: var(--bs-primary);
+    border-color: grey;
+    color: white;
+    font-weight: bold;
+    
   }
   
   .logo-img {

@@ -10,7 +10,7 @@ import logo from '../../assets/sporology-logo.svg';
 import { axiosInstance } from '../../lib/axios';
 import './navStyle.css';
 
-export const NavPartner = () => {
+export const NavAdmin = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.user?.userId);
   const isConnected = useSelector((state) => state.auth.isConnected);
@@ -66,7 +66,7 @@ export const NavPartner = () => {
               <div className="position-relative">
                 <Dropdown>
                   <Dropdown.Toggle id="dropdown-basic" className="toggle-primary d-flex rounded-pill " >
-                    {partner?.companyName || 'User'}
+                    Admin
                   </Dropdown.Toggle>
                   <Dropdown.Menu align="end">
                     <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>

@@ -104,7 +104,7 @@ function ActivityForm() {
 
     
     <div>
-    <Form className='mt-5 container-xs' noValidate onSubmit={handleSubmit}>
+    <Form className='mt-5 ' noValidate onSubmit={handleSubmit}>
       <Toaster />
 
                 <Form.Group controlId="categorySelect">

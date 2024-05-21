@@ -196,10 +196,13 @@ import { Col, Row } from 'react-bootstrap';
         
         </Col>
         <Col className='d-flex align-items-center'>
-        
+       <div className='d-flex flex-column' >
         Sporology is a comprehensive online directory or database dedicated to showcase the wide range  of sports professionals available in the UAE. Our platform aims to simplify the process of finding specific sports activities by providing a user-friendly interface that allows individuals to search and discover various sports professionals and activities in their erea.
         
+        <Button className='button-primary' style={{width:'25%'}}>read more</Button>
+        </div>
         </Col>
+        
         </Row>
 
         

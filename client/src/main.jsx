@@ -6,7 +6,7 @@ import  Register  from './pages/register/Register'
 import  Login  from './pages/login/Login'
 import  Home  from './pages/home/Home'
 import  Found  from './pages/notFound/notFound'
-import { NavLayout, PartnerLayout } from './components/layout/Layout'
+import { AdminLayout, NavLayout, PartnerLayout } from './components/layout/Layout'
 import { PrivateRoute } from './components/PrivateRoute'
 import { PublicRoute } from './components/PublicRoute'
 import { Provider } from 'react-redux'
@@ -29,6 +29,8 @@ import PartnerPage from './pages/partnersPage/partnerPage'
 import Dashboard from './pages/Dashboard/admin/Dashboard'
 import Profile from './pages/profile/Profile'
 import LoginForm from './components/forms/loginForm'
+import PartnerProfile from './pages/profile/PartnerProfile'
+import AdminStat from './pages/Dashboard/admin/statistics'
 
 
 
@@ -88,10 +90,7 @@ const router =createBrowserRouter([
           
         },
 
-        {
-          path : '/dashboard/partner/create',
-          element : <CreateActivity/>
-        },
+        
 
         {
           
@@ -144,7 +143,29 @@ const router =createBrowserRouter([
      <DashboardPartner/>
      
    },
+   {
+    path : '/dashboard/partner/create',
+    element : <CreateActivity/>
+  },
+
+  {
+    path : '/dashboard/partner/profile',
+    element : <PartnerProfile/>
+  },
+  
+
   ]
+  },
+
+  {
+    path: '/dashboard/admin',
+    element: <AdminLayout />,
+    children: [
+      {
+        path: '/dashboard/admin/stat',
+        element: <AdminStat />
+      }
+    ]
   },
 
 

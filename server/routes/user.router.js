@@ -14,6 +14,8 @@ route.put("/updateUser/:id",  userController.updateUserById);
 route.post("/email", userController.checkEmailExists);
 route.post("/verifyPassword/:id", userController.verifyPassword);
 route.delete("/deleteUser/:id", passport.authenticate("jwt", { session: false }), checkRole(['admin']), userController.deleteUser);
+route.get('/registrationData', userController.getUserRegistrationData);
+route.get('/roleProportion', userController.getUserRoleProportion);
 
 //Kén aandek wa9t arja3 lenna w aamel desactiver l son compter el membre
 

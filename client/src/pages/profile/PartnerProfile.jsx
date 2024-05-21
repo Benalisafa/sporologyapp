@@ -8,7 +8,7 @@ import logo from "../../assets/sporology-logo.svg"
 import {toast,Toaster} from "react-hot-toast";
 import ProfileForm from "../../components/forms/profileForm";
 
-function Profile() {
+function PartnerProfile() {
   
   return (
     <>
@@ -17,4 +17,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default PartnerProfile;

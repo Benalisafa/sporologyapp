@@ -56,33 +56,46 @@ function RegisterFormMember() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!validateForm()) return;
-
-    try {
-      // Check if the email already exists in the database
-      const emailExists = await UserService.checkEmailExists(formData.email);
-      if (emailExists) {
-        setErrors({ email: 'Email is already in use' });
-        return;
-      }
+    await UserService.signupMember(formData);
+    toast.success('User added successfully');
+    setFormData({
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      address: '',
+      phone: '',
+      genre: '',
+      picture: '',
+    });
+    navigate('/');
+    // try {
+    //   // Check if the email already exists in the database
+    //   const emailExists = await UserService.checkEmailExists(formData.email);
+    //   if (emailExists) {
+    //     setErrors({ email: 'Email is already in use' });
+    //     return;
+    //   }
   
-      // If the email is unique, proceed with registration
-      await UserService.signupMember(formData);
-      toast.success('User added successfully');
-      setFormData({
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        address: '',
-        phone: '',
-        genre: '',
-        picture: '',
-      });
-      navigate('/');
-    } catch (err) {
-      setErrors(err.response?.data?.errors || { general: err.response?.data?.message || 'Failed to register user' });
-    }
+    //   // If the email is unique, proceed with registration
+    //   await UserService.signupMember(formData);
+    //   toast.success('User added successfully');
+    //   setFormData({
+    //     firstname: '',
+    //     lastname: '',
+    //     email: '',
+    //     password: '',
+    //     confirmPassword: '',
+    //     address: '',
+    //     phone: '',
+    //     genre: '',
+    //     picture: '',
+    //   });
+    //   navigate('/');
+    // } catch (err) {
+    //   setErrors(err.response?.data?.errors || { general: err.response?.data?.message || 'Failed to register user' });
+    // }
   };
 
   return (

@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema({
     companyName: String,
     companyAddress: String,
     description: String,
+    createdAt: { type: Date, default: Date.now },
         
 })
 

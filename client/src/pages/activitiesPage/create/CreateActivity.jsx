@@ -5,7 +5,9 @@ function CreateActivity() {
   return (
     <div>
     <h3>About your service</h3>
+    <div className='container-xs'>
     <ActivityForm/>
+    </div>
     </div>
   )
 }

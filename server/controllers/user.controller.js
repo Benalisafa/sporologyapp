@@ -187,3 +187,42 @@ exports.deleteUser = async (req, res) => {
     res.status(500).send({ message: 'Error deleting user' });
   }
 };
+
+
+exports.getUserRegistrationData = async (req, res) => {
+  try {
+    const sampleData = await User.find({}).limit(10); // Fetch some sample data
+    console.log('Sample user data:', sampleData); // Log the sample data
+
+    const data = await User.aggregate([
+      { $match: { createdAt: { $type: 'date' } } },
+      { $project: { year: { $year: "$createdAt" }, week: { $isoWeek: "$createdAt" } } },
+      { $group: { _id: { year: "$year", week: "$week" }, count: { $sum: 1 } } },
+      { $sort: { "_id.year": 1, "_id.week": 1 } }
+    ]);
+
+    console.log('Aggregated user registration data:', data); // Log the data
+    res.json(data);
+  } catch (error) {
+    console.error('Error retrieving user registration data:', error.message);
+    console.error(error.stack);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+exports.getUserRoleProportion = async (req, res) => {
+  try {
+    const memberCount = await User.countDocuments({ role: 'member' });
+    const partnerCount = await User.countDocuments({ role: 'partner' });
+    
+    // Example: Assuming returning an object with role names as keys and counts as values
+    res.json({ member: memberCount, partner: partnerCount });
+  } catch (error) {
+    console.error('Error fetching role proportion:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
