@@ -7,7 +7,9 @@ const AdminStat = () => {
   return (
     <div>
         <h3>Statistics</h3>
-    <div className="d-flex">
+        <UserRoleChart />
+
+    <div className="d-flex mt-5">
         <div style={{width:'50%'}}>
       <UserGrowthChart />
       </div>

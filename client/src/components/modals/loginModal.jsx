@@ -18,7 +18,7 @@ function RegisterModal({ show, handleClose }) {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>Sign in</Modal.Title>
       </Modal.Header>

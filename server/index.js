@@ -34,6 +34,8 @@ const activityRoutes = require('./routes/activity.router')
 const reviewRoutes = require('./routes/review.router')
 
 const bookingRoutes = require('./routes/booking.router')
+const familyMemberRoutes = require ('./routes/familyMember.route')
+const categoryRoutes = require ('./routes/category.route')
 
 
 app.use('/users' , authRoutes)
@@ -41,6 +43,8 @@ app.use('/users' , userRoutes)
 app.use('/activities' ,activityRoutes)
 app.use('/reviews' ,reviewRoutes)
 app.use('/bookings' ,bookingRoutes)
+app.use('/familyMembers' ,familyMemberRoutes)
+app.use('/categories' ,categoryRoutes)
 
 mongoose.connect(process.env.CONNECTION_STRING)
 

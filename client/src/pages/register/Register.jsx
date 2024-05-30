@@ -21,22 +21,22 @@ function Register() {
 
   const handleRegisterFormSubmit = async (registerData) => {
     const combinedData = { ...companyData, ...registerData };
-    console.log(combinedData)
+
+    const formDataToSend = new FormData();
+    Object.keys(combinedData).forEach((key) => {
+      formDataToSend.append(key, combinedData[key]);
+    });
+
     try {
-      const response = await UserService.signupPartner(combinedData);
-      
+      const response = await UserService.signupPartner(formDataToSend);
       if (response.status >= 200 && response.status < 300) {
         console.log("Data saved successfully");
-        navigate('/partner/login'); // Redirect after successful submission
+        navigate('/partner/login');
       } else {
         console.error('Error saving data to database:', response);
-        // Handle error case
-        // Example: toast.error('Failed to register partner');
       }
     } catch (error) {
       console.error('Error saving data to database:', error);
-      // Handle error case
-      // Example: toast.error('Failed to register partner');
     }
   };
 

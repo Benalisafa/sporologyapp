@@ -27,7 +27,8 @@ const Calendar = () => {
                     title: booking.activity.title, 
                     date: booking.activity.date,
                     time: booking.activity.time,
-                    location: booking.activity.location
+                    location: booking.activity.location,
+                    familyMember: booking.familyMember.name
                 }));
     
                  console.log(activities);
@@ -48,6 +49,7 @@ const Calendar = () => {
                 <div className="event-time">{arg.timeText}</div>
                 <div className="event-title">{arg.event.title}</div>
                 <div className="event-title">at {arg.event.extendedProps.location}</div>
+                <div className="event-familyMember">with {arg.event.extendedProps.familyMember}</div>
             </div>
         );
     };

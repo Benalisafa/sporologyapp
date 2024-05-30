@@ -31,6 +31,10 @@ import Profile from './pages/profile/Profile'
 import LoginForm from './components/forms/loginForm'
 import PartnerProfile from './pages/profile/PartnerProfile'
 import AdminStat from './pages/Dashboard/admin/statistics'
+import AdminActivities from './pages/Dashboard/admin/allActivities'
+import AdminPartners from './pages/Dashboard/admin/allPartners'
+import AdminMembers from './pages/Dashboard/admin/allMembers'
+import CalendarPage from './pages/calendar/calendar'
 
 
 
@@ -45,6 +49,11 @@ const router =createBrowserRouter([
         {
           path : '/',
           element : <Home/>
+        },
+
+        {
+          path : '/calendar',
+          element : <CalendarPage/>
         },
 
         {
@@ -101,6 +110,8 @@ const router =createBrowserRouter([
           // </PrivateRole>
 
         },
+
+        
 
         { 
           path : '/dashboard/partner/activities',
@@ -164,7 +175,37 @@ const router =createBrowserRouter([
       {
         path: '/dashboard/admin/stat',
         element: <AdminStat />
-      }
+      },
+
+      {
+          
+        path : '/dashboard/admin/activities',
+        element : 
+        // <PrivateRole role="admin">
+        <AdminActivities/>
+        // </PrivateRole>
+
+      },
+
+      {
+          
+        path : '/dashboard/admin/partners',
+        element : 
+        // <PrivateRole role="admin">
+        <AdminPartners/>
+        // </PrivateRole>
+
+      },
+
+      {
+          
+        path : '/dashboard/admin/members',
+        element : 
+        // <PrivateRole role="admin">
+        <AdminMembers/>
+        // </PrivateRole>
+
+      },
     ]
   },
 

@@ -440,3 +440,16 @@ exports.removeActivity = async (req, res) => {
       res.status(500).send({ message: 'Error deleting activity' });
     }
   };
+
+  exports.getActivityCount = async (req, res) => {
+    try {
+      const activityCount = await Activity.countDocuments();
+      res.json({ count: activityCount });
+    } catch (error) {
+      console.error('Error fetching activity count:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  
+
+  

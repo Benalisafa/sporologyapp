@@ -6,32 +6,16 @@ import { formatDate } from '../tools/date';
 import axios from 'axios';
 
 const ActivityCard = ({ activity, isTopReserved }) => {
-  const [isInWishlist, setIsInWishlist] = useState(false);
+  
   const [isUpdating, setIsUpdating] = useState(false); // Add state for loading indicator
 
   const firstImage = activity.images.length > 0 ? activity.images[0] : null;
   const filename = firstImage ? firstImage.split("\\").pop() : null;
+  
 
   const imageWidth = isTopReserved ? '600px' : '300px';
 
-  const addToWishlist = async (event) => {
-    event.stopPropagation(); // Stop event propagation to prevent navigation
-    try {
-      setIsUpdating(true); // Show loading indicator
 
-      // Toggle the isInWishlist state locally
-      setIsInWishlist(!isInWishlist);
-
-      // Update the isFavorite field in the database
-      await axios.patch(`/api/activities/${activity._id}`, { isFavorite: !isInWishlist });
-    } catch (error) {
-      console.error('Error updating activity:', error);
-      // Revert the isInWishlist state if there's an error
-      setIsInWishlist(!isInWishlist);
-    } finally {
-      setIsUpdating(false); // Hide loading indicator after update
-    }
-  };
 
   return (
     <div>
@@ -48,7 +32,7 @@ const ActivityCard = ({ activity, isTopReserved }) => {
 
       <div className="d-flex align-items-center justify-content-between text-dark mt-2">
         <h3 className="font-weight-bold text-dark" style={{ fontSize: '20px' }}>{activity.title}</h3>
-        <HeartIcon onClick={addToWishlist} fill={isInWishlist ? 'red' : 'none'} />
+        {/* <HeartIcon  /> */}
         {isUpdating && <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>}

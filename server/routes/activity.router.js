@@ -18,6 +18,8 @@ route.get('/nextActivity/:userId', activityController.getUpcomingActivitiesByUse
 route.get('/pastActivity/:userId', activityController.getPastActivitiesByUserId );
 route.put('/favorite/:id', activityController.activityFavoriteStatus);
 
+route.get('/count', activityController.getActivityCount );
+
 route.put('/updateActivity/:id' , 
   // passport.authenticate('jwt', { session: false }),  
   // checkRole(['member']), 

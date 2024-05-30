@@ -23,6 +23,7 @@ import { Col, Row } from 'react-bootstrap';
     const [activities, setActivities] = useState([]);
     const [partners, setPartners] = useState([]);
     const [topActivities, setTopActivities] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('All');
 
     useEffect(() => {
       fetchActivities();
@@ -60,6 +61,14 @@ import { Col, Row } from 'react-bootstrap';
           console.error("Error fetching top reserved activities:", error);
         });
     };
+
+    const handleCategoryClick = (category) => {
+      setSelectedCategory(category);
+    };
+  
+    const filteredActivities = selectedCategory === 'All' 
+      ? activities 
+      : activities.filter(activity => activity.category === selectedCategory);
 
     const CustomPrevArrow = (props) => {
       const { className, onClick } = props;
@@ -131,26 +140,27 @@ import { Col, Row } from 'react-bootstrap';
           <h1 style={{textAlign:'center'}}>Move Your Body</h1>
           <Filter />
         </div>
-        <div className='d-flex align-items-center justify-content-center ' style={{gap:'1%'}}>
-          <Button className='button-extra'>Outdoor</Button>
-          <Button className='button-extra'> Indoor</Button>
-          <Button className='button-extra'> Ladies</Button>
-          <Button className='button-extra'> Kids</Button>
-          <Button className='button-circle' style={{borderRadius:'6px' }} ><FilterIcon/></Button>
+        <div className='d-flex align-items-center justify-content-center' style={{ gap: '1%' }}>
+        <Button className='button-extra' onClick={() => handleCategoryClick('All')}>All</Button>
+          <Button className='button-extra' onClick={() => handleCategoryClick('Outdoor')}>Outdoor</Button>
+          <Button className='button-extra' onClick={() => handleCategoryClick('Indoor')}>Indoor</Button>
+          <Button className='button-extra' onClick={() => handleCategoryClick('Ladies')}>Ladies</Button>
+          <Button className='button-extra' onClick={() => handleCategoryClick('Kids')}>Kids</Button>
+          <Button className='button-circle' style={{ borderRadius: '6px' }}><FilterIcon /></Button>
         </div>
         <Slider {...settings} className="mt-2">
-    {activities
-      .sort((a, b) => new Date(b.date) - new Date(a.date)) 
-      .map(activity => (
-        <div key={activity._id} className="col">
-          <div className="m-2"> 
-            <Link to={`/activities/single/${activity._id}`} style={{ textDecoration: 'none' }} className="col">
-              <ActivityCard activity={activity} />
-            </Link>
-          </div>
-        </div>
-      ))}
-  </Slider>
+          {filteredActivities
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
+            .map(activity => (
+              <div key={activity._id} className="col">
+                <div className="m-2">
+                  <Link to={`/activities/single/${activity._id}`} style={{ textDecoration: 'none' }} className="col">
+                    <ActivityCard activity={activity} />
+                  </Link>
+                </div>
+              </div>
+            ))}
+        </Slider>
 
   </section>
   <div style={{ marginTop: '250px' }}></div> {/* Space between Slider and professional section */}

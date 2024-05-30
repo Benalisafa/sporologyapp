@@ -211,6 +211,19 @@ exports.getUserRegistrationData = async (req, res) => {
 };
 
 
+exports.getUserRoleProportion = async (req, res) => {
+  try {
+    const memberCount = await User.countDocuments({ role: 'member' });
+    const partnerCount = await User.countDocuments({ role: 'partner' });
+    
+    res.json({ member: memberCount, partner: partnerCount });
+  } catch (error) {
+    console.error('Error fetching role proportion:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
 
 exports.getUserRoleProportion = async (req, res) => {
   try {

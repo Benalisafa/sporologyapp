@@ -9,16 +9,22 @@ import { NavAdmin } from './NavAdmin';
 
 
 
+
 export const NavLayout = () => {
   const user = useSelector(state => state.auth.user).role;
 
   return (
     <div>
-       
+      
         <Navbarhead/>
+        <br/>
+        <br/>
+        <br/>
+       
         <Outlet/>
+        </div>
         
-    </div>
+   
   )
 };
 

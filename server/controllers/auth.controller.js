@@ -4,19 +4,6 @@ const jwt = require ('jsonwebtoken')
 const multer = require('multer');
 const path = require('path');
 
-const fs = require('fs');
-
-const storage = multer.diskStorage({
-  destination: './images/profile/', 
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname); // Extract file extension
-    const filename = Date.now() + ext; // Generate unique filename with original extension
-    cb(null, filename);
-  }
-});
-
-const upload = multer({ storage: storage });
-
 
 exports.signup = async (req, res) => {
   console.log('Received request with password:', req.body.password);
@@ -30,61 +17,50 @@ exports.signup = async (req, res) => {
     role = 'member';
   } else if (route.includes('/signup/partner')) {
     role = 'partner';
-    partnerType = req.body.partnertype;
-    
+
+    const { companyName, companyAddress } = req.body;
+    partnerType = companyName && companyAddress ? 'company' : 'individual';
   } else {
     return res.status(400).json({ message: 'Invalid signup route' });
   }
 
-  // Handle picture upload
-  upload.single('picture')(req, res, async (err) => {
-    if (err) {
-      console.error('Error uploading picture:', err);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
+  const pictureFilename = req.file ? req.file.filename : null;
+  console.log("pictureFilename", pictureFilename);
 
+  if (!req.body.password || req.body.password.trim() === '') {
+    return res.status(400).json({ message: 'Password is required' });
+  }
 
-    
-    const pictureFilename = req.file ? req.file.filename : null;
-    console.log("pictureFilename", pictureFilename); 
+  const data = {
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    email: req.body.email,
+    picture: pictureFilename,
+    password: bcrypt.hashSync(req.body.password, 10),
+    address: req.body.address,
+    phone: req.body.phone,
+    companyName: req.body.companyName,
+    companyAddress: req.body.companyAddress,
+    description: req.body.description,
+    partnerType: partnerType,
+    role: role,
+  };
 
-    // Check if password exists in req.body and is not empty
-    if (!req.body.password || req.body.password.trim() === '') {
-      return res.status(400).json({ message: 'Password is required' });
-    }
+  const { password, confirmPassword } = req.body;
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: 'Passwords do not match' });
+  }
 
-    const data = {
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      email: req.body.email,
-      picture: pictureFilename,
-      password: bcrypt.hashSync(req.body.password, 10), // Hash password
-      address: req.body.address,
-      phone: req.body.phone,
-      companyName: req.body.companyName,
-      companyAddress: req.body.companyAddress,
-      description: req.body.description,
-      partnerType: partnerType,
-      role: role,
-    };
-
-    // Validate data
-    const { password, confirmPassword } = req.body;
-    if (password !== confirmPassword) {
-      return res.status(400).json({ message: 'Passwords do not match' });
-    }
-
-    try {
-      // Save user data
-      const _user = new User(data);
-      await _user.save();
-      res.status(200).json({ message: 'User added successfully' });
-    } catch (err) {
-      console.error('Error saving user:', err);
-      res.status(400).json({ message: 'Error adding user: ' + err.message });
-    }
-  });
+  try {
+    const _user = new User(data);
+    await _user.save();
+    res.status(200).json({ message: 'User added successfully' });
+  } catch (err) {
+    console.error('Error saving user:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
+
 
 
 

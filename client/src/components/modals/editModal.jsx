@@ -5,7 +5,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 
 const EditModal = ({ show, handleClose, title, saveChanges, data, setData }) => {
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

@@ -20,7 +20,6 @@ import PropTypes from 'prop-types';
 const ActivityPage = () => {
 
 
-
   const { id } = useParams();
   const [activity, setActivity] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -30,6 +29,8 @@ const ActivityPage = () => {
   const [user, setUser] = useState(null);
   const [similarActivities, setSimilarActivities] = useState([]);
   const [averageRating, setAverageRating] = useState(null);
+  const [users, setUsers] = useState({});
+  
  
   useEffect(() => {
     axiosInstance.get(`activities/listActivity/${id}`)
@@ -37,7 +38,7 @@ const ActivityPage = () => {
         // console.log('Activity images:', response.data.images);
         setActivity(response.data);
         setActivityId(response.data._id); 
-        console.log("Activity userId:", response.data.userId);
+        // console.log("Activity userId:", response.data.userId);
         setLoading(false);
         
       })
@@ -68,6 +69,7 @@ const ActivityPage = () => {
           console.error('Error fetching user details:', error);
         });
 
+
       if (activity.category) {
         axiosInstance.get(`activities/similar/${activity.category}`)
           .then(response => {
@@ -78,7 +80,28 @@ const ActivityPage = () => {
           });
       }
     }
-  }, [activity, activityId]);   
+  }, [activity, activityId]);  
+  
+  
+  const fetchUsers = (userIds) => {
+    
+    // Fetch user details for each userId
+    userIds.forEach(userId => {
+      console.log('Users:', users);
+      axiosInstance.get(`/users/user/${userId}`)
+        .then(response => {
+          // Update users state with user details
+          setUsers(prevUsers => ({
+            ...prevUsers,
+            [userId]: response.data
+          }));
+        })
+
+        .catch(error => {
+          console.error('Error fetching user details:', error);
+        });
+    });
+  };
 
 
   const CustomPrevArrow = (props) => {
@@ -159,7 +182,7 @@ const ActivityPage = () => {
   const filename = activity.images.map(imagePath => imagePath.split("\\").pop());
 
   return (
-    <div className="container-s" style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
+    <div  style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
       <section className="container mb-4" style={{width:'100%'}}>
       <div>
         <Row>
@@ -167,11 +190,11 @@ const ActivityPage = () => {
             <Filter/>
           </div>
           <div>
-     {averageRating && <div><StarIcon/>{averageRating}</div>}
-     {reviews.length > 0 && (
-            <span className="ms-2">{reviews.length} reviews</span>
-          )}
-     </div>
+            <div>
+              <StarIcon /> {averageRating ? averageRating : ''}
+            </div>
+            <span className="ms-2">{reviews.length > 0 ? `${reviews.length} reviews` : " 0 reviews"}</span>
+          </div>
           <h1>{activity.title}</h1>
           
           <Col md={8}>
@@ -264,7 +287,7 @@ const ActivityPage = () => {
       </section>
       <div>
         
-        <section>
+        <section >
            
             <Review reviews={reviews} />
             </section>

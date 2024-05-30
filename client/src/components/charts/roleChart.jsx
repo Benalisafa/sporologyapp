@@ -1,59 +1,65 @@
 import React, { useEffect, useState } from 'react';
-import { Pie } from 'react-chartjs-2';
-import axiosInstance from 'axios';
+
+import { axiosInstance } from '../../lib/axios';
 
 const UserRoleChart = () => {
-  const [chartData, setChartData] = useState({});
+  const [data, setData] = useState({ member: 0, partner: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get('/users/roleProportion');
-        
-        console.log('Response received:', response);
-        
-        // Check Content-Type to ensure it's JSON
-        const contentType = response.headers['content-type'];
-        if (!contentType || contentType.indexOf('application/json') === -1) {
-          throw new Error('Received HTML response instead of JSON');
-        }
-        
-        const data = response.data;
-        const labels = Object.keys(data);
-        const values = Object.values(data);
-        
-        setChartData({
-          labels: labels,
-          datasets: [
-            {
-              label: 'User Roles',
-              data: values,
-              backgroundColor: ['#FF6384', '#36A2EB'],
-              hoverBackgroundColor: ['#FF6384', '#36A2EB'],
-            },
-          ],
-        });
-        
+        setData(response.data);
         setLoading(false);
-      } catch (error) {
-        console.error('Error fetching role proportion data:', error);
-        setError('Error fetching data. Please try again later.');
+      } catch (err) {
+        setError(err);
         setLoading(false);
       }
     };
-    
+
     fetchData();
   }, []);
-  
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosInstance.get('/activities/count');
+        setCount(response.data.count);
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div>
-      <h5 style={{ textAlign: 'center', fontWeight: 'bold' }}>User Role Proportion</h5>
-      <Pie data={chartData} />
+      <div className='d-flex justify-content-around mt-4'>
+        <div className='border rounded text-center p-4 ' style={{backgroundColor:'var(--bs-light-grey)'}}>
+      <div style={{fontSize:'20px'}}>Members:</div><div style={{fontSize:'30px', width:'18vw'}}>{data.member}</div> 
+      </div>
+      <div className='border rounded text-center p-4 'style={{backgroundColor:'var(--bs-light-grey)'}}>
+      <div style={{fontSize:'20px'}}>Partners:</div><div style={{fontSize:'30px', width:'18vw'}}>{data.partner}</div> 
+      </div>
+      <div className='border rounded text-center p-4 'style={{backgroundColor:'var(--bs-light-grey)'}}>
+      <div style={{fontSize:'20px'}}>Activities:</div><div style={{fontSize:'30px', width:'18vw'}}>{count}</div> 
+      </div>
+      </div>
     </div>
   );
 };

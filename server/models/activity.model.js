@@ -36,7 +36,7 @@ const activitySchema = new mongoose.Schema({
         ref: 'users'
       },
 
-      favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+      // favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 
     
 

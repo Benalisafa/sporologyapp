@@ -1,12 +1,17 @@
+/* navStyle.css */
+
+/* Top Navbar Styles */
+.navbar {
+  background-color: #fff;
+  border-bottom: 1px solid #dee2e6;
+}
 .dropdown-toggle::after {
-    display: none !important;
-  }
-  
+  display: none !important;}
+
   .dropdown-toggle.custom-toggle,
   .dropdown-toggle.custom-toggle:focus {
     background-color: transparent;
     border-color: grey;
-    
     
   }
 
@@ -17,47 +22,82 @@
     font-weight: bold;
     
   }
-  .toggle-primary:focus .toggle-primary:hover {
+  .toggle-primary:focus {
     background-color: var(--bs-primary);
-    border-color: grey;
+    
     color: white;
     font-weight: bold;
     
   }
-  
-  .logo-img {
-    width: 40px;
+
+.logo-img {
+  width: 40px;
+}
+
+.profile-icon-wrapper {
+  width: 30px;
+  height: 30px;
+  background-color: grey;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: #ccc solid 1px;
+  object-fit: cover;
+}
+
+.profile-placeholder {
+  width: 30px;
+  height: 30px;
+  background-color: grey;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+}
+
+/* Bottom Navbar Styles */
+.bottom-navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  padding: 0.5rem 0;
+  z-index: 1030;
+}
+
+.bottom-navbar .nav-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  color: #000;
+}
+
+.bottom-navbar .nav-link:hover {
+  background-color: #e9ecef;
+}
+
+.bottom-navbar .nav-link svg {
+  width: 24px;
+  height: 24px;
+}
+
+@media (min-width: 992px) {
+  /* Hide bottom navbar on larger screens */
+  .bottom-navbar {
+    display: none;
   }
-  
-  .profile-icon-wrapper {
-    width: 30px;
-    height: 30px;
-    background-color: grey;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .profile-img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: #ccc solid 1px;
-    object-fit: 'cover';
-  }
-  
-  .profile-placeholder {
-    width: 30px;
-    height: 30px;
-    background-color: grey;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: 1px solid #ccc;
-  }
-  
+}
