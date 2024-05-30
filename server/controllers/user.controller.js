@@ -139,11 +139,12 @@ exports.updateUserById = async (req, res) => {
 };
 
 exports.checkEmailExists = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.body; // Extract email from request body
 
   try {
     // Check if the email already exists in the database
     const user = await User.findOne({ email });
+
     if (user) {
       // Email already exists
       return res.status(200).json({ exists: true });

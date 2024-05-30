@@ -72,6 +72,17 @@ function RegisterFormPartner({ onSubmit }) {
     });
 
     try {
+      // Check if email already exists
+      const emailExists = await checkEmailExists(formData.email);
+      if (emailExists) {
+        setFormErrors((prevErrors) => ({
+          ...prevErrors,
+          email: 'Email already exists'
+        }));
+        return;
+      }
+
+      // If email does not exist, proceed with form submission
       const response = await axiosInstance.post('/users/signup/partner', formDataToSend);
       console.log('Response:', response.data);
 
@@ -83,6 +94,15 @@ function RegisterFormPartner({ onSubmit }) {
     }
   };
 
+  const checkEmailExists = async (email) => {
+    try {
+      const response = await axiosInstance.post('http://127.0.0.1:4000/users/email', { email });
+      return response.data.exists; // true if email exists, false otherwise
+    } catch (error) {
+      console.error('Error checking email:', error);
+      return false; // Return false in case of any error
+    }
+  };
   const validateForm = () => {
     const errors = {};
 
