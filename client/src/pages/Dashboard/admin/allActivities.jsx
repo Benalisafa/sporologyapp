@@ -6,15 +6,18 @@ import { DeleteIcon, EditIcon } from "../../../components/Icons";
 function AdminActivities() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
     const fetchActivities = async () => {
       try {
         const { data } = await axiosInstance.get('activities/listActivity');
+        console.log("Fetched activities:", data.activities); // Log fetched activities
         setActivities(data.activities);
       } catch (error) {
         console.error("Error fetching activities:", error);
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -37,52 +40,66 @@ function AdminActivities() {
     console.log('Edit activity:', activity);
   };
 
+  const renderPartnerName = (activity) => {
+    if (activity.userId) {
+      const { userId } = activity;
+      if (userId.partnerType === 'individual') {
+        return `${userId.firstname} ${userId.lastname}`;
+      } else if (userId.partnerType === 'company') {
+        return userId.companyName;
+      }
+    }
+    return 'N/A';
+  };
+
   return (
     <div>
-      <h3 className="mt-4">Dashboard</h3>
-      <div className="d-flex">
-        {!loading && activities.length > 0 ? (
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Capacity</th>
-                <th>Partner</th>
-                <th style={{ width: '10%' }}>Actions</th>
+      <h3 className="mt-4">Activities</h3>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error.message}</p>
+      ) : activities.length > 0 ? (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Capacity</th>
+              <th>Partner</th>
+              <th style={{ width: '10%' }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {activities.map(activity => (
+              <tr key={activity._id}>
+                <td>{activity.title}</td>
+                <td>{activity.description}</td>
+                <td>{activity.capacity}</td>
+                <td>{renderPartnerName(activity)}</td>
+                <td>
+                  <Button
+                    style={{ background: 'transparent', color: 'green', border: 'none' }}
+                    size="sm"
+                    onClick={() => handleEdit(activity)}
+                  >
+                    <EditIcon />
+                  </Button>
+                  <Button
+                    style={{ background: 'transparent', color: 'red', border: 'none' }}
+                    size="sm"
+                    onClick={() => handleRemove(activity._id)}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {activities.map(activity => (
-                <tr key={activity._id}>
-                  <td>{activity.title}</td>
-                  <td>{activity.description}</td>
-                  <td>{activity.capacity}</td>
-                  <td>{activity.userId?.firstname}</td>
-                  <td>
-                    <Button
-                      style={{ background: 'transparent', color: 'green', border: 'none' }}
-                      size="sm"
-                      onClick={() => handleEdit(activity)}
-                    >
-                      <EditIcon />
-                    </Button>
-                    <Button
-                      style={{ background: 'transparent', color: 'red', border: 'none' }}
-                      size="sm"
-                      onClick={() => handleRemove(activity._id)}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        ) : (
-          loading ? <p>Loading...</p> : <p>No activities found.</p>
-        )}
-      </div>
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <p>No activities found.</p>
+      )}
     </div>
   );
 }

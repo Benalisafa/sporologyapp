@@ -6,7 +6,7 @@ import BookingTrendsChart from '../../../components/charts/bookingTrends';
 const AdminStat = () => {
   return (
     <div>
-        <h3>Statistics</h3>
+        <h3 className="mt-4">Statistics</h3>
         <UserRoleChart />
 
     <div className="d-flex mt-5">

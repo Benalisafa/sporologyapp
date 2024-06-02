@@ -1,8 +1,10 @@
-const Activity = require('../models/activity.model'); 
+const Activity = require('../models/activity.model');
 const multer = require('multer');
-const { validationResult } = require('express-validator'); 
+const { validationResult } = require('express-validator');
 const path = require('path');
+const mongoose = require('mongoose');
 
+// Multer storage configuration
 const storage = multer.diskStorage({
   destination: './images/activity/', 
   filename: function (req, file, cb) {
@@ -10,8 +12,11 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage,
-  limits: { files: 5 } });
+// Multer upload configuration
+const upload = multer({ 
+  storage: storage,
+  limits: { files: 5 }
+});
 
 exports.createActivity = async (req, res) => {
   try {
@@ -20,8 +25,6 @@ exports.createActivity = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    
-
     const uploadedImages = []; 
 
     upload.array('images', 5)(req, res, async (err) => { 
@@ -29,33 +32,34 @@ exports.createActivity = async (req, res) => {
         return res.status(400).json({ message: err.message });
       }
 
-     
-
-      if (req.files.length === 0) {
+      if (!req.files || req.files.length === 0) {
         return res.status(400).json({ message: 'No images uploaded' });
       }
 
       for (const file of req.files) {
         uploadedImages.push(file.path); 
       }
-     
+
+      // Validate userId
+      if (!req.body.userId || !mongoose.Types.ObjectId.isValid(req.body.userId)) {
+        return res.status(400).json({ message: 'Invalid User ID' });
+      }
+
       const activity = new Activity({
         title: req.body.title,
         description: req.body.description,
         capacity: req.body.capacity,
         price: req.body.price,
-        date:req.body.date,
-        images: uploadedImages ,
-        category:req.body.category,
-        duration:req.body.duration,
-        location:req.body.location,
-        time:req.body.time,
+        date: req.body.date,
+        images: uploadedImages,
+        category: req.body.category,
+        duration: req.body.duration,
+        location: req.body.location,
+        time: req.body.time,
         bookingIds: [],
-        favorites: [],
-        userId:req.body.userId,
+        userId: req.body.userId,
       });
-      
-      console.log(uploadedImages)
+
       await activity.save();
       res.status(201).json(activity);
     });
@@ -66,10 +70,11 @@ exports.createActivity = async (req, res) => {
 };
 
 
+
 exports.getActivities = async (req, res) => {
   try {
-    // Retrieve all activities from the database
-    const allActivities = await Activity.find().populate('userId', 'firstname');
+    // Retrieve all activities from the database and populate userId with firstname and companyName
+    const allActivities = await Activity.find().populate('userId', ' partnerType firstname lastname companyName');
 
     // Send response with all activities
     res.status(200).json({ activities: allActivities });
@@ -78,6 +83,7 @@ exports.getActivities = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving activities' });
   }
 };
+
 
 
      
@@ -329,62 +335,34 @@ exports.searchActivities = async (req, res) => {
 
 
 exports.updateActivity = async (req, res) => {
-  const activityData = {
-      title : req.body.title,
-      description: req.body.description,
-      photos : req.body.photos,
-      date : req.body.date,
-      location : req.body.location,
-      duration : req.body.duration,
-      capacity : req.body.capacity,
-      category : req.body.category,
-      userId : req.user ? req.user._id : null,
-      
-  }
   try {
-      
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-          return res.status(400).json({ errors: errors.array() });
-      }
-
-      
       const { id } = req.params;
-      const { title, description, category, date, location} = req.body;
+      const { title, description, capacity, date, location } = req.body;
 
-      
-      let _activity = await Activity.findById(id);
+      // Find activity by ID
+      let activity = await Activity.findById(id);
 
-      
-      if (!_activity) {
+      if (!activity) {
           return res.status(404).json({ error: 'Activity not found' });
       }
-      
-      
-      if (activityData) {
-          _activity.title = activityData.title;
-          _activity.description = activityData.description;
-          _activity.photos = activityData.photos;
-          _activity.duration = activityData.duration;
-          _activity.capacity = activityData.capacity;
-          _activity.date = activityData.date;
-          _activity.location = activityData.location;
-          _activity.category = activityData.category;
-          if (activityData.owner) {
-              _activity.userId = activityData.userId;
-          }
-      }
-      
-      await _activity.save();
 
-      
-      res.status(200).json(_activity);
+      // Update activity fields
+      activity.title = title;
+      activity.description = description;
+      activity.capacity = capacity;
+      activity.date = date;
+      activity.location = location;
+
+      // Save updated activity
+      await activity.save();
+
+      res.status(200).json(activity);
   } catch (error) {
-      
-      console.error('Cannot update activity:', error);
+      console.error('Error updating activity:', error);
       res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 

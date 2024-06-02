@@ -24,11 +24,13 @@ import { Col, Row } from 'react-bootstrap';
     const [partners, setPartners] = useState([]);
     const [topActivities, setTopActivities] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
       fetchActivities();
       fetchPartners();
       fetchTopActivities();
+      fetchCategories();
     }, []);
 
     const fetchActivities = () => {
@@ -62,6 +64,16 @@ import { Col, Row } from 'react-bootstrap';
         });
     };
 
+    const fetchCategories = () => {
+      axiosInstance.get('/categories')
+        .then(({ data }) => {
+          setCategories(data);
+        })
+        .catch(error => {
+          console.error("Error fetching categories:", error);
+        });
+    };
+  
     const handleCategoryClick = (category) => {
       setSelectedCategory(category);
     };
@@ -141,11 +153,12 @@ import { Col, Row } from 'react-bootstrap';
           <Filter />
         </div>
         <div className='d-flex align-items-center justify-content-center' style={{ gap: '1%' }}>
-        <Button className='button-extra' onClick={() => handleCategoryClick('All')}>All</Button>
-          <Button className='button-extra' onClick={() => handleCategoryClick('Outdoor')}>Outdoor</Button>
-          <Button className='button-extra' onClick={() => handleCategoryClick('Indoor')}>Indoor</Button>
-          <Button className='button-extra' onClick={() => handleCategoryClick('Ladies')}>Ladies</Button>
-          <Button className='button-extra' onClick={() => handleCategoryClick('Kids')}>Kids</Button>
+          <Button className='button-extra' onClick={() => handleCategoryClick('All')}>All</Button>
+          {categories.map(category => (
+            <Button key={category._id} className='button-extra' onClick={() => handleCategoryClick(category.name)}>
+              {category.name}
+            </Button>
+          ))}
           <Button className='button-circle' style={{ borderRadius: '6px' }}><FilterIcon /></Button>
         </div>
         <Slider {...settings} className="mt-2">

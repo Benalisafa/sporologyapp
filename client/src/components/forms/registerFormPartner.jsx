@@ -3,29 +3,37 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Toaster } from 'react-hot-toast';
 import { EyeIcon, EyeSlashIcon, MailIcon, PhoneIcon } from '../Icons';
-import './Forms.css';  // Ensure this CSS file exists and provides necessary styling
-import { axiosInstance } from '../../lib/axios';  // Assuming axiosInstance is correctly set up
+import './Forms.css';
+import { axiosInstance } from '../../lib/axios';
 
 function RegisterFormPartner({ onSubmit }) {
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
     email: '',
+    age: '',
     password: '',
     confirmPassword: '',
     address: '',
     phone: '',
     genre: '',
     picture: null,
+    status: '',
+    location: '',
   });
 
   const [formErrors, setFormErrors] = useState({
     firstname: '',
     lastname: '',
     email: '',
+    age: '',
     password: '',
     confirmPassword: '',
     phone: '',
+    genre: '',
+    picture: '',
+    status: '',
+    location: ''
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +55,6 @@ function RegisterFormPartner({ onSubmit }) {
       }));
     }
 
-    // Clear error message when user starts typing
     if (formErrors[name]) {
       setFormErrors((prevErrors) => ({
         ...prevErrors,
@@ -59,7 +66,6 @@ function RegisterFormPartner({ onSubmit }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validate form fields before submission
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -72,7 +78,6 @@ function RegisterFormPartner({ onSubmit }) {
     });
 
     try {
-      // Check if email already exists
       const emailExists = await checkEmailExists(formData.email);
       if (emailExists) {
         setFormErrors((prevErrors) => ({
@@ -82,13 +87,30 @@ function RegisterFormPartner({ onSubmit }) {
         return;
       }
 
-      // If email does not exist, proceed with form submission
       const response = await axiosInstance.post('/users/signup/partner', formDataToSend);
       console.log('Response:', response.data);
 
       if (onSubmit) {
         onSubmit(formData);
       }
+
+      // Clear the form after successful submission
+      setFormData({
+        firstname: '',
+        lastname: '',
+        email: '',
+        age: '',
+        password: '',
+        confirmPassword: '',
+        address: '',
+        phone: '',
+        genre: '',
+        picture: null,
+        status: '',
+        location: '',
+      });
+
+      setFormErrors({});
     } catch (error) {
       console.error('Error:', error);
     }
@@ -96,13 +118,14 @@ function RegisterFormPartner({ onSubmit }) {
 
   const checkEmailExists = async (email) => {
     try {
-      const response = await axiosInstance.post('http://127.0.0.1:4000/users/email', { email });
-      return response.data.exists; // true if email exists, false otherwise
+      const response = await axiosInstance.post('/users/email', { email });
+      return response.data.exists;
     } catch (error) {
       console.error('Error checking email:', error);
-      return false; // Return false in case of any error
+      return false;
     }
   };
+
   const validateForm = () => {
     const errors = {};
 
@@ -112,6 +135,10 @@ function RegisterFormPartner({ onSubmit }) {
 
     if (!formData.lastname.trim()) {
       errors.lastname = 'Last name is required';
+    }
+
+    if (!formData.age.trim()) {
+      errors.age = 'Age is required';
     }
 
     if (!formData.email.trim()) {
@@ -142,11 +169,18 @@ function RegisterFormPartner({ onSubmit }) {
       errors.picture = 'Profile picture is required';
     }
 
+    if (!formData.status) {
+      errors.status = 'Please select a status';
+    }
+
+    if (!formData.location) {
+      errors.location = 'Please select a city';
+    }
+
     return errors;
   };
 
   const isValidEmail = (email) => {
-    // Basic email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
@@ -160,164 +194,224 @@ function RegisterFormPartner({ onSubmit }) {
   };
 
   return (
-    <div className='container-s d-flex align-items-center justify-content-center'>
-    <Form className="mt-5" onSubmit={handleSubmit}>
-      <Toaster />
-      <div className='d-flex' style={{ gap: '5%' }}>
-        <Form.Group className="mb-3">
-          <Form.Label>First name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="First name"
-            name="firstname"
-            value={formData.firstname}
+    <div className='container-s d-flex align-items-center justify-content-center pb-4'>
+      <Form className="mt-5" onSubmit={handleSubmit}>
+        <Toaster />
+        <div className='d-flex' style={{ gap: '5%' }}>
+          <Form.Group className="mb-3">
+            <Form.Label>First name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="First name"
+              name="firstname"
+              value={formData.firstname}
+              onChange={handleChange}
+              isInvalid={!!formErrors.firstname}
+              aria-invalid={!!formErrors.firstname}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formErrors.firstname}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Last name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Last name"
+              name="lastname"
+              value={formData.lastname}
+              onChange={handleChange}
+              isInvalid={!!formErrors.lastname}
+              aria-invalid={!!formErrors.lastname}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formErrors.lastname}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </div>
+
+        <div className='d-flex align-items-center mb-4 mt-4' style={{ gap: '5%' }}>
+          <Form.Group className="mb-3">
+            <Form.Label>Age</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Age"
+              name="age"
+              value={formData.age}
+              onChange={handleChange}
+              isInvalid={!!formErrors.age}
+              aria-invalid={!!formErrors.age}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formErrors.age}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Check
+            type="radio"
+            label="Male"
+            name="genre"
+            id="ml"
+            value="male"
             onChange={handleChange}
-            isInvalid={!!formErrors.firstname}
-            aria-invalid={!!formErrors.firstname}
+            checked={formData.genre === 'male'}
+            isInvalid={!!formErrors.genre}
+          />
+          <Form.Check
+            type="radio"
+            label="Female"
+            name="genre"
+            id="fm"
+            value="female"
+            onChange={handleChange}
+            checked={formData.genre === 'female'}
+            isInvalid={!!formErrors.genre}
           />
           <Form.Control.Feedback type="invalid">
-            {formErrors.firstname}
+            {formErrors.genre}
           </Form.Control.Feedback>
-        </Form.Group>
+        </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Last name</Form.Label>
+        <div className='d-flex' style={{ gap: '5%' }}>
+          <Form.Group className="mb-3 input-with-icon">
+            <Form.Label>Phone Number</Form.Label>
+            <div className="icon"><PhoneIcon /></div>
+            <Form.Control
+              type="text"
+              placeholder="Phone Number"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              isInvalid={!!formErrors.phone}
+              aria-invalid={!!formErrors.phone}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formErrors.phone}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3 input-with-icon">
+            <Form.Label>Email Address</Form.Label>
+            <div className="icon"><MailIcon /></div>
+            <Form.Control
+              type="text"
+              placeholder="Email Address"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              isInvalid={!!formErrors.email}
+              aria-invalid={!!formErrors.email}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formErrors.email}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </div>
+
+        <div className='d-flex' style={{ gap: '5%' }}>
+          <Form.Group className="mb-3 input-with-icon">
+            <Form.Label>Password</Form.Label>
+            <div className="icon" onClick={toggleShowPassword} style={{ cursor: 'pointer' }}>
+              {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
+            </div>
+            <Form.Control
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              isInvalid={!!formErrors.password}
+              aria-invalid={!!formErrors.password}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formErrors.password}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3 input-with-icon">
+            <Form.Label>Confirm Password</Form.Label>
+            <div className="icon" onClick={toggleShowConfirmPassword} style={{ cursor: 'pointer' }}>
+              {showConfirmPassword ? <EyeSlashIcon /> : <EyeIcon />}
+            </div>
+            <Form.Control
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              isInvalid={!!formErrors.confirmPassword}
+              aria-invalid={!!formErrors.confirmPassword}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formErrors.confirmPassword}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </div>
+
+        <div className='d-flex mb-4 ' style={{ gap: '5%' }}>
+          <Form.Group controlId="statusSelect">
+            <Form.Label>Status</Form.Label>
+            <Form.Control
+              as="select"
+              onChange={handleChange}
+              value={formData.status}
+              name="status"
+              isInvalid={!!formErrors.status}
+              className={formErrors.status ? 'input-error' : ''}
+            >
+              <option value="">-----</option>
+              <option value="Responsable">Responsable</option>
+              <option value="Personal trainer">Personal trainer</option>
+              <option value="Rehabilitation Specialist">Rehabilitation Specialist</option>
+              <option value="Physical Therapist">Physical Therapist</option>
+              <option value="Nutritionist">Nutritionist</option>
+            </Form.Control>
+            <Form.Control.Feedback className='feedback-error' type="invalid">{formErrors.status}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="locationSelect">
+            <Form.Label>City</Form.Label>
+            <Form.Control
+              as="select"
+              onChange={handleChange}
+              value={formData.location}
+              name="location"
+              isInvalid={!!formErrors.location}
+              className={formErrors.location ? 'input-error' : ''}
+            >
+              <option value="">-----</option>
+              <option value="Dubai">Dubai</option>
+              <option value="Abu Dhabi">Abu Dhabi</option>
+              <option value="Sharjah">Sharjah</option>
+              <option value="Ajman">Ajman</option>
+              <option value="Fujairah">Fujairah</option>
+              <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+              <option value="Umm Al Quwain">Umm Al Quwain</option>
+            </Form.Control>
+            <Form.Control.Feedback className='feedback-error' type="invalid">{formErrors.location}</Form.Control.Feedback>
+          </Form.Group>
+        </div>
+
+        <div className="profile-image-container mb-4 mt-4">
+          <Form.Label>Profile Picture</Form.Label>
           <Form.Control
-            type="text"
-            placeholder="Last name"
-            name="lastname"
-            value={formData.lastname}
+            type="file"
+            className="profile-image-input"
+            name="picture"
+            accept="image/*"
             onChange={handleChange}
-            isInvalid={!!formErrors.lastname}
-            aria-invalid={!!formErrors.lastname}
+            isInvalid={!!formErrors.picture}
+            aria-invalid={!!formErrors.picture}
           />
           <Form.Control.Feedback type="invalid">
-            {formErrors.lastname}
+            {formErrors.picture}
           </Form.Control.Feedback>
-        </Form.Group>
-      </div>
+        </div>
 
-      <div className='d-flex mb-4 mt-4' style={{ gap: '5%' }}>
-        <Form.Check
-          type="radio"
-          label="Male"
-          name="genre"
-          id="ml"
-          value="male"
-          onChange={handleChange}
-          checked={formData.genre === 'male'}
-          isInvalid={!!formErrors.genre}
-        />
-        <Form.Check
-          type="radio"
-          label="Female"
-          name="genre"
-          id="fm"
-          value="female"
-          onChange={handleChange}
-          checked={formData.genre === 'female'}
-          isInvalid={!!formErrors.genre}
-        />
-        <Form.Control.Feedback type="invalid">
-          {formErrors.genre}
-        </Form.Control.Feedback>
-      </div>
-
-      <div className='d-flex' style={{ gap: '5%' }}>
-        <Form.Group className="mb-3 input-with-icon">
-          <Form.Label>Phone Number</Form.Label>
-          <div className="icon"><PhoneIcon /></div>
-          <Form.Control
-            type="text"
-            placeholder="Phone Number"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            isInvalid={!!formErrors.phone}
-            aria-invalid={!!formErrors.phone}
-          />
-          <Form.Control.Feedback type="invalid">
-            {formErrors.phone}
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3 input-with-icon">
-          <Form.Label>Email Address</Form.Label>
-          <div className="icon"><MailIcon /></div>
-          <Form.Control
-            type="text"
-            placeholder="Email Address"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            isInvalid={!!formErrors.email}
-            aria-invalid={!!formErrors.email}
-          />
-          <Form.Control.Feedback type="invalid">
-            {formErrors.email}
-          </Form.Control.Feedback>
-        </Form.Group>
-      </div>
-
-      <div className='d-flex' style={{ gap: '5%' }}>
-        <Form.Group className="mb-3 input-with-icon">
-          <Form.Label>Password</Form.Label>
-          <div className="icon" onClick={toggleShowPassword} style={{ cursor: 'pointer' }}>
-            {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
-          </div>
-          <Form.Control
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            isInvalid={!!formErrors.password}
-            aria-invalid={!!formErrors.password}
-          />
-          <Form.Control.Feedback type="invalid">
-            {formErrors.password}
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3 input-with-icon">
-          <Form.Label>Confirm Password</Form.Label>
-          <div className="icon" onClick={toggleShowConfirmPassword} style={{ cursor: 'pointer' }}>
-            {showConfirmPassword ? <EyeSlashIcon /> : <EyeIcon />}
-          </div>
-          <Form.Control
-            type={showConfirmPassword ? "text" : "password"}
-            placeholder="Confirm Password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            isInvalid={!!formErrors.confirmPassword}
-            aria-invalid={!!formErrors.confirmPassword}
-          />
-          <Form.Control.Feedback type="invalid">
-            {formErrors.confirmPassword}
-          </Form.Control.Feedback>
-        </Form.Group>
-      </div>
-
-      <div className="profile-image-container">
-        <Form.Label>Profile Picture</Form.Label>
-        <Form.Control
-          type="file"
-          className="profile-image-input"
-          name="picture"
-          accept="image/*"
-          onChange={handleChange}
-          isInvalid={!!formErrors.picture}
-          aria-invalid={!!formErrors.picture}
-        />
-        <Form.Control.Feedback type="invalid">
-          {formErrors.picture}
-        </Form.Control.Feedback>
-      </div>
-
-      <Button type="submit" className='button-primary' style={{ width: '100%' }}>Register</Button>
-    </Form>
-  </div>
+        <Button type="submit" className='button-primary' style={{ width: '100%' }}>Register</Button>
+      </Form>
+    </div>
   );
 }
 

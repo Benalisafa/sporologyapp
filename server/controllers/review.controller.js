@@ -31,6 +31,19 @@ exports.createReview = async (req, res) => {
 };
 
 
+exports.getReviews = async (req, res) => {
+    try {
+        const reviews = await Review.find()
+          .populate('userId', 'firstname') 
+          .populate('activityId', 'title'); 
+    
+        res.json(reviews);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+}
+
 exports.getReviewsByActivityId = async (req, res) => {
     try {
         const { activityId } = req.params;

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 // import { Link } from "react-router-dom";
 import { Container, Button, Form, Modal, Col, Row } from 'react-bootstrap';
 import {  ProfileIcon } from "../../components/Icons";
-import logo from "../../assets/sporology-logo.svg"
+import profile from "../../assets/profile.png"
 import {toast,Toaster} from "react-hot-toast";
 
 function ProfileForm() {
@@ -153,8 +153,8 @@ function ProfileForm() {
                 {image ? (
     <img src={image} alt="Preview" style={{borderRadius:'50%',width:'150px', height:'150px', objectFit: 'cover'}} />
 ) : (
-  <div className="p-4" style={{backgroundColor:'grey', width:'150px', height:'150px',borderRadius:'50%'}}>
-    <img src={logo} style={{borderRadius:'50%'}}/> 
+  <div >
+    <img src={profile} className="p-4" style={{borderRadius:'50%',width:'150px', height:'150px', objectFit: 'cover'}}/> 
     </div>
 )}</div>
                 {/* Profile Image */}

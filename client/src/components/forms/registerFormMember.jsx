@@ -136,7 +136,25 @@ function RegisterFormMember() {
           </Form.Group>
         </div>
 
-        <Form.Group className="mb-3" controlId="genre">
+        <div className='d-flex ' >
+
+        <Form.Group className="mb-3">
+            <Form.Label>Age</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Age"
+              name="age"
+              value={formData.age}
+              onChange={handleChange}
+              isInvalid={!!errors.age}
+              aria-invalid={!!errors.age}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.age}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+        <Form.Group className="mb-3 " controlId="genre">
   <Form.Label>Gender</Form.Label>
   <div className='d-flex ' style={{ gap: '5%' }}>
     <Form.Check
@@ -160,11 +178,12 @@ function RegisterFormMember() {
       aria-invalid={!!errors.genre}
     />
   </div>
+  
   <Form.Control.Feedback type="invalid" style={{ display: 'block' }}>
     {errors.genre}
   </Form.Control.Feedback>
 </Form.Group>
-
+</div>
 
         <div className='d-flex mb-4 ' style={{ gap: '5%' }}>
           <Form.Group className="input-with-icon" controlId="phone">

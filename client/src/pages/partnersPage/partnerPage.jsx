@@ -29,9 +29,10 @@ const PartnerPage = () => {
         axiosInstance.get(`users/user/${id}`)
             .then(response => {
                 let partnerData = response.data;
+                console.log(partnerData)
                 if (partnerData.partnerType === "individual") {
-                    partnerData.companyAddress = `${partnerData.firstname} `;
-                    partnerData.companyName = `${partnerData.lastname} `;
+                    partnerData.companyAddress = `${partnerData.firstname} ${partnerData.lastname} `;
+                    partnerData.description = `${partnerData.email} ${partnerData.phone} `;
                    
                 }
                 setPartner(partnerData);

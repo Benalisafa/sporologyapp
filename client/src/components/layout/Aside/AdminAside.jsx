@@ -46,22 +46,18 @@ const AdminAside = () => {
         <Nav.Link as={Link} to="/dashboard/admin/activities" className="partner-nav-link">
         Activities
         </Nav.Link>
-        <Nav.Link as={Link} to="/about" className="partner-nav-link">
+        <Nav.Link as={Link} to="/dashboard/admin/categories" className="partner-nav-link">
         Categories
         </Nav.Link>
-        <Nav.Link as={Link} to="/about" className="partner-nav-link">
-        Bookings
-        </Nav.Link>
-        <Nav.Link as={Link} to="/about" className="partner-nav-link">
+        
+        <Nav.Link as={Link} to="/dashboard/admin/reviews" className="partner-nav-link">
         Testimonies
         </Nav.Link>
         <Nav.Link as={Link} to="/dashboard/admin/stat" className="partner-nav-link">
         Statistics
         </Nav.Link>
-        <Nav.Link as={Link} to="/about" className="partner-nav-link">
-        Profile 
-        </Nav.Link>
-        <Nav.Link as={Link} to="/about" className="partner-nav-link">
+        
+        <Nav.Link  className="partner-nav-link">
         Logout
         </Nav.Link>
       </Nav>

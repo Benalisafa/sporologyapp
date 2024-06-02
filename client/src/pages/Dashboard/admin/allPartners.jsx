@@ -48,7 +48,8 @@ function AdminPartners() {
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
-                <th>Company</th>
+                <th>Phone</th>
+                <th>Type</th>
                 <th style={{ width: '10%' }}>Actions</th>
               </tr>
             </thead>
@@ -58,7 +59,8 @@ function AdminPartners() {
                   <td>{partner.firstname}</td>
                   <td>{partner.lastname}</td>
                   <td>{partner.email}</td>
-                  <td>{partner.company}</td>
+                  <td>{partner.phone}</td>
+                  <td>{partner.partnerType}</td>
                   <td>
                     <Button
                       style={{ background: 'transparent', color: 'green', border: 'none' }}

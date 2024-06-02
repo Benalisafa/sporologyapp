@@ -6,7 +6,6 @@ const path = require('path');
 
 
 exports.signup = async (req, res) => {
-  console.log('Received request with password:', req.body.password);
   console.log('Received request:', req.body);
 
   let role;
@@ -27,29 +26,36 @@ exports.signup = async (req, res) => {
   const pictureFilename = req.file ? req.file.filename : null;
   console.log("pictureFilename", pictureFilename);
 
-  if (!req.body.password || req.body.password.trim() === '') {
+  const { password, confirmPassword, firstname, lastname, email, age, address, phone, genre, status, location, companyName, companyAddress, description } = req.body;
+
+  if (!password || password.trim() === '') {
     return res.status(400).json({ message: 'Password is required' });
   }
 
-  const data = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    email: req.body.email,
-    picture: pictureFilename,
-    password: bcrypt.hashSync(req.body.password, 10),
-    address: req.body.address,
-    phone: req.body.phone,
-    companyName: req.body.companyName,
-    companyAddress: req.body.companyAddress,
-    description: req.body.description,
-    partnerType: partnerType,
-    role: role,
-  };
-
-  const { password, confirmPassword } = req.body;
   if (password !== confirmPassword) {
     return res.status(400).json({ message: 'Passwords do not match' });
   }
+
+  const hashedPassword = bcrypt.hashSync(password, 10);
+
+  const data = {
+    firstname,
+    lastname,
+    email,
+    age,
+    picture: pictureFilename,
+    password: hashedPassword,
+    address,
+    phone,
+    genre,
+    status,
+    location,
+    companyName,
+    companyAddress,
+    description,
+    partnerType,
+    role,
+  };
 
   try {
     const _user = new User(data);

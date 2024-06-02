@@ -35,6 +35,9 @@ import AdminActivities from './pages/Dashboard/admin/allActivities'
 import AdminPartners from './pages/Dashboard/admin/allPartners'
 import AdminMembers from './pages/Dashboard/admin/allMembers'
 import CalendarPage from './pages/calendar/calendar'
+import AdminProfile from './pages/Dashboard/admin/profile'
+import AdminCategories from './pages/Dashboard/admin/categories'
+import AdminReviews from './pages/Dashboard/admin/reviews'
 
 
 
@@ -100,19 +103,6 @@ const router =createBrowserRouter([
         },
 
         
-
-        {
-          
-          path : '/dashboard/admin',
-          element : 
-          // <PrivateRole role="admin">
-          <DashboardAdmin/>
-          // </PrivateRole>
-
-        },
-
-        
-
         { 
           path : '/dashboard/partner/activities',
           element : 
@@ -206,6 +196,39 @@ const router =createBrowserRouter([
         // </PrivateRole>
 
       },
+
+      {
+          
+        path : '/dashboard/admin/categories',
+        element : 
+        // <PrivateRole role="admin">
+        <AdminCategories/>
+        // </PrivateRole>
+
+      },
+
+      {
+          
+        path : '/dashboard/admin/reviews',
+        element : 
+        // <PrivateRole role="admin">
+        <AdminReviews/>
+        // </PrivateRole>
+
+      },
+
+      {
+          
+        path : '/dashboard/admin/profile',
+        element : 
+        // <PrivateRole role="admin">
+        <AdminProfile/>
+        // </PrivateRole>
+
+      }
+
+
+
     ]
   },
 

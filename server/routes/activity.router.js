@@ -6,6 +6,8 @@ const passport = require ("passport");
 const checkRole = require ("../middleware/role.middleware");
 const activityOwnership = require('../middleware/activityOwnership');
 
+route.get('/count', activityController.getActivityCount );
+
 
 route.post('/createActivity', activityController.createActivity);
 
@@ -18,12 +20,8 @@ route.get('/nextActivity/:userId', activityController.getUpcomingActivitiesByUse
 route.get('/pastActivity/:userId', activityController.getPastActivitiesByUserId );
 route.put('/favorite/:id', activityController.activityFavoriteStatus);
 
-route.get('/count', activityController.getActivityCount );
-
 route.put('/updateActivity/:id' , 
-  // passport.authenticate('jwt', { session: false }),  
-  // checkRole(['member']), 
-  activityOwnership,
+  
   activityController.updateActivity
 );
 

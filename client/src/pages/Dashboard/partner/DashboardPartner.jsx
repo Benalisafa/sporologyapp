@@ -9,7 +9,7 @@ import { formatDate } from "../../../components/tools/date";
 
 
 function DashboardPartner() {
-    const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedActivity, setEditedActivity] = useState({});
@@ -17,30 +17,29 @@ function DashboardPartner() {
   const currentUser = useSelector(userData)
   
   
- useEffect(() => {
-  if (currentUser) {
-    setLoading(true);
-    axiosInstance.get('activities/listActivity')
-      .then(({ data }) => {
-        // Assuming data.activities is an array of activity objects
-        const activities = data.activities;
-        console.log(currentUser.userId)
-
-        console.log("Fetched activities:", activities);
-        // Filtering activities based on the userId
-        const userActivities = activities.filter(activity => activity.userId._id === currentUser.userId);
-
-        setActivities(userActivities);
-        console.log("User activities:", userActivities);
-
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Error fetching activities:", error);
-        setLoading(false);
-      });
-  }
-}, [currentUser]);
+  useEffect(() => {
+    if (currentUser) {
+      setLoading(true);
+      axiosInstance.get('activities/listActivity')
+        .then(({ data }) => {
+          const activities = data.activities;
+          console.log(currentUser.userId);
+          console.log("Fetched activities:", activities);
+  
+          // Filtering activities based on the userId with added null check
+          const userActivities = activities.filter(activity => activity.userId && activity.userId._id === currentUser.userId);
+  
+          setActivities(userActivities);
+          console.log("User activities:", userActivities);
+  
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error("Error fetching activities:", error);
+          setLoading(false);
+        });
+    }
+  }, [currentUser]);
 
 
 
@@ -68,19 +67,20 @@ function DashboardPartner() {
 
   const handleSaveChanges = async () => {
     try {
-      // Send a PUT request to update the edited activity
-      await axiosInstance.put(`/activities/updateActivity/${editedActivity._id}`, editedActivity);
-      
-      // Update the activities state with the edited activity
-      const updatedActivities = activities.map(activity => {
-        if (activity._id === editedActivity._id) {
-          return editedActivity;
-        }
-        return activity;
+      await axiosInstance.put(`/activities/updateActivity/${editedActivity._id}`, {
+        title: editedActivity.title,
+        description: editedActivity.description,
+        capacity: editedActivity.capacity,
+        date: editedActivity.date,
+        location: editedActivity.location
+        // Include other fields as needed
       });
+  
+      const updatedActivities = activities.map(activity =>
+        activity._id === editedActivity._id ? editedActivity : activity
+      );
       setActivities(updatedActivities);
   
-      // Close the edit modal
       handleCloseEditModal();
     } catch (error) {
       console.error('Error saving changes:', error);
